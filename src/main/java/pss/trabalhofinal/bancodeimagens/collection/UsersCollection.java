@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
+import pss.trabalhofinal.bancodeimagens.factory.PasswordEncryptor;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.NormalUser;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
@@ -12,10 +13,12 @@ import pss.trabalhofinal.bancodeimagens.model.UserModel;
 public class UsersCollection {
     /* ATTRIBUTES */
     private List<UserModel> users;
+    private int countUsers;
 
     /* CONSTRUCTORS */
     public UsersCollection(List<UserModel> users) {
         setUsers(users);
+        setCountUsers(users.size());
     }
 
     public UsersCollection() {
@@ -48,6 +51,7 @@ public class UsersCollection {
             }
 
             setUsers(UserDAO.getAllUsers());
+            setCountUsers(users.size());
         }
     }
 
@@ -71,6 +75,7 @@ public class UsersCollection {
             UserDAO.removeUser(user.getId());
             appointNewAdmin(user);
             setUsers(UserDAO.getAllUsers());
+            setCountUsers(users.size());
         }
     }
 
@@ -93,6 +98,17 @@ public class UsersCollection {
             remove(older);
             add(newer);
         }
+    }
+
+    public UserModel login(String username, String password) {
+        for (UserModel u : users) {
+            if (username.toLowerCase().equals(u.getUsername().toLowerCase())
+                    && PasswordEncryptor.encrypt(password).equals(u.getPassword())) {
+                return u;
+            }
+        }
+
+        return null;
     }
 
     private void appointNewAdmin(UserModel user) {
@@ -118,6 +134,14 @@ public class UsersCollection {
     }
 
     /* GETTERS AND SETTERS */
+    public int getCountUsers() {
+        return this.countUsers;
+    }
+
+    private void setCountUsers(int count) {
+        this.countUsers = count;
+    }
+
     public List<UserModel> getAllUsers() {
         return Collections.unmodifiableList(users);
     }
