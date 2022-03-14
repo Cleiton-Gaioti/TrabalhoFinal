@@ -158,7 +158,7 @@ public abstract class UserDAO {
     }
 
     public static void appointNewAdmin() {
-        var query = "UPDATE user SET admin = 1 WHERE dateRegister = SELECT MIN(dateRegister) FROM user";
+        var query = "UPDATE user SET admin = 1 WHERE id = (SELECT id FROM user ORDER BY dateRegister ASC LIMIT 1)";
 
         try {
             Connection conn = ConnectionSQLite.connect();

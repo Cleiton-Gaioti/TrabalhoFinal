@@ -24,7 +24,11 @@ public class UsersCollection {
 
     /* METHODS */
     public void add(UserModel user) {
-        /* Caso o novo usuário seja válido, ele é inserido na lista de usuários. */
+        /*
+         * Caso o novo usuário seja válido, ele é inserido na lista de usuários e no
+         * banco.
+         */
+
         if (user == null) {
 
             throw new RuntimeException("Usuário nulo.");
@@ -71,6 +75,11 @@ public class UsersCollection {
     }
 
     public void update(UserModel older, UserModel newer) {
+        /*
+         * Valida os novos dados do usuário e caso seja válido, remove o antigo registro
+         * do banco e insere movamente com as novas informações do usuário e mesmo id.
+         */
+
         if (older == null || newer == null) {
 
             throw new RuntimeException("Usuário nulo.");
@@ -87,6 +96,8 @@ public class UsersCollection {
     }
 
     private void appointNewAdmin(UserModel user) {
+        /* Nomeia um novo administrador */
+
         if (countAdmins() == 1) {
             if (Admin.class.isInstance(user)) {
                 UserDAO.appointNewAdmin();
