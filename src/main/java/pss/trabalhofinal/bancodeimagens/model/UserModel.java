@@ -1,6 +1,7 @@
 package pss.trabalhofinal.bancodeimagens.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -10,16 +11,16 @@ import pss.trabalhofinal.bancodeimagens.factory.PasswordEncryptor;
 public abstract class UserModel {
 
     /* ATTRIBUTES */
-    private int id;
+    public int id;
     private String name;
     private String email;
     private String username;
     private String password;
-    private LocalDateTime registrationDate;
+    private LocalDate registrationDate;
 
     /* CONSTRUCTORS */
     public UserModel(int id, String name, String email, String username, String password,
-            LocalDateTime registrationDate, boolean encryptPassword) {
+            LocalDate registrationDate, boolean encryptPassword) {
         setId(id);
         setName(name);
         setEmail(email);
@@ -28,17 +29,35 @@ public abstract class UserModel {
         setRegistrationDate(registrationDate);
     }
 
-    public UserModel(String name, String email, String username, String password, LocalDateTime registrationDate,
+    public UserModel(String name, String email, String username, String password, LocalDate registrationDate,
             boolean encryptPassword) {
         this(-1, name, email, username, password, registrationDate, encryptPassword);
     }
 
-    /** GETTERS AND SETTERS */
+    /* METHODS */
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof UserModel)) {
+            return false;
+        }
+        UserModel userModel = (UserModel) o;
+        return Objects.equals(name, userModel.name) && Objects.equals(email, userModel.email)
+                && Objects.equals(username, userModel.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, email, username);
+    }
+
+    /* GETTERS AND SETTERS */
     public int getId() {
         return this.id;
     }
 
-    private void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -125,11 +144,11 @@ public abstract class UserModel {
 
     }
 
-    public LocalDateTime getRegistrationDate() {
+    public LocalDate getRegistrationDate() {
         return this.registrationDate;
     }
 
-    private void setRegistrationDate(LocalDateTime registrationDate) {
+    private void setRegistrationDate(LocalDate registrationDate) {
         if (registrationDate == null) {
 
             throw new RuntimeException("Data de registro nula.");
