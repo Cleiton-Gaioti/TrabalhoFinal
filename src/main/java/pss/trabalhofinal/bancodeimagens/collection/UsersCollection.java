@@ -12,10 +12,12 @@ import pss.trabalhofinal.bancodeimagens.model.UserModel;
 public class UsersCollection {
     /* ATTRIBUTES */
     private List<UserModel> users;
+    private int countUsers;
 
     /* CONSTRUCTORS */
     public UsersCollection(List<UserModel> users) {
         setUsers(users);
+        setCountUsers(users.size());
     }
 
     public UsersCollection() {
@@ -37,9 +39,15 @@ public class UsersCollection {
 
             throw new RuntimeException("Usuário já cadastrado.");
 
-        } else {
+        } else if (!UserDAO.verifyUsername(user.getUsername())) {
 
-            UserDAO.insertUser(user);
+            throw new RuntimeException("Nome de usuário já em uso.");
+
+        } else if (!UserDAO.verifyEmail(user.getEmail())) {
+
+            throw new RuntimeException("Email já em uso.");
+
+        } else {
 
             if (user.getId() == -1) {
                 UserDAO.insertUser(user);
@@ -48,6 +56,7 @@ public class UsersCollection {
             }
 
             setUsers(UserDAO.getAllUsers());
+            setCountUsers(users.size());
         }
     }
 
@@ -71,6 +80,7 @@ public class UsersCollection {
             UserDAO.removeUser(user.getId());
             appointNewAdmin(user);
             setUsers(UserDAO.getAllUsers());
+            setCountUsers(users.size());
         }
     }
 
@@ -118,6 +128,14 @@ public class UsersCollection {
     }
 
     /* GETTERS AND SETTERS */
+    public int getCountUsers() {
+        return this.countUsers;
+    }
+
+    private void setCountUsers(int count) {
+        this.countUsers = count;
+    }
+
     public List<UserModel> getAllUsers() {
         return Collections.unmodifiableList(users);
     }

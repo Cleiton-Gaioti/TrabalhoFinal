@@ -41,12 +41,12 @@ public abstract class UserDAO {
         }
     }
 
-    public static int insertUser(UserModel user) {
+    public static void insertUser(UserModel user) {
         var query = "INSERT INTO user(name, email, username, password, dateRegister, admin, authorized) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection conn = ConnectionSQLite.connect();
-            PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement(query);
 
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
@@ -56,21 +56,10 @@ public abstract class UserDAO {
             ps.setInt(6, Admin.class.isInstance(user) ? 1 : 0);
             ps.setInt(7, Admin.class.isInstance(user) ? 1 : 0);
 
-            ps.executeQuery();
+            ps.executeUpdate();
 
-            ResultSet rs = ps.getGeneratedKeys();
-
-            var id = -1;
-
-            if (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-            rs.close();
             ps.close();
             conn.close();
-
-            return id;
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao inserir usuario: " + e.getMessage());
         }
@@ -170,6 +159,107 @@ public abstract class UserDAO {
             conn.close();
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao apontar novo administrador: " + e.getMessage());
+        }
+    }
+
+    public static boolean verifyUsername(String username) {
+        var query = "SELECT COUNT(1) AS count FROM user WHERE username = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setString(1, username);
+
+            ResultSet rs = ps.executeQuery();
+
+            var count = 0;
+
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return count == 0;
+        } catch (SQLException e) {
+
+            throw new RuntimeException("Erro ao verificar senha: " + e.getMessage());
+        }
+    }
+
+    public static boolean verifyEmail(String email) {
+        var query = "SELECT COUNT(1) AS count FROM user WHERE email = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setString(1, email);
+
+            ResultSet rs = ps.executeQuery();
+
+            var count = 0;
+
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return count == 0;
+        } catch (SQLException e) {
+
+            throw new RuntimeException("Erro ao verificar email: " + e.getMessage());
+        }
+    }
+
+    public static UserModel login(String username, String password) {
+        var query = "SELECT * FROM user WHERE LOWER(username) = LOWER(?) AND password = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setString(1, username);
+            ps.setString(2, password);
+
+            ResultSet rs = ps.executeQuery();
+
+            UserModel user = null;
+
+            if (rs.next()) {
+                var id = rs.getInt("id");
+                var name = rs.getString("name");
+                var email = rs.getString("email");
+                username = rs.getString("username");
+                password = rs.getString("password");
+                var dataRegister = rs.getDate("dateRegister").toLocalDate();
+                var admin = rs.getInt("admin") == 1;
+                var authorized = rs.getInt("authorized") == 1;
+
+                if (!authorized) {
+                    throw new RuntimeException(
+                            "Usuário não autorizado. Espere até que um administrador autorize sua criação de usuário.");
+
+                } else if (admin) {
+                    user = new Admin(id, name, email, username, password, dataRegister, false);
+                } else {
+                    user = new NormalUser(id, name, email, username, password, dataRegister, authorized, false);
+                }
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao realizar login: " + e.getMessage());
         }
     }
 }
