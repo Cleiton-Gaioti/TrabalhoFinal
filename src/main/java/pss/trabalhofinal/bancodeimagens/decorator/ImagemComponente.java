@@ -12,6 +12,6 @@ public abstract class ImagemComponente {
     public abstract ImagemComponente reverter();
 
     public final void visualizar() throws InterruptedException, IOException {
-        VisualizarDecorator visualizador = new VisualizarDecorator(this);
+        //VisualizarDecorator visualizador = new VisualizarDecorator(this);
     }
 }
