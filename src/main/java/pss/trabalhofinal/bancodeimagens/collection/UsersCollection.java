@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
-import pss.trabalhofinal.bancodeimagens.factory.PasswordEncryptor;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.NormalUser;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
@@ -40,9 +39,15 @@ public class UsersCollection {
 
             throw new RuntimeException("Usuário já cadastrado.");
 
-        } else {
+        } else if (!UserDAO.verifyUsername(user.getUsername())) {
 
-            UserDAO.insertUser(user);
+            throw new RuntimeException("Nome de usuário já em uso.");
+
+        } else if (!UserDAO.verifyEmail(user.getEmail())) {
+
+            throw new RuntimeException("Email já em uso.");
+
+        } else {
 
             if (user.getId() == -1) {
                 UserDAO.insertUser(user);
@@ -98,17 +103,6 @@ public class UsersCollection {
             remove(older);
             add(newer);
         }
-    }
-
-    public UserModel login(String username, String password) {
-        for (UserModel u : users) {
-            if (username.toLowerCase().equals(u.getUsername().toLowerCase())
-                    && PasswordEncryptor.encrypt(password).equals(u.getPassword())) {
-                return u;
-            }
-        }
-
-        return null;
     }
 
     private void appointNewAdmin(UserModel user) {

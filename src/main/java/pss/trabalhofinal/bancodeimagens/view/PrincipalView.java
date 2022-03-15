@@ -28,8 +28,6 @@ public class PrincipalView extends javax.swing.JFrame {
         menuLogout = new javax.swing.JMenuItem();
         jMenuAdministrador = new javax.swing.JMenu();
         menuListarUsuarios = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        menuSettings = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -60,13 +58,6 @@ public class PrincipalView extends javax.swing.JFrame {
         jMenuAdministrador.add(menuListarUsuarios);
 
         jMenuBar1.add(jMenuAdministrador);
-
-        jMenu2.setText("Configurações");
-
-        menuSettings.setText("Configurações");
-        jMenu2.add(menuSettings);
-
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -101,7 +92,6 @@ public class PrincipalView extends javax.swing.JFrame {
     private javax.swing.JButton btnNotifications;
     private javax.swing.JButton btnSolicitacao;
     private javax.swing.JDesktopPane desktop;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenuAdministrador;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuUsuario;
@@ -109,7 +99,6 @@ public class PrincipalView extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuListarUsuarios;
     private javax.swing.JMenuItem menuLogin;
     private javax.swing.JMenuItem menuLogout;
-    private javax.swing.JMenuItem menuSettings;
     private javax.swing.JMenuItem menuUpdate;
     private javax.swing.JTextPane txtUser;
     // End of variables declaration//GEN-END:variables
@@ -125,10 +114,6 @@ public class PrincipalView extends javax.swing.JFrame {
     public JTextPane getTxtUser() {
         return txtUser;
     }
-
-    public JMenuItem getMenuSettings() {
-        return menuSettings;
-    }   
 
     public JMenu getjMenuAdministrador() {
         return jMenuAdministrador;

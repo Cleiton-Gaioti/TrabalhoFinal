@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
+import pss.trabalhofinal.bancodeimagens.factory.PasswordEncryptor;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
 import pss.trabalhofinal.bancodeimagens.view.LoginView;
@@ -38,9 +39,9 @@ public class LoginPresenter implements IObservable {
 
         view.getBtnRegister().addActionListener(l -> {
             if (users.getCountUsers() == 0) {
-                new CadastrarUsuarioPresenter(desktop, true);
+                new CadastrarUsuarioPresenter(desktop, true, false);
             } else {
-                new CadastrarUsuarioPresenter(desktop, false);
+                new CadastrarUsuarioPresenter(desktop, false, false);
             }
         });
 
@@ -64,17 +65,23 @@ public class LoginPresenter implements IObservable {
 
         } else {
 
-            var user = users.login(username, password);
+            try {
+                var user = UserDAO.login(username, PasswordEncryptor.encrypt(password));
 
-            if (user == null) {
+                if (user == null) {
 
-                JOptionPane.showMessageDialog(view, "Credenciais incorretas. Verifique seu email e senha.");
+                    JOptionPane.showMessageDialog(view, "Credenciais incorretas. Verifique seu email e senha.");
 
-            } else {
+                } else {
 
-                notifyObservers(user);
+                    notifyObservers(user);
 
-                view.dispose();
+                    view.dispose();
+                }
+            } catch (RuntimeException e) {
+
+                JOptionPane.showMessageDialog(view, e.getMessage());
+
             }
         }
     }
