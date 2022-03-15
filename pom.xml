@@ -8,7 +8,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <exec.mainClass>pss.trabalhofinal.bancodeimagens.TrabalhoFinal</exec.mainClass>
+        <exec.mainClass>pss.trabalhofinal.bancodeimagens.Main</exec.mainClass>
     </properties>
     <repositories>
         <repository>
