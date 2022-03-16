@@ -8,14 +8,14 @@ public class NormalUser extends UserModel {
 
     /* CONSTRUCTORS */
     public NormalUser(int id, String name, String email, String username, String password, LocalDate registrationDate,
-            boolean authorized, boolean encryptPassword) {
-        super(id, name, email, username, password, registrationDate, encryptPassword);
+            boolean authorized, int permissions, boolean encryptPassword) {
+        super(id, name, email, username, password, registrationDate, permissions, encryptPassword);
         setAuthorized(authorized);
     }
 
     public NormalUser(String name, String email, String username, String password, LocalDate registrationDate,
-            boolean authorized, boolean encryptPassword) {
-        this(-1, name, email, username, password, registrationDate, authorized, encryptPassword);
+            boolean authorized, int permissions, boolean encryptPassword) {
+        this(-1, name, email, username, password, registrationDate, authorized, permissions, encryptPassword);
     }
 
     /* GETTERS AND SETTERS */

@@ -84,6 +84,16 @@ public class UsersCollection {
         }
     }
 
+    public void remove(int id) {
+        var user = getUserById(id);
+
+        if (user == null) {
+            throw new RuntimeException("Usuário não encontrado");
+        } else {
+            remove(user);
+        }
+    }
+
     public void update(UserModel older, UserModel newer) {
         /*
          * Valida os novos dados do usuário e caso seja válido, remove o antigo registro
@@ -103,6 +113,26 @@ public class UsersCollection {
             remove(older);
             add(newer);
         }
+    }
+
+    public void searchUser(String substr, int field) {
+        var query = "";
+
+        switch (field) {
+            case 0:
+                query = "SELECT * FROM user WHERE CAST(id AS VARCHAR) = CAST(? AS VARCHAR) ORDER BY name";
+                break;
+            case 1:
+                query = "SELECT * FROM user WHERE name LIKE ? ORDER BY name";
+                break;
+            case 2:
+                query = "SELECT * FROM user WHERE username LIKE ? ORDER BY name";
+                break;
+            default:
+                throw new RuntimeException("Campo de pesquisa inválido!");
+        }
+
+        setUsers(users = UserDAO.search(query, substr));
     }
 
     private void appointNewAdmin(UserModel user) {
@@ -128,6 +158,16 @@ public class UsersCollection {
     }
 
     /* GETTERS AND SETTERS */
+    public UserModel getUserById(int id) {
+        for (var u : users) {
+            if (u.getId() == id) {
+                return u;
+            }
+        }
+
+        return null;
+    }
+
     public int getCountUsers() {
         return this.countUsers;
     }

@@ -31,19 +31,17 @@
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnAddUser" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="btnUpdateUser" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnShowUser" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnRemoveUser" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="txtSearch" pref="390" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="txtSearch" min="-2" pref="616" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="boxSearchFor" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnSearchUser" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="checkSelectAll" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnSendNotification" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -54,18 +52,19 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btnSendNotification" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="checkSelectAll" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtSearch" alignment="3" pref="32" max="32767" attributes="0"/>
-                  <Component id="btnSearchUser" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="txtSearch" pref="26" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btnSearchUser" alignment="3" max="32767" attributes="0"/>
+                      <Component id="boxSearchFor" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="350" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnRemoveUser" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btnUpdateUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnShowUser" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAddUser" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnClose" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -102,9 +101,9 @@
         <Property name="text" type="java.lang.String" value="Remover"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnUpdateUser">
+    <Component class="javax.swing.JButton" name="btnShowUser">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Atualizar"/>
+        <Property name="text" type="java.lang.String" value="Ver Usu&#xe1;rio"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnAddUser">
@@ -117,16 +116,6 @@
         <Property name="text" type="java.lang.String" value="Fechar"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btnSendNotification">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Enviar Notifica&#xe7;&#xe3;o"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="checkSelectAll">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Selecionar Todos"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JTextField" name="txtSearch">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="Busca por id, nome, usu&#xe1;rio ou email"/>
@@ -136,6 +125,20 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Buscar Usu&#xe1;rio"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="boxSearchFor">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="3">
+            <StringItem index="0" value="Id"/>
+            <StringItem index="1" value="Nome"/>
+            <StringItem index="2" value="Nome de Usu&#xe1;rio"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
