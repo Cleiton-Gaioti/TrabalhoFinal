@@ -16,14 +16,19 @@ import pss.trabalhofinal.bancodeimagens.view.LoginView;
 public class LoginPresenter implements IObservable {
     /* ATTRIBUTES */
     private final List<IObserver> observers;
-    private final UsersCollection users;
+    private UsersCollection users;
     private final LoginView view;
 
     /* CONSTRUCTOR */
     public LoginPresenter(JDesktopPane desktop) {
-        users = new UsersCollection(UserDAO.getAllUsers());
         observers = new ArrayList<>();
         view = new LoginView();
+
+        try {
+            users = new UsersCollection(UserDAO.getAllUsers());
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(view, e.getMessage());
+        }
 
         view.getCheckShowPassword().addActionListener(l -> {
             if (view.getCheckShowPassword().isSelected()) {

@@ -25,7 +25,8 @@ public abstract class UserDAO {
                 + "password VARCHAR NOT NULL, "
                 + "dateRegister DATE NOT NULL, "
                 + "admin INT DEFAULT 0, "
-                + "authorized INT DEFAULT 0 "
+                + "authorized INT DEFAULT 0, "
+                + "permission INT DEFAULT 0 "
                 + ")";
 
         try {
@@ -42,7 +43,7 @@ public abstract class UserDAO {
     }
 
     public static void insertUser(UserModel user) {
-        var query = "INSERT INTO user(name, email, username, password, dateRegister, admin, authorized) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        var query = "INSERT INTO user(name, email, username, password, dateRegister, admin, authorized, permission) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection conn = ConnectionSQLite.connect();
@@ -55,6 +56,7 @@ public abstract class UserDAO {
             ps.setDate(5, Date.valueOf(user.getRegistrationDate()));
             ps.setInt(6, Admin.class.isInstance(user) ? 1 : 0);
             ps.setInt(7, Admin.class.isInstance(user) ? 1 : 0);
+            ps.setInt(8, user.getPermissions());
 
             ps.executeUpdate();
 
@@ -66,7 +68,7 @@ public abstract class UserDAO {
     }
 
     public static void insertUser(int id, UserModel user) {
-        var query = "INSERT INTO user(id, name, email, username, password, dateRegister, admin, authorized) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        var query = "INSERT INTO user(id, name, email, username, password, dateRegister, admin, authorized, permission) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection conn = ConnectionSQLite.connect();
@@ -80,6 +82,7 @@ public abstract class UserDAO {
             ps.setDate(6, Date.valueOf(user.getRegistrationDate()));
             ps.setInt(7, Admin.class.isInstance(user) ? 1 : 0);
             ps.setInt(8, Admin.class.isInstance(user) ? 1 : 0);
+            ps.setInt(9, user.getPermissions());
 
             ps.executeQuery();
 
@@ -128,11 +131,13 @@ public abstract class UserDAO {
                 var dateRegister = rs.getDate("dateRegister").toLocalDate();
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
+                var permission = rs.getInt("permission");
 
                 if (admin) {
                     users.add(new Admin(id, name, email, username, password, dateRegister, false));
                 } else {
-                    users.add(new NormalUser(id, name, email, username, password, dateRegister, authorized, false));
+                    users.add(new NormalUser(id, name, email, username, password, dateRegister, authorized, permission,
+                            false));
                 }
             }
 
@@ -241,6 +246,7 @@ public abstract class UserDAO {
                 var dataRegister = rs.getDate("dateRegister").toLocalDate();
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
+                var permission = rs.getInt("permission");
 
                 if (!authorized) {
                     throw new RuntimeException(
@@ -249,7 +255,8 @@ public abstract class UserDAO {
                 } else if (admin) {
                     user = new Admin(id, name, email, username, password, dataRegister, false);
                 } else {
-                    user = new NormalUser(id, name, email, username, password, dataRegister, authorized, false);
+                    user = new NormalUser(id, name, email, username, password, dataRegister, authorized, permission,
+                            false);
                 }
             }
 
@@ -262,4 +269,50 @@ public abstract class UserDAO {
             throw new RuntimeException("Erro ao realizar login: " + e.getMessage());
         }
     }
+
+    public static List<UserModel> search(String query, String substr) {
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setString(1, "%" + substr + "%");
+
+            ResultSet rs = ps.executeQuery();
+
+            List<UserModel> users = new ArrayList<>();
+
+            while (rs.next()) {
+                var id = rs.getInt("id");
+                var name = rs.getString("name");
+                var email = rs.getString("email");
+                var username = rs.getString("username");
+                var password = rs.getString("password");
+                var dataRegister = rs.getDate("dateRegister").toLocalDate();
+                var administrator = rs.getInt("admin") == 1;
+                var authorized = rs.getInt("authorized") == 1;
+                var permission = rs.getInt("permission");
+
+                if (administrator) {
+
+                    users.add(new Admin(id, name, email, username, password, dataRegister, false));
+
+                } else {
+
+                    users.add(new NormalUser(id, name, email, username, password, dataRegister, authorized, permission,
+                            false));
+
+                }
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return users;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao realizar login: " + e.getMessage());
+        }
+    }
+
 }

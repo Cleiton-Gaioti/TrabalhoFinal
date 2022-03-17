@@ -1,7 +1,7 @@
 package pss.trabalhofinal.bancodeimagens.view;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -16,13 +16,12 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
         btnRemoveUser = new javax.swing.JButton();
-        btnUpdateUser = new javax.swing.JButton();
+        btnShowUser = new javax.swing.JButton();
         btnAddUser = new javax.swing.JButton();
         btnClose = new javax.swing.JButton();
-        btnSendNotification = new javax.swing.JButton();
-        checkSelectAll = new javax.swing.JCheckBox();
         txtSearch = new javax.swing.JTextField();
         btnSearchUser = new javax.swing.JButton();
+        boxSearchFor = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Listar Usuários");
@@ -39,19 +38,17 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
 
         btnRemoveUser.setText("Remover");
 
-        btnUpdateUser.setText("Atualizar");
+        btnShowUser.setText("Ver Usuário");
 
         btnAddUser.setText("Novo");
 
         btnClose.setText("Fechar");
 
-        btnSendNotification.setText("Enviar Notificação");
-
-        checkSelectAll.setText("Selecionar Todos");
-
         txtSearch.setToolTipText("Busca por id, nome, usuário ou email");
 
         btnSearchUser.setText("Buscar Usuário");
+
+        boxSearchFor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Id", "Nome", "Nome de Usuário" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -65,35 +62,33 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAddUser)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnUpdateUser)
+                        .addComponent(btnShowUser)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRemoveUser))
                     .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 616, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSearchUser)
+                        .addComponent(boxSearchFor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(checkSelectAll)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSendNotification)))
+                        .addComponent(btnSearchUser)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSendNotification)
-                    .addComponent(checkSelectAll)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
-                    .addComponent(btnSearchUser))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnSearchUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(boxSearchFor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRemoveUser)
-                    .addComponent(btnUpdateUser)
+                    .addComponent(btnShowUser)
                     .addComponent(btnAddUser)
                     .addComponent(btnClose))
                 .addGap(15, 15, 15))
@@ -103,13 +98,12 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> boxSearchFor;
     private javax.swing.JButton btnAddUser;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnRemoveUser;
     private javax.swing.JButton btnSearchUser;
-    private javax.swing.JButton btnSendNotification;
-    private javax.swing.JButton btnUpdateUser;
-    private javax.swing.JCheckBox checkSelectAll;
+    private javax.swing.JButton btnShowUser;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUsuarios;
     private javax.swing.JTextField txtSearch;
@@ -131,18 +125,6 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
         return btnSearchUser;
     }
 
-    public JButton getBtnSendNotification() {
-        return btnSendNotification;
-    }
-
-    public JButton getBtnUpdateUser() {
-        return btnUpdateUser;
-    }
-
-    public JCheckBox getCheckSelectAll() {
-        return checkSelectAll;
-    }
-
     public JTable getTblUsuarios() {
         return tblUsuarios;
     }
@@ -150,4 +132,13 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
     public JTextField getTxtSearch() {
         return txtSearch;
     }
+
+    public JButton getBtnShowUser() {
+        return btnShowUser;
+    }
+
+    public JComboBox<String> getBoxSearchFor() {
+        return boxSearchFor;
+    }
+
 }

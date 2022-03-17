@@ -1,6 +1,8 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
@@ -9,17 +11,26 @@ import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.NormalUser;
+import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
+import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
 import pss.trabalhofinal.bancodeimagens.view.CadastrarUsuarioView;
 
-public class CadastrarUsuarioPresenter {
+public class CadastrarUsuarioPresenter implements IObservable {
     /* ATTRIBUTES */
     private final CadastrarUsuarioView view;
-    private final UsersCollection users;
+    private final List<IObserver> observers;
+    private UsersCollection users;
 
     /* CONSTRUCTOR */
     public CadastrarUsuarioPresenter(JDesktopPane desktop, boolean firstUser, boolean isAdmin) {
-        users = new UsersCollection(UserDAO.getAllUsers());
         view = new CadastrarUsuarioView();
+        observers = new ArrayList<>();
+
+        try {
+            users = new UsersCollection(UserDAO.getAllUsers());
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(view, e.getMessage());
+        }
 
         view.getBtnClose().addActionListener(l -> {
             view.dispose();
@@ -45,8 +56,13 @@ public class CadastrarUsuarioPresenter {
         if (firstUser) {
             view.getCheckAdministrador().setSelected(true);
             view.getCheckAdministrador().setEnabled(false);
+            view.getBoxPermissions().setSelectedIndex(2);
+            view.getBoxPermissions().setEnabled(false);
+
         } else if (!isAdmin) {
-            view.getCheckAdministrador().setEnabled(false);
+            view.getCheckAdministrador().setVisible(false);
+            view.getLblPermissions().setVisible(false);
+            view.getBoxPermissions().setVisible(false);
         }
 
         view.setLocation((desktop.getWidth() - view.getWidth()) / 2, (desktop.getHeight() - view.getHeight()) / 2);
@@ -62,13 +78,16 @@ public class CadastrarUsuarioPresenter {
         var username = view.getTxtUsername().getText();
         var password = String.valueOf(view.getTxtPassword().getPassword());
         var admin = view.getCheckAdministrador().isSelected();
+        var permission = view.getBoxPermissions().getSelectedIndex();
 
         try {
             if (admin) {
                 users.add(new Admin(name, email, username, password, LocalDate.now(), true));
             } else {
-                users.add(new NormalUser(name, email, username, password, LocalDate.now(), isAdmin, true));
+                users.add(new NormalUser(name, email, username, password, LocalDate.now(), isAdmin, permission, true));
             }
+
+            notifyObservers(null);
 
             view.dispose();
         } catch (RuntimeException e) {
@@ -76,6 +95,23 @@ public class CadastrarUsuarioPresenter {
             JOptionPane.showMessageDialog(view, e.getMessage());
 
         }
+    }
+
+    @Override
+    public void registerObserver(IObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(IObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(Object obj) {
+        observers.forEach(o -> {
+            o.update(obj);
+        });
     }
 
 }

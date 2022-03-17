@@ -24,12 +24,20 @@ public class PrincipalPresenter implements IObserver {
         userDeslogadoLayout();
         user = null;
 
+        view.getMenuUpdate().addActionListener(l -> {
+            // TODO: implementar edição de usuário.
+        });
+
         view.getMenuLogin().addActionListener(l -> {
             login();
         });
 
         view.getMenuLogout().addActionListener(l -> {
             logout(true);
+        });
+
+        view.getMenuListarUsuarios().addActionListener(l -> {
+            new ListarUsuariosPresenter(view.getDesktop(), (Admin) user);
         });
 
         view.setSize(1280, 720);
