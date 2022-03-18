@@ -1,7 +1,5 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
-import com.pss.imagem.processamento.decorator.Imagem;
-import com.pss.imagem.processamento.decorator.ImagemComponente;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
@@ -24,12 +22,6 @@ public class PrincipalPresenter implements IObserver {
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
         view = new PrincipalView();
-        try {
-            ImagemComponente imagem = new Imagem("images/teste.jpg");
-            new AplicarFiltroPresenter(imagem, view.getDesktop());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
         userDeslogadoLayout();
         user = null;
 
