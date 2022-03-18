@@ -56,7 +56,9 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblFiltros" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="430" max="32767" attributes="0"/>
+                      <EmptySpace pref="338" max="32767" attributes="0"/>
+                      <Component id="btnReverter" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblPredefinicoes" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="cmbPredefinicoes" min="-2" pref="288" max="-2" attributes="0"/>
@@ -78,6 +80,7 @@
                   <Component id="lblFiltros" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblPredefinicoes" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cmbPredefinicoes" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnReverter" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -143,9 +146,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Imagem Azul"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ckbImgAzulActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="ckbImgEspelhada">
       <Properties>
@@ -198,12 +198,9 @@
     <Component class="javax.swing.JComboBox" name="cmbPredefinicoes">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&quot;1. Azul + Vermelho&quot;, &quot;2. Azul + Verde&quot;, &quot;3. Verde + Vermelho&quot;, &quot;4. S&#xe9;pia + Azul&quot;, &quot;5. S&#xe9;pia + Vermelho&quot;, &quot;6. S&#xe9;pia + Verde&quot;})" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] {&quot;1. Vermelho = S&#xe9;pia&quot;, &quot;2. Verde + S&#xe9;pia&quot;, &quot;3. Azul + S&#xe9;pia&quot;, &quot;4. Vermelho + Negativo&quot;, &quot;5. Verde + Negativo&quot;, &quot;6. Azul + Negativo&quot;, &quot;7. S&#xe9;pia + Negativo&quot;})" type="code"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbPredefinicoesActionPerformed"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -226,6 +223,11 @@
     <Component class="javax.swing.JTextField" name="txtBrilho">
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnReverter">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Reverter"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -35,6 +35,7 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
         txtRotacao = new javax.swing.JTextField();
         txtPixel = new javax.swing.JTextField();
         txtBrilho = new javax.swing.JTextField();
+        btnReverter = new javax.swing.JButton();
 
         setTitle("Aplicar filtro em uma imagem");
 
@@ -65,7 +66,7 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
 
         lblPredefinicoes.setText("Predefinições");
 
-        cmbPredefinicoes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"1. Sépia + Vermelho", "2. Sépia + Verde", "3. Sépia + Azul", "4. Negativo + Vermelho", "5. Negativo + Verde", "6. Negativo + Azul", "7. Negativo + Sépia"}));
+        cmbPredefinicoes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"1. Vermelho = Sépia", "2. Verde + Sépia", "3. Azul + Sépia", "4. Vermelho + Negativo", "5. Verde + Negativo", "6. Azul + Negativo", "7. Sépia + Negativo"}));
 
         btnFechar.setText("Fechar");
 
@@ -74,6 +75,8 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
         txtPixel.setText("0");
 
         txtBrilho.setText("0");
+
+        btnReverter.setText("Reverter");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,7 +110,9 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
                         .addComponent(scpPainel))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblFiltros)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 430, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 338, Short.MAX_VALUE)
+                        .addComponent(btnReverter)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblPredefinicoes)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmbPredefinicoes, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -123,7 +128,8 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFiltros)
                     .addComponent(lblPredefinicoes)
-                    .addComponent(cmbPredefinicoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbPredefinicoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReverter))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -225,6 +231,14 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
         this.ckbImgCinza = ckbImgCinza;
     }
 
+    public JButton getBtnReverter() {
+        return btnReverter;
+    }
+
+    public void setBtnReverter(JButton btnReverter) {
+        this.btnReverter = btnReverter;
+    }
+
     public JCheckBox getCkbImgEspelhada() {
         return ckbImgEspelhada;
     }
@@ -316,6 +330,7 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox CkbImgSepia;
     private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnReverter;
     private javax.swing.JCheckBox ckbImgAzul;
     private javax.swing.JCheckBox ckbImgBrilho;
     private javax.swing.JCheckBox ckbImgCinza;

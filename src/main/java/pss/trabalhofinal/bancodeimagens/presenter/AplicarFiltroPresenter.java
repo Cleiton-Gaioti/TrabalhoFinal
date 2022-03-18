@@ -30,11 +30,10 @@ public class AplicarFiltroPresenter implements IObservable {
         this.imagem = imagem;
         view = new AplicarFiltroView();
 
+        view.getBtnReverter().setVisible(false);
         view.getCmbPredefinicoes().setSelectedIndex(-1);
         try {
-
             view.getLblImagem().setIcon(new ImageIcon(this.imagem.getImagem()));
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -75,6 +74,9 @@ public class AplicarFiltroPresenter implements IObservable {
         view.getCmbPredefinicoes().addActionListener((ActionEvent ae) -> {
             predefinicoes();
         });
+        view.getBtnReverter().addActionListener((ActionEvent ae) -> {
+            reverterPredefinicoes();
+        });
 
         desktop.add(view);
         view.setVisible(true);
@@ -95,6 +97,17 @@ public class AplicarFiltroPresenter implements IObservable {
         observers.forEach(o -> {
             o.update(obj);
         });
+    }
+
+    private void reverterPredefinicoes() {
+        try {
+            imagem = imagem.reverter();
+            imagem = imagem.reverter();
+            view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
+            view.getBtnReverter().setVisible(false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
+        }
     }
 
     private void predefinicoes() {
@@ -123,7 +136,7 @@ public class AplicarFiltroPresenter implements IObservable {
                     negativo(true);
                     sepia(true);
                 }
-
+                view.getBtnReverter().setVisible(true);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
