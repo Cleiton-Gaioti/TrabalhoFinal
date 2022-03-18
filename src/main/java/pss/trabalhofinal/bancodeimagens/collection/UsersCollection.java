@@ -94,24 +94,23 @@ public class UsersCollection {
         }
     }
 
-    public void update(UserModel older, UserModel newer) {
+    public void update(UserModel newer) throws RuntimeException {
         /*
          * Valida os novos dados do usuário e caso seja válido, remove o antigo registro
          * do banco e insere movamente com as novas informações do usuário e mesmo id.
          */
 
-        if (older == null || newer == null) {
+        if (newer == null) {
 
             throw new RuntimeException("Usuário nulo.");
 
-        } else if (!users.contains(older)) {
+        } else if (getUserById(newer.getId()) == null) {
 
             throw new RuntimeException("Usuário não encontrado.");
 
         } else {
-            newer.setId(older.getId());
-            remove(older);
-            add(newer);
+
+            UserDAO.update(newer);
         }
     }
 

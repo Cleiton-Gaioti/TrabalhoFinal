@@ -41,8 +41,8 @@ public class ListarUsuariosPresenter implements IObserver {
             new CadastrarUsuarioPresenter(desktop, false, true).registerObserver(this);
         });
 
-        view.getBtnShowUser().addActionListener(l -> {
-            // TODO: implementar edição de usuário.
+        view.getBtnEdit().addActionListener(l -> {
+            editUser(desktop);
         });
 
         view.getBtnRemoveUser().addActionListener(l -> {
@@ -124,6 +124,32 @@ public class ListarUsuariosPresenter implements IObserver {
         }
 
         loadTable();
+    }
+
+    private void editUser(JDesktopPane desktop) {
+
+        var row = view.getTblUsuarios().getSelectedRow();
+
+        if (row == -1) {
+
+            JOptionPane.showMessageDialog(view, "Selecione uma linha!");
+
+        } else {
+
+            var id = Integer.valueOf(view.getTblUsuarios().getValueAt(row, 0).toString());
+
+            try {
+
+                var user = users.getUserById(id);
+
+                new EditByAdminPresenter(desktop, user).registerObserver(this);
+
+            } catch (RuntimeException e) {
+
+                JOptionPane.showMessageDialog(view, e.getMessage());
+
+            }
+        }
     }
 
     private void removeUser() {

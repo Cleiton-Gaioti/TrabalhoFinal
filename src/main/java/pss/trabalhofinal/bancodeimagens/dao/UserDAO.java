@@ -74,14 +74,16 @@ public abstract class UserDAO {
             Connection conn = ConnectionSQLite.connect();
             PreparedStatement ps = conn.prepareStatement(query);
 
+            var admin = Admin.class.isInstance(user) ? 1 : 0;
+
             ps.setInt(1, id);
             ps.setString(2, user.getName());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getUsername());
             ps.setString(5, user.getPassword());
             ps.setDate(6, Date.valueOf(user.getRegistrationDate()));
-            ps.setInt(7, Admin.class.isInstance(user) ? 1 : 0);
-            ps.setInt(8, Admin.class.isInstance(user) ? 1 : 0);
+            ps.setInt(7, admin);
+            ps.setInt(8, admin);
             ps.setInt(9, user.getPermissions());
 
             ps.executeQuery();
@@ -311,8 +313,43 @@ public abstract class UserDAO {
 
             return users;
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao realizar login: " + e.getMessage());
+            throw new RuntimeException("Erro ao buscar usuário: " + e.getMessage());
         }
+    }
+
+    public static void update(UserModel newer) {
+        var query = "UPDATE user SET "
+                + "name = ?, "
+                + "email = ?, "
+                + "username = ?, "
+                + "password = ?, "
+                + "admin = ?, "
+                + "permission = ? "
+                + "WHERE id = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            var admin = Admin.class.isInstance(newer) ? 1 : 0;
+
+            ps.setString(1, newer.getName());
+            ps.setString(2, newer.getEmail());
+            ps.setString(3, newer.getUsername());
+            ps.setString(4, newer.getPassword());
+            ps.setInt(5, admin);
+            ps.setInt(6, newer.getPermissions());
+            ps.setInt(7, newer.getId());
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao atualizar usuário: " + e.getMessage());
+        }
+
     }
 
 }

@@ -25,7 +25,7 @@ public class PrincipalPresenter implements IObserver {
         user = null;
 
         view.getMenuUpdate().addActionListener(l -> {
-            // TODO: implementar edição de usuário.
+            new EditYourselfPresenter(view.getDesktop(), user).registerObserver(this);
         });
 
         view.getMenuLogin().addActionListener(l -> {

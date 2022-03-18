@@ -183,7 +183,7 @@ public abstract class UserModel {
         if (permission < 0 || permission > 2) {
             throw new RuntimeException("Permissão inválida");
         } else {
-            permissions = permission;
+            this.permissions = permission;
         }
     }
 }
