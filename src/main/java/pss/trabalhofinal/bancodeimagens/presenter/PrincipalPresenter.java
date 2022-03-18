@@ -1,5 +1,7 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
+import com.pss.imagem.processamento.decorator.Imagem;
+import com.pss.imagem.processamento.decorator.ImagemComponente;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
@@ -13,6 +15,7 @@ import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
 import pss.trabalhofinal.bancodeimagens.view.PrincipalView;
 
 public class PrincipalPresenter implements IObserver {
+
     /* ATTRIBUTES */
     private final PrincipalView view;
     private LoginState state;
@@ -21,6 +24,12 @@ public class PrincipalPresenter implements IObserver {
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
         view = new PrincipalView();
+        try {
+            ImagemComponente imagem = new Imagem("images/teste.jpg");
+            new AplicarFiltroPresenter(imagem, view.getDesktop());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         userDeslogadoLayout();
         user = null;
 
@@ -73,7 +82,7 @@ public class PrincipalPresenter implements IObserver {
         var resposta = 0;
 
         if (confirmar) {
-            String[] options = { "Sim", "Não" };
+            String[] options = {"Sim", "Não"};
 
             resposta = JOptionPane.showOptionDialog(
                     view,

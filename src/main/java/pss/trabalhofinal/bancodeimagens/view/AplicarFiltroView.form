@@ -26,19 +26,32 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="ckbImgRotacionar" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="ckbImgNegativo" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="CkbImgSepia" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="ckbImgPixelar" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="ckbImgCinza" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="ckbImgBrilho" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="ckbImgVermelho" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="ckbImgVerde" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="ckbImgAzul" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="ckbImgEspelhada" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="ckbImgRotacionar" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="txtRotacao" min="-2" pref="73" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="ckbImgPixelar" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="ckbImgBrilho" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="txtBrilho" pref="76" max="32767" attributes="0"/>
+                                  <Component id="txtPixel" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="scpPainel" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -77,17 +90,26 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="ckbImgEspelhada" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="ckbImgRotacionar" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="ckbImgRotacionar" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtRotacao" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="ckbImgNegativo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="CkbImgSepia" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="ckbImgPixelar" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="ckbImgPixelar" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtPixel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="ckbImgCinza" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="ckbImgBrilho" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="ckbImgBrilho" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtBrilho" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Component id="scpPainel" min="-2" pref="490" max="-2" attributes="0"/>
               </Group>
@@ -189,6 +211,21 @@
     <Component class="javax.swing.JButton" name="btnFechar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Fechar"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtRotacao">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtPixel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtBrilho">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
     </Component>
   </SubComponents>

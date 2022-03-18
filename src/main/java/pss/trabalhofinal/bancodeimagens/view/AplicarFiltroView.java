@@ -1,4 +1,3 @@
-
 package pss.trabalhofinal.bancodeimagens.view;
 
 import javax.swing.JButton;
@@ -6,6 +5,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 public class AplicarFiltroView extends javax.swing.JInternalFrame {
 
@@ -13,7 +13,7 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
         initComponents();
     }
 
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         lblFiltros = new javax.swing.JLabel();
@@ -32,6 +32,9 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
         lblPredefinicoes = new javax.swing.JLabel();
         cmbPredefinicoes = new javax.swing.JComboBox<>();
         btnFechar = new javax.swing.JButton();
+        txtRotacao = new javax.swing.JTextField();
+        txtPixel = new javax.swing.JTextField();
+        txtBrilho = new javax.swing.JTextField();
 
         setTitle("Aplicar filtro em uma imagem");
 
@@ -62,85 +65,98 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
 
         lblPredefinicoes.setText("Predefinições");
 
-        cmbPredefinicoes
-                .setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1. Azul + Vermelho", "2. Azul + Verde",
-                        "3. Verde + Vermelho", "4. Sépia + Azul", "5. Sépia + Vermelho", "6. Sépia + Verde" }));
+        cmbPredefinicoes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"1. Sépia + Vermelho", "2. Sépia + Verde", "3. Sépia + Azul", "4. Negativo + Vermelho", "5. Negativo + Verde", "6. Negativo + Azul", "7. Negativo + Sépia"}));
 
         btnFechar.setText("Fechar");
+
+        txtRotacao.setText("0");
+
+        txtPixel.setText("0");
+
+        txtBrilho.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ckbImgNegativo)
+                            .addComponent(CkbImgSepia)
+                            .addComponent(ckbImgCinza)
+                            .addComponent(ckbImgVermelho)
+                            .addComponent(ckbImgVerde)
+                            .addComponent(ckbImgAzul)
+                            .addComponent(ckbImgEspelhada)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(ckbImgRotacionar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtRotacao, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(ckbImgRotacionar)
-                                                        .addComponent(ckbImgNegativo)
-                                                        .addComponent(CkbImgSepia)
-                                                        .addComponent(ckbImgPixelar)
-                                                        .addComponent(ckbImgCinza)
-                                                        .addComponent(ckbImgBrilho)
-                                                        .addComponent(ckbImgVermelho)
-                                                        .addComponent(ckbImgVerde)
-                                                        .addComponent(ckbImgAzul)
-                                                        .addComponent(ckbImgEspelhada))
-                                                .addGap(79, 79, 79)
-                                                .addComponent(scpPainel))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(lblFiltros)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                        430, Short.MAX_VALUE)
-                                                .addComponent(lblPredefinicoes)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(cmbPredefinicoes, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        288, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                                                layout.createSequentialGroup()
-                                                        .addGap(0, 0, Short.MAX_VALUE)
-                                                        .addComponent(btnFechar)))
-                                .addContainerGap()));
+                                    .addComponent(ckbImgPixelar)
+                                    .addComponent(ckbImgBrilho))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtBrilho, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                                    .addComponent(txtPixel))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scpPainel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblFiltros)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 430, Short.MAX_VALUE)
+                        .addComponent(lblPredefinicoes)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbPredefinicoes, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnFechar)))
+                .addContainerGap())
+        );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(lblFiltros)
-                                        .addComponent(lblPredefinicoes)
-                                        .addComponent(cmbPredefinicoes, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(ckbImgVermelho)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(ckbImgVerde)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(ckbImgAzul)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(ckbImgEspelhada)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(ckbImgRotacionar)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(ckbImgNegativo)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(CkbImgSepia)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(ckbImgPixelar)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(ckbImgCinza)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(ckbImgBrilho))
-                                        .addComponent(scpPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 490,
-                                                javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10,
-                                        Short.MAX_VALUE)
-                                .addComponent(btnFechar)
-                                .addContainerGap()));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFiltros)
+                    .addComponent(lblPredefinicoes)
+                    .addComponent(cmbPredefinicoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(ckbImgVermelho)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ckbImgVerde)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ckbImgAzul)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ckbImgEspelhada)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(ckbImgRotacionar)
+                            .addComponent(txtRotacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ckbImgNegativo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CkbImgSepia)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ckbImgPixelar)
+                            .addComponent(txtPixel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ckbImgCinza)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ckbImgBrilho)
+                            .addComponent(txtBrilho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(scpPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(btnFechar)
+                .addContainerGap())
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -179,6 +195,30 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
 
     public JCheckBox getCkbImgCinza() {
         return ckbImgCinza;
+    }
+
+    public JTextField getTxtBrilho() {
+        return txtBrilho;
+    }
+
+    public void setTxtBrilho(JTextField txtBrilho) {
+        this.txtBrilho = txtBrilho;
+    }
+
+    public JTextField getTxtPixel() {
+        return txtPixel;
+    }
+
+    public void setTxtPixel(JTextField txtPixel) {
+        this.txtPixel = txtPixel;
+    }
+
+    public JTextField getTxtRotacao() {
+        return txtRotacao;
+    }
+
+    public void setTxtRotacao(JTextField txtRotacao) {
+        this.txtRotacao = txtRotacao;
     }
 
     public void setCkbImgCinza(JCheckBox ckbImgCinza) {
@@ -290,5 +330,8 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblImagem;
     private javax.swing.JLabel lblPredefinicoes;
     private javax.swing.JScrollPane scpPainel;
+    private javax.swing.JTextField txtBrilho;
+    private javax.swing.JTextField txtPixel;
+    private javax.swing.JTextField txtRotacao;
     // End of variables declaration//GEN-END:variables
 }
