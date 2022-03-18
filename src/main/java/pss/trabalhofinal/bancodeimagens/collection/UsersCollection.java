@@ -25,7 +25,7 @@ public class UsersCollection {
     }
 
     /* METHODS */
-    public void add(UserModel user) {
+    public void add(UserModel user, boolean authorized) {
         /*
          * Caso o novo usuário seja válido, ele é inserido na lista de usuários e no
          * banco.
@@ -50,9 +50,9 @@ public class UsersCollection {
         } else {
 
             if (user.getId() == -1) {
-                UserDAO.insertUser(user);
+                UserDAO.insertUser(user, authorized);
             } else {
-                UserDAO.insertUser(user.getId(), user);
+                UserDAO.insertUser(user.getId(), user, authorized);
             }
 
             setUsers(UserDAO.getAllUsers());

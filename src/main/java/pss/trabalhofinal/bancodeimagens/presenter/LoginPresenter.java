@@ -77,6 +77,8 @@ public class LoginPresenter implements IObservable {
 
                     JOptionPane.showMessageDialog(view, "Credenciais incorretas. Verifique seu email e senha.");
 
+                    view.getTxtPassword().setText("");
+
                 } else {
 
                     notifyObservers(user);
@@ -86,6 +88,8 @@ public class LoginPresenter implements IObservable {
             } catch (RuntimeException e) {
 
                 JOptionPane.showMessageDialog(view, e.getMessage());
+
+                view.getTxtPassword().setText("");
 
             }
         }

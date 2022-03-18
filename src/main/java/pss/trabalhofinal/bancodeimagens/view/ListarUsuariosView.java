@@ -16,7 +16,7 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
         btnRemoveUser = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
+        btnView = new javax.swing.JButton();
         btnAddUser = new javax.swing.JButton();
         btnClose = new javax.swing.JButton();
         txtSearch = new javax.swing.JTextField();
@@ -38,7 +38,7 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
 
         btnRemoveUser.setText("Remover");
 
-        btnEdit.setText("Editar");
+        btnView.setText("Visualizar");
 
         btnAddUser.setText("Novo");
 
@@ -62,7 +62,7 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAddUser)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEdit)
+                        .addComponent(btnView)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRemoveUser))
                     .addComponent(jScrollPane1)
@@ -88,7 +88,7 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRemoveUser)
-                    .addComponent(btnEdit)
+                    .addComponent(btnView)
                     .addComponent(btnAddUser)
                     .addComponent(btnClose))
                 .addGap(15, 15, 15))
@@ -101,9 +101,9 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> boxSearchFor;
     private javax.swing.JButton btnAddUser;
     private javax.swing.JButton btnClose;
-    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnRemoveUser;
     private javax.swing.JButton btnSearchUser;
+    private javax.swing.JButton btnView;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblUsuarios;
     private javax.swing.JTextField txtSearch;
@@ -133,8 +133,8 @@ public class ListarUsuariosView extends javax.swing.JInternalFrame {
         return txtSearch;
     }
 
-    public JButton getBtnEdit() {
-        return btnEdit;
+    public JButton getBtnView() {
+        return btnView;
     }
 
     public JComboBox<String> getBoxSearchFor() {

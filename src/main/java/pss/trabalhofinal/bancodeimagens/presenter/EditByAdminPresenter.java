@@ -23,7 +23,7 @@ public class EditByAdminPresenter implements IObservable {
     private UsersCollection users;
 
     /* CONSTRUCTOR */
-    public EditByAdminPresenter(JDesktopPane desktop, UserModel user) {
+    public EditByAdminPresenter(JDesktopPane desktop, Admin admin, UserModel user) {
         view = new CadastrarUsuarioView();
         observers = new ArrayList<>();
 
@@ -31,15 +31,7 @@ public class EditByAdminPresenter implements IObservable {
 
             users = new UsersCollection(UserDAO.getAllUsers());
 
-            layoutVisualizar(user);
-
-            view.getBtnClose().addActionListener(l -> {
-                view.dispose();
-            });
-
-            view.getBtnRegister().addActionListener(l -> {
-                layoutUpdate(user);
-            });
+            layoutVisualizar(user, admin);
 
             view.getCheckShowPassword().addActionListener(l -> {
                 if (view.getCheckShowPassword().isSelected()) {
@@ -63,7 +55,7 @@ public class EditByAdminPresenter implements IObservable {
     }
 
     /* METHODS */
-    private void save(UserModel user) {
+    private void save(UserModel user, Admin administrador) {
         var name = view.getTxtName().getText();
         var email = view.getTxtEmail().getText();
         var username = view.getTxtUsername().getText();
@@ -86,7 +78,7 @@ public class EditByAdminPresenter implements IObservable {
             JOptionPane.showMessageDialog(view, "Dados editados com sucesso!");
 
             notifyObservers(null);
-            layoutVisualizar(newer);
+            layoutVisualizar(newer, administrador);
 
         } catch (RuntimeException e) {
 
@@ -120,25 +112,33 @@ public class EditByAdminPresenter implements IObservable {
         view.getBoxPermissions().setEnabled(enabled);
     }
 
-    private void layoutUpdate(UserModel user) {
-        view.getBtnRegister().setText("Salvar");
-        view.getBtnClose().setText("Cancelar");
+    private void layoutUpdate(UserModel user, Admin admin) {
+        if (admin.equals(user)) {
+            System.out.println("1");
+            JOptionPane.showMessageDialog(view,
+                    "Para editar suas informações acesse o menu Usuário -> Atualizar Cadastro.");
 
-        clearActionListeners(view.getBtnClose());
-        view.getBtnClose().addActionListener(l -> {
-            layoutVisualizar(user);
-            preencherCampos(user);
-        });
+        } else {
 
-        clearActionListeners(view.getBtnRegister());
-        view.getBtnRegister().addActionListener(l -> {
-            save(user);
-        });
+            view.getBtnRegister().setText("Salvar");
+            view.getBtnClose().setText("Cancelar");
 
-        enableFields(true);
+            clearActionListeners(view.getBtnClose());
+            view.getBtnClose().addActionListener(l -> {
+                layoutVisualizar(user, admin);
+                preencherCampos(user);
+            });
+
+            clearActionListeners(view.getBtnRegister());
+            view.getBtnRegister().addActionListener(l -> {
+                save(user, admin);
+            });
+
+            enableFields(true);
+        }
     }
 
-    private void layoutVisualizar(UserModel user) {
+    private void layoutVisualizar(UserModel user, Admin admin) {
         view.getBtnRegister().setText("Editar");
         view.getBtnClose().setText("Fechar");
 
@@ -149,7 +149,7 @@ public class EditByAdminPresenter implements IObservable {
 
         clearActionListeners(view.getBtnRegister());
         view.getBtnRegister().addActionListener(l -> {
-            layoutUpdate(user);
+            layoutUpdate(user, admin);
         });
 
         preencherCampos(user);
