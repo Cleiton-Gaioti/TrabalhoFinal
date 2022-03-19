@@ -1,7 +1,12 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.plaf.FileChooserUI;
 
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.AdminLogadoState;
@@ -23,14 +28,7 @@ public class PrincipalPresenter implements IObserver {
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
         view = new PrincipalView();
-
-        try {
-            Image img = new Image("images/teste.jpg");
-            new AplicarFiltroPresenter(img, view.getDesktop());
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(view, e.getMessage());
-        }
-
+        abrirArquivo();
         userDeslogadoLayout();
         user = null;
 
@@ -171,4 +169,25 @@ public class PrincipalPresenter implements IObserver {
             this.state = state;
         }
     }
+
+    private void abrirArquivo() {
+        try {
+            JFileChooser chooser = new JFileChooser(new File("./images/"));
+            chooser.setDialogTitle("Escolha os arquivos");
+            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            int res = chooser.showOpenDialog(view);
+            if (res == JFileChooser.APPROVE_OPTION) {
+                File escolhido = chooser.getSelectedFile();
+                if (escolhido.isDirectory()) {
+                    System.out.println("Pasta: " + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
+                } else {
+                    new AplicarFiltroPresenter(new Image(Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString()), view.getDesktop());
+                    System.out.println("Imagem: " + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Erro ao abrir arquivo! " + e.getMessage());
+        }
+    }
+
 }
