@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.AdminLogadoState;
+import pss.trabalhofinal.bancodeimagens.model.Image;
 import pss.trabalhofinal.bancodeimagens.model.LoginState;
 import pss.trabalhofinal.bancodeimagens.model.UserDeslogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserLogadoState;
@@ -22,6 +23,14 @@ public class PrincipalPresenter implements IObserver {
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
         view = new PrincipalView();
+
+        try {
+            Image img = new Image("images/teste.jpg");
+            new AplicarFiltroPresenter(img, view.getDesktop());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, e.getMessage());
+        }
+
         userDeslogadoLayout();
         user = null;
 

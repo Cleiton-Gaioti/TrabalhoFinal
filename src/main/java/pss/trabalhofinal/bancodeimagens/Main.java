@@ -16,8 +16,6 @@ public class Main {
             UserDAO.createTableUsers();
             HistoricoFiltroDAO.createTableHistorico();
 
-            HistoricoFiltroDAO.insertHistorico("images/birds/bird1.jpg", "Sépia");
-
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             System.exit(1);
