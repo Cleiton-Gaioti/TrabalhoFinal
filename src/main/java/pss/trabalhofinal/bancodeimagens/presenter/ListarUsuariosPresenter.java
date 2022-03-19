@@ -41,8 +41,8 @@ public class ListarUsuariosPresenter implements IObserver {
             new CadastrarUsuarioPresenter(desktop, false, true).registerObserver(this);
         });
 
-        view.getBtnEdit().addActionListener(l -> {
-            editUser(desktop);
+        view.getBtnView().addActionListener(l -> {
+            viewUser(desktop, admin);
         });
 
         view.getBtnRemoveUser().addActionListener(l -> {
@@ -126,7 +126,7 @@ public class ListarUsuariosPresenter implements IObserver {
         loadTable();
     }
 
-    private void editUser(JDesktopPane desktop) {
+    private void viewUser(JDesktopPane desktop, Admin admin) {
 
         var row = view.getTblUsuarios().getSelectedRow();
 
@@ -142,7 +142,7 @@ public class ListarUsuariosPresenter implements IObserver {
 
                 var user = users.getUserById(id);
 
-                new EditByAdminPresenter(desktop, user).registerObserver(this);
+                new EditByAdminPresenter(desktop, admin, user).registerObserver(this);
 
             } catch (RuntimeException e) {
 

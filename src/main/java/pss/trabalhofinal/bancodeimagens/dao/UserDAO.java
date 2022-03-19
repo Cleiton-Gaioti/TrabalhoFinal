@@ -42,7 +42,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static void insertUser(UserModel user) {
+    public static void insertUser(UserModel user, boolean authorized) {
         var query = "INSERT INTO user(name, email, username, password, dateRegister, admin, authorized, permission) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
@@ -55,7 +55,7 @@ public abstract class UserDAO {
             ps.setString(4, user.getPassword());
             ps.setDate(5, Date.valueOf(user.getRegistrationDate()));
             ps.setInt(6, Admin.class.isInstance(user) ? 1 : 0);
-            ps.setInt(7, Admin.class.isInstance(user) ? 1 : 0);
+            ps.setInt(7, authorized ? 1 : 0);
             ps.setInt(8, user.getPermissions());
 
             ps.executeUpdate();
@@ -67,14 +67,12 @@ public abstract class UserDAO {
         }
     }
 
-    public static void insertUser(int id, UserModel user) {
+    public static void insertUser(int id, UserModel user, boolean authorized) {
         var query = "INSERT INTO user(id, name, email, username, password, dateRegister, admin, authorized, permission) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection conn = ConnectionSQLite.connect();
             PreparedStatement ps = conn.prepareStatement(query);
-
-            var admin = Admin.class.isInstance(user) ? 1 : 0;
 
             ps.setInt(1, id);
             ps.setString(2, user.getName());
@@ -82,8 +80,8 @@ public abstract class UserDAO {
             ps.setString(4, user.getUsername());
             ps.setString(5, user.getPassword());
             ps.setDate(6, Date.valueOf(user.getRegistrationDate()));
-            ps.setInt(7, admin);
-            ps.setInt(8, admin);
+            ps.setInt(7, Admin.class.isInstance(user) ? 1 : 0);
+            ps.setInt(8, authorized ? 1 : 0);
             ps.setInt(9, user.getPermissions());
 
             ps.executeQuery();
@@ -352,4 +350,56 @@ public abstract class UserDAO {
 
     }
 
+    public static List<UserModel> getUsersUnauthorizeds() {
+        var query = "SELECT * FROM user WHERE authorized = 0";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
+
+            List<UserModel> users = new ArrayList<>();
+
+            while (rs.next()) {
+                var id = rs.getInt("id");
+                var name = rs.getString("name");
+                var email = rs.getString("email");
+                var username = rs.getString("username");
+                var password = rs.getString("password");
+                var dataRegister = rs.getDate("dateRegister").toLocalDate();
+                var authorized = rs.getInt("authorized") == 1;
+
+                users.add(new NormalUser(id, name, email, username, password, dataRegister, authorized, 0, false));
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return users;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar usuários.");
+        }
+    }
+
+    public static void approveSolicitation(String username) {
+        var query = "UPDATE user SET authorized = 1 WHERE username = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setString(1, username);
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+
+            throw new RuntimeException("Erro ao editar usuário: " + e.getMessage());
+
+        }
+    }
 }
