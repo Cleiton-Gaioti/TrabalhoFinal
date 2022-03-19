@@ -21,7 +21,7 @@ public class UsersCollection {
     }
 
     public UsersCollection() {
-        this(new ArrayList<>());
+        this(UserDAO.getAllUsers());
     }
 
     /* METHODS */
@@ -49,11 +49,7 @@ public class UsersCollection {
 
         } else {
 
-            if (user.getId() == -1) {
-                UserDAO.insertUser(user, authorized);
-            } else {
-                UserDAO.insertUser(user.getId(), user, authorized);
-            }
+            UserDAO.insertUser(user, authorized);
 
             setUsers(UserDAO.getAllUsers());
             setCountUsers(users.size());
@@ -114,6 +110,10 @@ public class UsersCollection {
         }
     }
 
+    public UserModel login(String username, String password) {
+        return UserDAO.login(username, password);
+    }
+
     public void searchUser(String substr, int field) {
         var query = "";
 
@@ -132,6 +132,10 @@ public class UsersCollection {
         }
 
         setUsers(users = UserDAO.search(query, substr));
+    }
+
+    public void approveSolicitation(String username) {
+        UserDAO.approveSolicitation(username);
     }
 
     private void appointNewAdmin(UserModel user) {
@@ -157,6 +161,10 @@ public class UsersCollection {
     }
 
     /* GETTERS AND SETTERS */
+    public List<NormalUser> getUsersUnauthorizeds() {
+        return UserDAO.getUsersUnauthorizeds();
+    }
+
     public UserModel getUserById(int id) {
         for (var u : users) {
             if (u.getId() == id) {

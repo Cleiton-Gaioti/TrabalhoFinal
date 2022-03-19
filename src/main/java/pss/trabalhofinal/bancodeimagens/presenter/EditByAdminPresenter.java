@@ -7,8 +7,9 @@ import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
+import pss.trabalhofinal.bancodeimagens.collection.NotificationCollection;
+import pss.trabalhofinal.bancodeimagens.collection.PermissaoCollection;
 import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
-import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.NormalUser;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
@@ -29,7 +30,7 @@ public class EditByAdminPresenter implements IObservable {
 
         try {
 
-            users = new UsersCollection(UserDAO.getAllUsers());
+            users = new UsersCollection();
 
             layoutVisualizar(user, admin);
 
@@ -60,17 +61,17 @@ public class EditByAdminPresenter implements IObservable {
         var email = view.getTxtEmail().getText();
         var username = view.getTxtUsername().getText();
         var admin = view.getCheckAdministrador().isSelected();
-        var permissions = view.getBoxPermissions().getSelectedIndex();
 
         try {
             UserModel newer = null;
 
             if (admin) {
                 newer = new Admin(user.getId(), name, email, username, user.getPassword(), user.getRegistrationDate(),
-                        false);
+                        new NotificationCollection(), false);
             } else {
                 newer = new NormalUser(user.getId(), name, email, username, user.getPassword(),
-                        user.getRegistrationDate(), true, permissions, false);
+                        user.getRegistrationDate(), new NotificationCollection(), true, new PermissaoCollection(),
+                        false);
             }
 
             users.update(newer);
@@ -93,7 +94,6 @@ public class EditByAdminPresenter implements IObservable {
         view.getTxtEmail().setText(user.getEmail());
         view.getTxtUsername().setText(user.getUsername());
         view.getCheckAdministrador().setSelected(Admin.class.isInstance(user));
-        view.getBoxPermissions().setSelectedIndex(user.getPermissions());
     }
 
     private void clearActionListeners(JButton btn) {
@@ -109,7 +109,6 @@ public class EditByAdminPresenter implements IObservable {
         view.getTxtPassword().setEditable(false);
         view.getCheckShowPassword().setEnabled(false);
         view.getCheckAdministrador().setEnabled(enabled);
-        view.getBoxPermissions().setEnabled(enabled);
     }
 
     private void layoutUpdate(UserModel user, Admin admin) {

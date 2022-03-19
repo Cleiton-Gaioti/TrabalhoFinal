@@ -5,7 +5,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
-import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.view.AutorizarUsuarioView;
 
 public class AutorizarUsuarioPresenter {
@@ -50,9 +49,9 @@ public class AutorizarUsuarioPresenter {
 
         try {
 
-            users = new UsersCollection(UserDAO.getUsersUnauthorizeds());
+            var usersList = users.getUsersUnauthorizeds();
 
-            users.getAllUsers().forEach(u -> {
+            usersList.forEach(u -> {
                 tableModel.addRow(
                         new String[] {
                                 u.getName(),
@@ -82,7 +81,7 @@ public class AutorizarUsuarioPresenter {
                 var username = view.getTblUsers().getValueAt(row, 1).toString();
 
                 try {
-                    UserDAO.approveSolicitation(username);
+                    users.approveSolicitation(username);
 
                     loadTable();
                 } catch (RuntimeException e) {

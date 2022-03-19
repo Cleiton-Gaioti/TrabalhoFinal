@@ -2,7 +2,7 @@ package pss.trabalhofinal.bancodeimagens;
 
 import javax.swing.JOptionPane;
 import pss.trabalhofinal.bancodeimagens.dao.HistoricoFiltroDAO;
-
+import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.factory.ConnectionSQLite;
 import pss.trabalhofinal.bancodeimagens.presenter.PrincipalPresenter;
@@ -15,7 +15,7 @@ public class Main {
         try {
             UserDAO.createTableUsers();
             HistoricoFiltroDAO.createTableHistorico();
-
+            PermissaoDAO.createTablePermissoes();
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             System.exit(1);

@@ -2,6 +2,7 @@ package pss.trabalhofinal.bancodeimagens.presenter;
 
 import java.io.File;
 import java.nio.file.Paths;
+
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -82,7 +83,7 @@ public class PrincipalPresenter implements IObserver {
         var resposta = 0;
 
         if (confirmar) {
-            String[] options = {"Sim", "Não"};
+            String[] options = { "Sim", "Não" };
 
             resposta = JOptionPane.showOptionDialog(
                     view,
@@ -103,6 +104,30 @@ public class PrincipalPresenter implements IObserver {
             view.getBtnNotifications().setText("0 notificações");
             userDeslogadoLayout();
             login();
+        }
+    }
+
+    private void abrirArquivo() {
+        try {
+            JFileChooser chooser = new JFileChooser(new File("./images/"));
+            chooser.setDialogTitle("Escolha os arquivos");
+            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            int res = chooser.showOpenDialog(view);
+            if (res == JFileChooser.APPROVE_OPTION) {
+                File escolhido = chooser.getSelectedFile();
+                if (escolhido.isDirectory()) {
+                    System.out.println("Pasta: "
+                            + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
+                } else {
+                    new AplicarFiltroPresenter(new Image(
+                            Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString()),
+                            view.getDesktop());
+                    System.out.println("Imagem: "
+                            + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Erro ao abrir arquivo! " + e.getMessage());
         }
     }
 
@@ -171,26 +196,6 @@ public class PrincipalPresenter implements IObserver {
             System.exit(1);
         } else {
             this.state = state;
-        }
-    }
-
-    private void abrirArquivo() {
-        try {
-            JFileChooser chooser = new JFileChooser(new File("./images/"));
-            chooser.setDialogTitle("Escolha os arquivos");
-            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            int res = chooser.showOpenDialog(view);
-            if (res == JFileChooser.APPROVE_OPTION) {
-                File escolhido = chooser.getSelectedFile();
-                if (escolhido.isDirectory()) {
-                    System.out.println("Pasta: " + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
-                } else {
-                    new AplicarFiltroPresenter(new Image(Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString()), view.getDesktop());
-                    System.out.println("Imagem: " + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(view, "Erro ao abrir arquivo! " + e.getMessage());
         }
     }
 

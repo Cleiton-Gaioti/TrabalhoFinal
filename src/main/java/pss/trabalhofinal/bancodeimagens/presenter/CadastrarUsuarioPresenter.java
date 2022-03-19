@@ -7,8 +7,9 @@ import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
+import pss.trabalhofinal.bancodeimagens.collection.NotificationCollection;
+import pss.trabalhofinal.bancodeimagens.collection.PermissaoCollection;
 import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
-import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.NormalUser;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
@@ -28,7 +29,7 @@ public class CadastrarUsuarioPresenter implements IObservable {
 
         try {
 
-            users = new UsersCollection(UserDAO.getAllUsers());
+            users = new UsersCollection();
 
             view.getBtnClose().addActionListener(l -> {
                 view.dispose();
@@ -54,13 +55,9 @@ public class CadastrarUsuarioPresenter implements IObservable {
             if (firstUser) {
                 view.getCheckAdministrador().setSelected(true);
                 view.getCheckAdministrador().setEnabled(false);
-                view.getBoxPermissions().setSelectedIndex(2);
-                view.getBoxPermissions().setEnabled(false);
 
             } else if (!isAdmin) {
                 view.getCheckAdministrador().setVisible(false);
-                view.getLblPermissions().setVisible(false);
-                view.getBoxPermissions().setVisible(false);
             }
 
             view.setLocation((desktop.getWidth() - view.getWidth()) / 2, (desktop.getHeight() - view.getHeight()) / 2);
@@ -83,14 +80,15 @@ public class CadastrarUsuarioPresenter implements IObservable {
         var username = view.getTxtUsername().getText();
         var password = String.valueOf(view.getTxtPassword().getPassword());
         var admin = view.getCheckAdministrador().isSelected();
-        var permission = view.getBoxPermissions().getSelectedIndex();
 
         try {
             if (admin) {
-                users.add(new Admin(name, email, username, password, LocalDate.now(), true), true);
+                users.add(
+                        new Admin(name, email, username, password, LocalDate.now(), new NotificationCollection(), true),
+                        true);
             } else {
-                users.add(new NormalUser(name, email, username, password, LocalDate.now(), isAdmin, permission, true),
-                        isAdmin);
+                users.add(new NormalUser(name, email, username, password, LocalDate.now(), new NotificationCollection(),
+                        isAdmin, new PermissaoCollection(), true), isAdmin);
             }
 
             notifyObservers(null);

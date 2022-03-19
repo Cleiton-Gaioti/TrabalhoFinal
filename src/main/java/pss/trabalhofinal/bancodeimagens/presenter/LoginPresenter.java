@@ -7,7 +7,6 @@ import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
 import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
-import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.factory.PasswordEncryptor;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
@@ -25,7 +24,7 @@ public class LoginPresenter implements IObservable {
         view = new LoginView();
 
         try {
-            users = new UsersCollection(UserDAO.getAllUsers());
+            users = new UsersCollection();
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(view, e.getMessage());
         }
@@ -71,7 +70,7 @@ public class LoginPresenter implements IObservable {
         } else {
 
             try {
-                var user = UserDAO.login(username, PasswordEncryptor.encrypt(password));
+                var user = users.login(username, PasswordEncryptor.encrypt(password));
 
                 if (user == null) {
 

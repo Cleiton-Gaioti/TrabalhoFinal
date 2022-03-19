@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import pss.trabalhofinal.bancodeimagens.collection.NotificationCollection;
+import pss.trabalhofinal.bancodeimagens.collection.PermissaoCollection;
 import pss.trabalhofinal.bancodeimagens.factory.ConnectionSQLite;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.NormalUser;
@@ -25,8 +27,7 @@ public abstract class UserDAO {
                 + "password VARCHAR NOT NULL, "
                 + "dateRegister DATE NOT NULL, "
                 + "admin INT DEFAULT 0, "
-                + "authorized INT DEFAULT 0, "
-                + "permission INT DEFAULT 0 "
+                + "authorized INT DEFAULT 0 "
                 + ")";
 
         try {
@@ -43,7 +44,7 @@ public abstract class UserDAO {
     }
 
     public static void insertUser(UserModel user, boolean authorized) {
-        var query = "INSERT INTO user(name, email, username, password, dateRegister, admin, authorized, permission) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        var query = "INSERT INTO user(name, email, username, password, dateRegister, admin, authorized) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             Connection conn = ConnectionSQLite.connect();
@@ -56,35 +57,8 @@ public abstract class UserDAO {
             ps.setDate(5, Date.valueOf(user.getRegistrationDate()));
             ps.setInt(6, Admin.class.isInstance(user) ? 1 : 0);
             ps.setInt(7, authorized ? 1 : 0);
-            ps.setInt(8, user.getPermissions());
 
             ps.executeUpdate();
-
-            ps.close();
-            conn.close();
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao inserir usuario: " + e.getMessage());
-        }
-    }
-
-    public static void insertUser(int id, UserModel user, boolean authorized) {
-        var query = "INSERT INTO user(id, name, email, username, password, dateRegister, admin, authorized, permission) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try {
-            Connection conn = ConnectionSQLite.connect();
-            PreparedStatement ps = conn.prepareStatement(query);
-
-            ps.setInt(1, id);
-            ps.setString(2, user.getName());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getUsername());
-            ps.setString(5, user.getPassword());
-            ps.setDate(6, Date.valueOf(user.getRegistrationDate()));
-            ps.setInt(7, Admin.class.isInstance(user) ? 1 : 0);
-            ps.setInt(8, authorized ? 1 : 0);
-            ps.setInt(9, user.getPermissions());
-
-            ps.executeQuery();
 
             ps.close();
             conn.close();
@@ -131,13 +105,15 @@ public abstract class UserDAO {
                 var dateRegister = rs.getDate("dateRegister").toLocalDate();
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
-                var permission = rs.getInt("permission");
+
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
 
                 if (admin) {
-                    users.add(new Admin(id, name, email, username, password, dateRegister, false));
+                    users.add(new Admin(id, name, email, username, password, dateRegister, notifications, false));
                 } else {
-                    users.add(new NormalUser(id, name, email, username, password, dateRegister, authorized, permission,
-                            false));
+                    users.add(new NormalUser(id, name, email, username, password, dateRegister, notifications,
+                            authorized, permissoes, false));
                 }
             }
 
@@ -246,17 +222,19 @@ public abstract class UserDAO {
                 var dataRegister = rs.getDate("dateRegister").toLocalDate();
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
-                var permission = rs.getInt("permission");
+
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
 
                 if (!authorized) {
                     throw new RuntimeException(
                             "Usuário não autorizado. Espere até que um administrador autorize sua criação de usuário.");
 
                 } else if (admin) {
-                    user = new Admin(id, name, email, username, password, dataRegister, false);
+                    user = new Admin(id, name, email, username, password, dataRegister, notifications, false);
                 } else {
-                    user = new NormalUser(id, name, email, username, password, dataRegister, authorized, permission,
-                            false);
+                    user = new NormalUser(id, name, email, username, password, dataRegister, notifications, authorized,
+                            permissoes, false);
                 }
             }
 
@@ -291,15 +269,18 @@ public abstract class UserDAO {
                 var dataRegister = rs.getDate("dateRegister").toLocalDate();
                 var administrator = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
-                var permission = rs.getInt("permission");
+
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
 
                 if (administrator) {
 
-                    users.add(new Admin(id, name, email, username, password, dataRegister, false));
+                    users.add(new Admin(id, name, email, username, password, dataRegister, notifications, false));
 
                 } else {
 
-                    users.add(new NormalUser(id, name, email, username, password, dataRegister, authorized, permission,
+                    users.add(new NormalUser(id, name, email, username, password, dataRegister, notifications,
+                            authorized, permissoes,
                             false));
 
                 }
@@ -321,8 +302,7 @@ public abstract class UserDAO {
                 + "email = ?, "
                 + "username = ?, "
                 + "password = ?, "
-                + "admin = ?, "
-                + "permission = ? "
+                + "admin = ? "
                 + "WHERE id = ?";
 
         try {
@@ -336,8 +316,7 @@ public abstract class UserDAO {
             ps.setString(3, newer.getUsername());
             ps.setString(4, newer.getPassword());
             ps.setInt(5, admin);
-            ps.setInt(6, newer.getPermissions());
-            ps.setInt(7, newer.getId());
+            ps.setInt(6, newer.getId());
 
             ps.executeUpdate();
 
@@ -350,7 +329,7 @@ public abstract class UserDAO {
 
     }
 
-    public static List<UserModel> getUsersUnauthorizeds() {
+    public static List<NormalUser> getUsersUnauthorizeds() {
         var query = "SELECT * FROM user WHERE authorized = 0";
 
         try {
@@ -359,7 +338,7 @@ public abstract class UserDAO {
 
             ResultSet rs = ps.executeQuery();
 
-            List<UserModel> users = new ArrayList<>();
+            List<NormalUser> users = new ArrayList<>();
 
             while (rs.next()) {
                 var id = rs.getInt("id");
@@ -370,7 +349,11 @@ public abstract class UserDAO {
                 var dataRegister = rs.getDate("dateRegister").toLocalDate();
                 var authorized = rs.getInt("authorized") == 1;
 
-                users.add(new NormalUser(id, name, email, username, password, dataRegister, authorized, 0, false));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
+
+                users.add(new NormalUser(id, name, email, username, password, dataRegister, notifications, authorized,
+                        permissoes, false));
             }
 
             rs.close();
@@ -400,6 +383,50 @@ public abstract class UserDAO {
 
             throw new RuntimeException("Erro ao editar usuário: " + e.getMessage());
 
+        }
+    }
+
+    public static UserModel getUserById(int id) {
+
+        var query = "SELECT * FROM user WHERE id = ";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery(query);
+
+            UserModel user = null;
+
+            if (rs.next()) {
+                var name = rs.getString("name");
+                var email = rs.getString("email");
+                var username = rs.getString("username");
+                var password = rs.getString("password");
+                var dateRegister = rs.getDate("dateRegister").toLocalDate();
+                var admin = rs.getInt("admin") == 1;
+                var authorized = rs.getInt("authorized") == 1;
+
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
+
+                if (admin) {
+                    user = new Admin(id, name, email, username, password, dateRegister, notifications, false);
+                } else {
+                    user = new NormalUser(id, name, email, username, password, dateRegister, notifications, authorized,
+                            permissoes, false);
+                }
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao inserir usuario: " + e.getMessage());
         }
     }
 }

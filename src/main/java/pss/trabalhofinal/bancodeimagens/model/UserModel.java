@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import pss.trabalhofinal.bancodeimagens.collection.NotificationCollection;
 import pss.trabalhofinal.bancodeimagens.factory.PasswordEncryptor;
 
 public abstract class UserModel {
@@ -17,23 +18,23 @@ public abstract class UserModel {
     private String username;
     private String password;
     private LocalDate registrationDate;
-    private int permissions; /* 0 - only read, 1 - read and manipulate, 3 - read, manipulate and share */
+    private NotificationCollection notifications;
 
     /* CONSTRUCTORS */
     public UserModel(int id, String name, String email, String username, String password, LocalDate registrationDate,
-            int permission, boolean encryptPassword) {
+            NotificationCollection notifications, boolean encryptPassword) {
         setId(id);
         setName(name);
         setEmail(email);
         setUsername(username);
         setPassword(password, encryptPassword);
         setRegistrationDate(registrationDate);
-        setPermissions(permission);
+        setNotifications(notifications);
     }
 
     public UserModel(String name, String email, String username, String password, LocalDate registrationDate,
-            int permission, boolean encryptPassword) {
-        this(-1, name, email, username, password, registrationDate, permission, encryptPassword);
+            NotificationCollection notifications, boolean encryptPassword) {
+        this(-1, name, email, username, password, registrationDate, notifications, encryptPassword);
     }
 
     /* METHODS */
@@ -165,25 +166,15 @@ public abstract class UserModel {
         }
     }
 
-    public int getPermissions() {
-        return this.permissions;
+    public NotificationCollection getNotifications() {
+        return this.notifications;
     }
 
-    public String getPermissionsDescription() {
-        if (permissions == 0) {
-            return "Apenas Visualizar";
-        } else if (permissions == 1) {
-            return "Visualizar e Manipular a Imagem";
+    private void setNotifications(NotificationCollection notifications) {
+        if (notifications == null) {
+            throw new RuntimeException("Lista de notificações nula.");
         } else {
-            return "Visualizar, Manipular e Compartilhar a Imagem";
-        }
-    }
-
-    private void setPermissions(int permission) {
-        if (permission < 0 || permission > 2) {
-            throw new RuntimeException("Permissão inválida");
-        } else {
-            this.permissions = permission;
+            this.notifications = notifications;
         }
     }
 }

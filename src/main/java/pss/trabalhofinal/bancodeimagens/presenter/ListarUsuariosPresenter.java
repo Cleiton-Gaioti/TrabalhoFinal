@@ -8,7 +8,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
-import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
@@ -58,7 +57,7 @@ public class ListarUsuariosPresenter implements IObserver {
     /* METHODS */
     private void reloadUsersList() {
         try {
-            users = new UsersCollection(UserDAO.getAllUsers());
+            users = new UsersCollection();
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(view, e.getMessage());
         }
@@ -89,7 +88,6 @@ public class ListarUsuariosPresenter implements IObserver {
                             tipo,
                             u.getName(),
                             u.getUsername(),
-                            u.getPermissionsDescription(),
                             u.getRegistrationDate().format(dataFormat)
                     });
         }
@@ -108,7 +106,7 @@ public class ListarUsuariosPresenter implements IObserver {
 
         if (substr.isBlank() || substr.isEmpty()) {
 
-            users = new UsersCollection(UserDAO.getAllUsers());
+            users = new UsersCollection();
 
         } else {
 

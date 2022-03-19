@@ -6,6 +6,8 @@ import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
+import pss.trabalhofinal.bancodeimagens.collection.NotificationCollection;
+import pss.trabalhofinal.bancodeimagens.collection.PermissaoCollection;
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.NormalUser;
@@ -30,8 +32,6 @@ public class EditYourselfPresenter implements IObservable {
 
             view.getBtnRegister().setText("Salvar");
             view.getCheckAdministrador().setVisible(false);
-            view.getLblPermissions().setVisible(false);
-            view.getBoxPermissions().setVisible(false);
 
             view.getBtnClose().addActionListener(l -> {
                 view.dispose();
@@ -73,10 +73,11 @@ public class EditYourselfPresenter implements IObservable {
             UserModel newer = null;
 
             if (Admin.class.isInstance(user)) {
-                newer = new Admin(user.getId(), name, email, username, password, user.getRegistrationDate(), true);
+                newer = new Admin(user.getId(), name, email, username, password, user.getRegistrationDate(),
+                        new NotificationCollection(), true);
             } else {
-                newer = new NormalUser(user.getId(), name, email, username, password, user.getRegistrationDate(), true,
-                        user.getPermissions(), true);
+                newer = new NormalUser(user.getId(), name, email, username, password, user.getRegistrationDate(),
+                        new NotificationCollection(), true, new PermissaoCollection(), true);
             }
 
             UserDAO.update(newer);
@@ -99,7 +100,6 @@ public class EditYourselfPresenter implements IObservable {
         view.getTxtEmail().setText(user.getEmail());
         view.getTxtUsername().setText(user.getUsername());
         view.getCheckAdministrador().setSelected(Admin.class.isInstance(user));
-        view.getBoxPermissions().setSelectedIndex(user.getPermissions());
     }
 
     @Override
