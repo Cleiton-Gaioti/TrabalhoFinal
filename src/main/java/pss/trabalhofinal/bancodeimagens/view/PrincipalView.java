@@ -1,4 +1,3 @@
-
 package pss.trabalhofinal.bancodeimagens.view;
 
 import javax.swing.JButton;
@@ -26,6 +25,8 @@ public class PrincipalView extends javax.swing.JFrame {
         menuUpdate = new javax.swing.JMenuItem();
         menuLogin = new javax.swing.JMenuItem();
         menuLogout = new javax.swing.JMenuItem();
+        jMenuArquivo = new javax.swing.JMenu();
+        menuAbrir = new javax.swing.JMenuItem();
         jMenuAdministrador = new javax.swing.JMenu();
         menuListarUsuarios = new javax.swing.JMenuItem();
 
@@ -51,6 +52,13 @@ public class PrincipalView extends javax.swing.JFrame {
         jMenuUsuario.add(menuLogout);
 
         jMenuBar1.add(jMenuUsuario);
+
+        jMenuArquivo.setText("Arquivo");
+
+        menuAbrir.setText("Abrir");
+        jMenuArquivo.add(menuAbrir);
+
+        jMenuBar1.add(jMenuArquivo);
 
         jMenuAdministrador.setText("Administrador");
 
@@ -93,9 +101,11 @@ public class PrincipalView extends javax.swing.JFrame {
     private javax.swing.JButton btnSolicitacao;
     private javax.swing.JDesktopPane desktop;
     private javax.swing.JMenu jMenuAdministrador;
+    private javax.swing.JMenu jMenuArquivo;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuUsuario;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem menuAbrir;
     private javax.swing.JMenuItem menuListarUsuarios;
     private javax.swing.JMenuItem menuLogin;
     private javax.swing.JMenuItem menuLogout;
@@ -142,4 +152,13 @@ public class PrincipalView extends javax.swing.JFrame {
     public JButton getBtnSolicitacao() {
         return btnSolicitacao;
     }
+
+    public JMenu getjMenuArquivo() {
+        return jMenuArquivo;
+    }
+
+    public JMenuItem getMenuAbrir() {
+        return menuAbrir;
+    }
+
 }

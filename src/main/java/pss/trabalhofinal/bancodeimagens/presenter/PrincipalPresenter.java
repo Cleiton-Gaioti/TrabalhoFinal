@@ -1,12 +1,10 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.plaf.FileChooserUI;
 
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.AdminLogadoState;
@@ -28,7 +26,6 @@ public class PrincipalPresenter implements IObserver {
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
         view = new PrincipalView();
-        abrirArquivo();
         userDeslogadoLayout();
         user = null;
 
@@ -46,6 +43,10 @@ public class PrincipalPresenter implements IObserver {
 
         view.getMenuListarUsuarios().addActionListener(l -> {
             new ListarUsuariosPresenter(view.getDesktop(), (Admin) user);
+        });
+
+        view.getMenuAbrir().addActionListener(l -> {
+            abrirArquivo();
         });
 
         view.setSize(1280, 720);
@@ -111,6 +112,7 @@ public class PrincipalPresenter implements IObserver {
         view.getjMenuUsuario().setVisible(false);
         view.getjMenuAdministrador().setVisible(false);
         view.getBtnSolicitacao().setVisible(false);
+        view.getjMenuArquivo().setVisible(false);
 
         setState(new UserDeslogadoState(this));
     }
@@ -126,6 +128,7 @@ public class PrincipalPresenter implements IObserver {
         view.getMenuLogout().setVisible(true);
         view.getMenuUpdate().setVisible(true);
         view.getBtnSolicitacao().setVisible(false);
+        view.getjMenuArquivo().setVisible(true);
 
         setState(new UserLogadoState(this));
     }
@@ -141,6 +144,7 @@ public class PrincipalPresenter implements IObserver {
         view.getMenuLogout().setVisible(true);
         view.getMenuUpdate().setVisible(true);
         view.getBtnSolicitacao().setVisible(true);
+        view.getjMenuArquivo().setVisible(true);
 
         setState(new AdminLogadoState(this));
     }
