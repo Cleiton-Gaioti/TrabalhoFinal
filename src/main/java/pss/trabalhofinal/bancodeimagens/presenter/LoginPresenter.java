@@ -42,7 +42,7 @@ public class LoginPresenter implements IObservable {
         });
 
         view.getBtnRegister().addActionListener(l -> {
-            if (users.getCountUsers() == 0) {
+            if (users.getAllUsers().size() == 0) {
                 new CadastrarUsuarioPresenter(desktop, true, false);
             } else {
                 new CadastrarUsuarioPresenter(desktop, false, false);

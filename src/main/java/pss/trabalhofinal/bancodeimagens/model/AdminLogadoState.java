@@ -7,6 +7,7 @@ public class AdminLogadoState extends LoginState {
     /* CONSTRUCTOR */
     public AdminLogadoState(PrincipalPresenter principalPresenter) {
         super(principalPresenter);
+        principalPresenter.adminLayout();
     }
 
     /* METHODS */

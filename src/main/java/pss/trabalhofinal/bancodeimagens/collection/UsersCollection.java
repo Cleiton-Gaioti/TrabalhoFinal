@@ -12,12 +12,10 @@ import pss.trabalhofinal.bancodeimagens.model.UserModel;
 public class UsersCollection {
     /* ATTRIBUTES */
     private List<UserModel> users;
-    private int countUsers;
 
     /* CONSTRUCTORS */
     public UsersCollection(List<UserModel> users) {
         setUsers(users);
-        setCountUsers(users.size());
     }
 
     public UsersCollection() {
@@ -52,7 +50,6 @@ public class UsersCollection {
             UserDAO.insertUser(user, authorized);
 
             setUsers(UserDAO.getAllUsers());
-            setCountUsers(users.size());
         }
     }
 
@@ -76,7 +73,6 @@ public class UsersCollection {
             UserDAO.removeUser(user.getId());
             appointNewAdmin(user);
             setUsers(UserDAO.getAllUsers());
-            setCountUsers(users.size());
         }
     }
 
@@ -173,14 +169,6 @@ public class UsersCollection {
         }
 
         return null;
-    }
-
-    public int getCountUsers() {
-        return this.countUsers;
-    }
-
-    private void setCountUsers(int count) {
-        this.countUsers = count;
     }
 
     public List<UserModel> getAllUsers() {

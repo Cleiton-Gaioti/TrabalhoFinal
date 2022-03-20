@@ -15,7 +15,6 @@ import pss.trabalhofinal.bancodeimagens.model.UserDeslogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
-import pss.trabalhofinal.bancodeimagens.utils.RelativePath;
 import pss.trabalhofinal.bancodeimagens.view.PrincipalView;
 
 public class PrincipalPresenter implements IObserver {
@@ -51,12 +50,18 @@ public class PrincipalPresenter implements IObserver {
             abrirArquivo();
         });
 
+        view.getBtnSolicitacao().addActionListener(l -> {
+            new AutorizarUsuarioPresenter(view.getDesktop());
+        });
+
         view.getBtnNotifications().addActionListener(l -> {
             new ShowNotificationsPresenter(view.getDesktop(), user).registerObserver(this);
             ;
         });
 
         view.setSize(1280, 720);
+
+        new UserDeslogadoState(this);
 
         login();
 
@@ -74,10 +79,13 @@ public class PrincipalPresenter implements IObserver {
         updateFooter(isAdmin);
 
         if (isAdmin) {
-            adminLayout();
+            new AdminLogadoState(this);
         } else {
-            userLogadoLayout();
+            new UserLogadoState(this);
         }
+
+        updateFooter(isAdmin);
+
     }
 
     private void login() {

@@ -7,6 +7,7 @@ public class UserDeslogadoState extends LoginState {
     /* CONSTRUCTOR */
     public UserDeslogadoState(PrincipalPresenter principalPresenter) {
         super(principalPresenter);
+        principalPresenter.userDeslogadoLayout();
     }
 
     /* METHODS */
