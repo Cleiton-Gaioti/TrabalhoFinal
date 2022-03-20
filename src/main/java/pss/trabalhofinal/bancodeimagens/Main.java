@@ -19,7 +19,7 @@ public class Main {
             HistoricoFiltroDAO.createTableHistorico();
             PermissaoDAO.createTablePermissoes();
             NotificationDAO.createTableNotification();
-            LixeiraDAO.CreateTableLixeira();
+            LixeiraDAO.createTableLixeira();
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             System.exit(1);

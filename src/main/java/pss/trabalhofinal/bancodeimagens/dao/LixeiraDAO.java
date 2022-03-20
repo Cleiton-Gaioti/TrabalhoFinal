@@ -11,7 +11,7 @@ import pss.trabalhofinal.bancodeimagens.model.Lixeira;
 
 public abstract class LixeiraDAO {
 
-    public static void CreateTableLixeira() {
+    public static void createTableLixeira() {
         var query = "CREATE TABLE IF NOT EXISTS lixeira ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "idUser INTEGER NOT NULL REFERENCES user (id), "
