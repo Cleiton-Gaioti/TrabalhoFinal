@@ -27,8 +27,6 @@ public class PrincipalPresenter implements IObserver {
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
         view = new PrincipalView();
-        abrirArquivo();
-        userDeslogadoLayout();
         user = null;
 
         view.getMenuUpdate().addActionListener(l -> {
@@ -53,10 +51,11 @@ public class PrincipalPresenter implements IObserver {
 
         view.getBtnNotifications().addActionListener(l -> {
             new ShowNotificationsPresenter(view.getDesktop(), user).registerObserver(this);
-            ;
         });
 
         view.setSize(1280, 720);
+
+        setState(new UserDeslogadoState(this));
 
         login();
 
@@ -71,13 +70,14 @@ public class PrincipalPresenter implements IObserver {
 
         var isAdmin = Admin.class.isInstance(obj);
 
+        if (isAdmin) {
+            setState(new AdminLogadoState(this));
+        } else {
+            setState(new UserLogadoState(this));
+        }
+
         updateFooter(isAdmin);
 
-        if (isAdmin) {
-            adminLayout();
-        } else {
-            userLogadoLayout();
-        }
     }
 
     private void login() {
@@ -145,7 +145,6 @@ public class PrincipalPresenter implements IObserver {
         view.getBtnSolicitacao().setVisible(false);
         view.getjMenuArquivo().setVisible(false);
 
-        setState(new UserDeslogadoState(this));
     }
 
     public void userLogadoLayout() {
@@ -161,7 +160,6 @@ public class PrincipalPresenter implements IObserver {
         view.getBtnSolicitacao().setVisible(false);
         view.getjMenuArquivo().setVisible(true);
 
-        setState(new UserLogadoState(this));
     }
 
     public void adminLayout() {
@@ -177,7 +175,6 @@ public class PrincipalPresenter implements IObserver {
         view.getBtnSolicitacao().setVisible(true);
         view.getjMenuArquivo().setVisible(true);
 
-        setState(new AdminLogadoState(this));
     }
 
     private void updateFooter(boolean isAdmin) {
