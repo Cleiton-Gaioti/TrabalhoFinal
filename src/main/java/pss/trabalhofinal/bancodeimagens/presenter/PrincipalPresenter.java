@@ -27,6 +27,7 @@ public class PrincipalPresenter implements IObserver {
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
         view = new PrincipalView();
+        abrirArquivo();
         userDeslogadoLayout();
         user = null;
 

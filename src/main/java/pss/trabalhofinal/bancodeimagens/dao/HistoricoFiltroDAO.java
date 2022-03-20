@@ -13,9 +13,9 @@ public abstract class HistoricoFiltroDAO {
     public static void createTableHistorico() {
         var query = "create table if not exists historicoFiltro ("
                 + "id integer primary key autoincrement, "
-                + "imagem varchar not null, "
-                + "filtro varchar not null, "
-                + "dataAplicacao date not null)";
+                + "path varchar not null, "
+                + "filter varchar not null, "
+                + "date date not null)";
 
         try {
             Connection conn = ConnectionSQLite.connect();
@@ -32,7 +32,7 @@ public abstract class HistoricoFiltroDAO {
     }
 
     public static void insertHistorico(String imagem, String filtro) {
-        var query = "insert into historicoFiltro(imagem, filtro, dataAplicacao) "
+        var query = "insert into historicoFiltro(path, filter, date) "
                 + "values (?, ?, ?)";
 
         try {
