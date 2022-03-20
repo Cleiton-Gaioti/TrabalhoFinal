@@ -61,7 +61,7 @@ public abstract class PermissaoDAO {
     }
 
     public static List<Permissao> getPermissionsByUser(int idUser) {
-        var query = "SELECT * FROM permissao WHERE idUser = ?";
+        var query = "SELECT * FROM permissoes WHERE idUser = ?";
 
         try {
 
@@ -96,7 +96,7 @@ public abstract class PermissaoDAO {
     }
 
     public static List<Permissao> getPermissionsByUser(Connection conn, int idUser) {
-        var query = "SELECT * FROM permissao WHERE idUser = ?";
+        var query = "SELECT * FROM permissoes WHERE idUser = ?";
 
         try {
 

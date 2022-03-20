@@ -51,6 +51,11 @@ public class PrincipalPresenter implements IObserver {
             abrirArquivo();
         });
 
+        view.getBtnNotifications().addActionListener(l -> {
+            new ShowNotificationsPresenter(view.getDesktop(), user).registerObserver(this);
+            ;
+        });
+
         view.setSize(1280, 720);
 
         login();
@@ -182,6 +187,10 @@ public class PrincipalPresenter implements IObserver {
         } else {
             view.getTxtUser().setText("Usuário - " + user.getName());
         }
+
+        var not = user.getNotifications().getUnreadNotifications().size();
+
+        view.getBtnNotifications().setText(not + " Notificações");
     }
 
     private void closeAllTabs() {
