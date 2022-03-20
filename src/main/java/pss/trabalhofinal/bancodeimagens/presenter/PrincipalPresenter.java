@@ -130,7 +130,8 @@ public class PrincipalPresenter implements IObserver {
                 } else {
                     new VisualizarImagemPresenter(new Image(
                             Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString()),
-                            view.getDesktop());
+                            view.getDesktop(),
+                            user);
                     System.out.println("Imagem: "
                             + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
                 }

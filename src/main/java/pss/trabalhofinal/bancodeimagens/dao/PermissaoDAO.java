@@ -127,4 +127,22 @@ public abstract class PermissaoDAO {
             throw new RuntimeException("Erro ao inserir permissão: " + e.getMessage());
         }
     }
+
+    public static void removeByPath(Connection conn, String path) {
+        var query = "delete from permissoes "
+                + "where path = ?";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setString(1, path);
+
+            ps.executeUpdate();
+
+            ps.close();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao remover permissões: " + e.getMessage());
+        }
+
+    }
 }

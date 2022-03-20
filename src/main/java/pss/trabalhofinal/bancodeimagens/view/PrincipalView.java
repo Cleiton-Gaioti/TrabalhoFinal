@@ -25,8 +25,9 @@ public class PrincipalView extends javax.swing.JFrame {
         menuUpdate = new javax.swing.JMenuItem();
         menuLogin = new javax.swing.JMenuItem();
         menuLogout = new javax.swing.JMenuItem();
-        jMenuArquivo = new javax.swing.JMenu();
+        menuDesfazerExclusoes = new javax.swing.JMenu();
         menuAbrir = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuAdministrador = new javax.swing.JMenu();
         menuListarUsuarios = new javax.swing.JMenuItem();
 
@@ -53,12 +54,15 @@ public class PrincipalView extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuUsuario);
 
-        jMenuArquivo.setText("Arquivo");
+        menuDesfazerExclusoes.setText("Arquivo");
 
         menuAbrir.setText("Abrir");
-        jMenuArquivo.add(menuAbrir);
+        menuDesfazerExclusoes.add(menuAbrir);
 
-        jMenuBar1.add(jMenuArquivo);
+        jMenuItem1.setText("Desfazer Exclusões");
+        menuDesfazerExclusoes.add(jMenuItem1);
+
+        jMenuBar1.add(menuDesfazerExclusoes);
 
         jMenuAdministrador.setText("Administrador");
 
@@ -101,11 +105,12 @@ public class PrincipalView extends javax.swing.JFrame {
     private javax.swing.JButton btnSolicitacao;
     private javax.swing.JDesktopPane desktop;
     private javax.swing.JMenu jMenuAdministrador;
-    private javax.swing.JMenu jMenuArquivo;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu jMenuUsuario;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem menuAbrir;
+    private javax.swing.JMenu menuDesfazerExclusoes;
     private javax.swing.JMenuItem menuListarUsuarios;
     private javax.swing.JMenuItem menuLogin;
     private javax.swing.JMenuItem menuLogout;
@@ -154,7 +159,11 @@ public class PrincipalView extends javax.swing.JFrame {
     }
 
     public JMenu getjMenuArquivo() {
-        return jMenuArquivo;
+        return menuDesfazerExclusoes;
+    }
+
+    public JMenu getMenuDesfazerExclusoes() {
+        return menuDesfazerExclusoes;
     }
 
     public JMenuItem getMenuAbrir() {
