@@ -18,7 +18,6 @@ import pss.trabalhofinal.bancodeimagens.model.Lixeira;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
-import pss.trabalhofinal.bancodeimagens.utils.RelativePath;
 import pss.trabalhofinal.bancodeimagens.view.VisualizarImagemView;
 
 public class VisualizarImagemPresenter implements IObservable {

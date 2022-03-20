@@ -1,7 +1,6 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -17,6 +16,7 @@ import pss.trabalhofinal.bancodeimagens.model.UserDeslogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
+import pss.trabalhofinal.bancodeimagens.utils.RelativePath;
 import pss.trabalhofinal.bancodeimagens.view.PrincipalView;
 
 public class PrincipalPresenter implements IObserver {
@@ -126,21 +126,30 @@ public class PrincipalPresenter implements IObserver {
         try {
             JFileChooser chooser = new JFileChooser(new File("./images/"));
             chooser.setDialogTitle("Escolha os arquivos");
-            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             var res = chooser.showOpenDialog(view);
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhido = chooser.getSelectedFile();
-                if (escolhido.isDirectory()) {
-                    System.out.println("Pasta: "
-                            + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
+
+                if (Admin.class.isInstance(user)) {
+                    new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)), view.getDesktop(), user);
                 } else {
-                    new VisualizarImagemPresenter(new Image(
-                            Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString()),
-                            view.getDesktop(),
-                            user);
-                    System.out.println("Imagem: "
-                            + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
+                    var auth = false;
+
+                    for (Permissao p : permissoes) {
+                        if (p.getPath().startsWith(RelativePath.toRelativePath(escolhido))) {
+                            System.out.println(p.getPath());
+                            auth = true;
+                        }
+                    }
+                    if (auth) {
+                        new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)), view.getDesktop(), user);
+                    } else {
+                        new NaoAutorizadoPresenter(user, view.getDesktop(), new Image(RelativePath.toRelativePath(escolhido)));
+                    }
+
                 }
+
             }
 
             /*
