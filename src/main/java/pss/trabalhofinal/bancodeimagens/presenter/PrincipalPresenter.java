@@ -92,7 +92,7 @@ public class PrincipalPresenter implements IObserver {
         var resposta = 0;
 
         if (confirmar) {
-            String[] options = { "Sim", "Não" };
+            String[] options = {"Sim", "Não"};
 
             resposta = JOptionPane.showOptionDialog(
                     view,
@@ -128,7 +128,7 @@ public class PrincipalPresenter implements IObserver {
                     System.out.println("Pasta: "
                             + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
                 } else {
-                    new AplicarFiltroPresenter(new Image(
+                    new VisualizarImagemPresenter(new Image(
                             Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString()),
                             view.getDesktop());
                     System.out.println("Imagem: "

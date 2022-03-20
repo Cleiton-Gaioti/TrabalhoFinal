@@ -5,6 +5,8 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
+import pss.trabalhofinal.bancodeimagens.dao.HistoricoFiltroDAO;
+import pss.trabalhofinal.bancodeimagens.model.HistoricoFiltros;
 import pss.trabalhofinal.bancodeimagens.model.Image;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
@@ -36,19 +38,34 @@ public class VisualizarImagemPresenter implements IObservable {
         });
 
         view.getBtnEditar().addActionListener(ae -> {
+            view.dispose();
             new AplicarFiltroPresenter(this.imagem, desktop);
         });
 
         view.getBtnVisualizarHistorico().addActionListener(ae -> {
-
+            historico(desktop);
         });
 
-        view.getBtnFechar().addActionListener(ae -> {
+        view.getBtnExcluir().addActionListener(ae -> {
 
         });
 
         desktop.add(view);
         view.setVisible(true);
+    }
+
+    private void historico(JDesktopPane desktop) {
+
+        ArrayList<HistoricoFiltros> lista = new ArrayList<>();
+
+        lista = (ArrayList<HistoricoFiltros>) HistoricoFiltroDAO.getHistoricoByImagem(imagem.getPath());
+
+        if (!lista.isEmpty()) {
+            new HistoricoFiltroPresenter(lista, desktop);
+        } else {
+            JOptionPane.showMessageDialog(view, "Imagem não tem histórico de filtros.");
+        }
+
     }
 
     @Override

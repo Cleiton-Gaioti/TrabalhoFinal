@@ -18,6 +18,7 @@ public class Main {
             HistoricoFiltroDAO.createTableHistorico();
             PermissaoDAO.createTablePermissoes();
             NotificationDAO.createTableNotification();
+
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             System.exit(1);
