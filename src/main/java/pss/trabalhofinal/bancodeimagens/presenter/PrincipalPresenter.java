@@ -48,6 +48,10 @@ public class PrincipalPresenter implements IObserver {
             abrirArquivo();
         });
 
+        view.getBtnSolicitacao().addActionListener(l -> {
+            new AutorizarUsuarioPresenter(view.getDesktop());
+        });
+
         view.getBtnNotifications().addActionListener(l -> {
             new ShowNotificationsPresenter(view.getDesktop(), user).registerObserver(this);
         });
