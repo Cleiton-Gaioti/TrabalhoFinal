@@ -11,8 +11,13 @@ public class Admin extends UserModel {
         super(id, name, email, username, password, registrationDate, notifications, encryptPassword);
     }
 
+    public Admin(int id, String name, String email, String username, String password, LocalDate registrationDate,
+            boolean encryptPassword) {
+        this(id, name, email, username, password, registrationDate, new NotificationCollection(), encryptPassword);
+    }
+
     public Admin(String name, String email, String username, String password, LocalDate registrationDate,
-            NotificationCollection notifications, boolean encryptPassword) {
-        super(-1, name, email, username, password, registrationDate, notifications, encryptPassword);
+            boolean encryptPassword) {
+        this(-1, name, email, username, password, registrationDate, encryptPassword);
     }
 }

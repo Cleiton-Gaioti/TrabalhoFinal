@@ -7,8 +7,6 @@ import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
-import pss.trabalhofinal.bancodeimagens.collection.NotificationCollection;
-import pss.trabalhofinal.bancodeimagens.collection.PermissaoCollection;
 import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.NormalUser;
@@ -83,12 +81,9 @@ public class CadastrarUsuarioPresenter implements IObservable {
 
         try {
             if (admin) {
-                users.add(
-                        new Admin(name, email, username, password, LocalDate.now(), new NotificationCollection(), true),
-                        true);
+                users.add(new Admin(name, email, username, password, LocalDate.now(), true), true);
             } else {
-                users.add(new NormalUser(name, email, username, password, LocalDate.now(), new NotificationCollection(),
-                        isAdmin, new PermissaoCollection(), true), isAdmin);
+                users.add(new NormalUser(name, email, username, password, LocalDate.now(), isAdmin, true), isAdmin);
             }
 
             notifyObservers(null);

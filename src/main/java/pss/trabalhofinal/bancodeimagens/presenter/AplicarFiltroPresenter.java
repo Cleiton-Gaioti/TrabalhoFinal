@@ -23,6 +23,7 @@ import com.pss.imagem.processamento.decorator.VerdeDecorator;
 import com.pss.imagem.processamento.decorator.VermelhoDecorator;
 
 import pss.trabalhofinal.bancodeimagens.dao.HistoricoFiltroDAO;
+import pss.trabalhofinal.bancodeimagens.factory.ImageConverter;
 import pss.trabalhofinal.bancodeimagens.model.Image;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
@@ -112,8 +113,15 @@ public class AplicarFiltroPresenter implements IObservable {
     private void save() {
 
         try {
-            ImageIO.write(imagem.getImagem(), "jpg", new File(caminho));
-        } catch (IOException e) {
+
+            var caminhoPNG = caminho.replace(".jpg", ".png");
+            var imagePNG = new File(caminhoPNG);
+
+            ImageIO.write(imagem.getImagem(), "png", imagePNG);
+            ImageConverter.convertImg(caminhoPNG, caminho);
+            imagePNG.delete();
+
+        } catch (IOException | RuntimeException e) {
             JOptionPane.showMessageDialog(view, "Erro ao salvar imagem: " + e.getMessage());
         }
 

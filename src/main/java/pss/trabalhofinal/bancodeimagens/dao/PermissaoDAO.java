@@ -95,36 +95,4 @@ public abstract class PermissaoDAO {
         }
     }
 
-    public static List<Permissao> getPermissionsByUser(Connection conn, int idUser) {
-        var query = "SELECT * FROM permissoes WHERE idUser = ?";
-
-        try {
-
-            PreparedStatement ps = conn.prepareStatement(query);
-
-            ps.setInt(1, idUser);
-
-            ResultSet rs = ps.executeQuery();
-
-            List<Permissao> permissoes = new ArrayList<>();
-
-            while (rs.next()) {
-                var id = rs.getInt("id");
-                var idAdminGranted = rs.getInt("idAdminGranted");
-                var tipo = rs.getString("tipo");
-                var path = rs.getString("path");
-                var date = rs.getDate("date").toLocalDate();
-
-                permissoes.add(new Permissao(id, idUser, idAdminGranted, tipo, path, date));
-            }
-
-            rs.close();
-            ps.close();
-
-            return permissoes;
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao inserir permissão: " + e.getMessage());
-        }
-    }
 }

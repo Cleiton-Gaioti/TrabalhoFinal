@@ -1,6 +1,7 @@
 package pss.trabalhofinal.bancodeimagens;
 
 import javax.swing.JOptionPane;
+
 import pss.trabalhofinal.bancodeimagens.dao.HistoricoFiltroDAO;
 import pss.trabalhofinal.bancodeimagens.dao.LixeiraDAO;
 import pss.trabalhofinal.bancodeimagens.dao.NotificationDAO;
@@ -26,5 +27,6 @@ public class Main {
         }
 
         new PrincipalPresenter();
+
     }
 }

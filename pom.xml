@@ -33,6 +33,12 @@
         </dependency>
         
         <dependency>
+            <groupId>com.github.Cleiton-Gaioti</groupId>
+            <artifactId>validadorsenha</artifactId>
+            <version>-95b43d1d6b-1</version>
+        </dependency>
+        
+        <dependency>
             <groupId>com.github.claytonfraga</groupId>
             <artifactId>processamentoImagemDecorator</artifactId>
             <version>-0ee2fde3e0-1</version>

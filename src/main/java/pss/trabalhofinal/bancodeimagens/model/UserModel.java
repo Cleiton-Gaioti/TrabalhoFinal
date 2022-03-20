@@ -6,6 +6,8 @@ import java.util.Objects;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import com.pss.senha.validacao.ValidadorSenha;
+
 import pss.trabalhofinal.bancodeimagens.collection.NotificationCollection;
 import pss.trabalhofinal.bancodeimagens.factory.PasswordEncryptor;
 
@@ -132,14 +134,10 @@ public abstract class UserModel {
     }
 
     private void setPassword(String password, boolean encrypt) {
-        if (password == null) {
+        var result = new ValidadorSenha().validar(password);
 
-            throw new RuntimeException("Senha nula.");
-
-        } else if (password.isBlank() || password.isEmpty()) {
-
-            throw new RuntimeException("Senha inválida.");
-
+        if (encrypt && (result.size() != 0)) {
+            throw new RuntimeException(result.get(0));
         } else {
 
             if (encrypt) {
@@ -170,7 +168,7 @@ public abstract class UserModel {
         return this.notifications;
     }
 
-    private void setNotifications(NotificationCollection notifications) {
+    public void setNotifications(NotificationCollection notifications) {
         if (notifications == null) {
             throw new RuntimeException("Lista de notificações nula.");
         } else {
