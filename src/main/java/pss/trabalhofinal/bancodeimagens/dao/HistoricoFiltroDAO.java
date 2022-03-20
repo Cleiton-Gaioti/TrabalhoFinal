@@ -3,10 +3,14 @@ package pss.trabalhofinal.bancodeimagens.dao;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import pss.trabalhofinal.bancodeimagens.factory.ConnectionSQLite;
+import pss.trabalhofinal.bancodeimagens.model.HistoricoFiltros;
 
 public abstract class HistoricoFiltroDAO {
 
@@ -50,6 +54,40 @@ public abstract class HistoricoFiltroDAO {
 
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao inserir aplicação de filtro no hisórico! " + e.getMessage());
+        }
+
+    }
+
+    public static List<HistoricoFiltros> getHistoricoByImagem(String path) {
+        var query = "select * from historicoFiltro where path = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setString(1, path);
+
+            ResultSet rs = ps.executeQuery();
+
+            ArrayList<HistoricoFiltros> historico = new ArrayList<>();
+
+            while (rs.next()) {
+                var id = rs.getInt("id");
+                var path1 = rs.getString("path");
+                var filter = rs.getString("filter");
+                var date = rs.getDate("date").toLocalDate();
+
+                historico.add(new HistoricoFiltros(id, path1, filter, date));
+
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return historico;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao recuperar histórico! " + e.getMessage());
         }
 
     }

@@ -10,25 +10,22 @@ import javax.swing.JOptionPane;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.AdminLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.Image;
-import pss.trabalhofinal.bancodeimagens.model.LoginState;
 import pss.trabalhofinal.bancodeimagens.model.UserDeslogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
-import pss.trabalhofinal.bancodeimagens.utils.RelativePath;
 import pss.trabalhofinal.bancodeimagens.view.PrincipalView;
 
 public class PrincipalPresenter implements IObserver {
 
     /* ATTRIBUTES */
     private final PrincipalView view;
-    private LoginState state;
+    // private LoginState state;
     private UserModel user;
 
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
         view = new PrincipalView();
-        userDeslogadoLayout();
         user = null;
 
         view.getMenuUpdate().addActionListener(l -> {
@@ -57,7 +54,6 @@ public class PrincipalPresenter implements IObserver {
 
         view.getBtnNotifications().addActionListener(l -> {
             new ShowNotificationsPresenter(view.getDesktop(), user).registerObserver(this);
-            ;
         });
 
         view.setSize(1280, 720);
@@ -76,8 +72,6 @@ public class PrincipalPresenter implements IObserver {
         user = (UserModel) obj;
 
         var isAdmin = Admin.class.isInstance(obj);
-
-        updateFooter(isAdmin);
 
         if (isAdmin) {
             new AdminLogadoState(this);
@@ -132,13 +126,13 @@ public class PrincipalPresenter implements IObserver {
                 File escolhido = chooser.getSelectedFile();
                 if (escolhido.isDirectory()) {
                     System.out.println("Pasta: "
-                            + RelativePath.toRelativePath(escolhido));
+                            + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
                 } else {
                     new AplicarFiltroPresenter(new Image(
-                        RelativePath.toRelativePath(escolhido)),
+                            Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString()),
                             view.getDesktop());
                     System.out.println("Imagem: "
-                            + RelativePath.toRelativePath(escolhido));
+                            + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
                 }
             }
         } catch (Exception e) {
@@ -154,7 +148,6 @@ public class PrincipalPresenter implements IObserver {
         view.getBtnSolicitacao().setVisible(false);
         view.getjMenuArquivo().setVisible(false);
 
-        setState(new UserDeslogadoState(this));
     }
 
     public void userLogadoLayout() {
@@ -170,7 +163,6 @@ public class PrincipalPresenter implements IObserver {
         view.getBtnSolicitacao().setVisible(false);
         view.getjMenuArquivo().setVisible(true);
 
-        setState(new UserLogadoState(this));
     }
 
     public void adminLayout() {
@@ -186,7 +178,6 @@ public class PrincipalPresenter implements IObserver {
         view.getBtnSolicitacao().setVisible(true);
         view.getjMenuArquivo().setVisible(true);
 
-        setState(new AdminLogadoState(this));
     }
 
     private void updateFooter(boolean isAdmin) {
@@ -205,16 +196,6 @@ public class PrincipalPresenter implements IObserver {
     private void closeAllTabs() {
         for (JInternalFrame f : view.getDesktop().getAllFrames()) {
             f.dispose();
-        }
-    }
-
-    /* GETTERS AND SETTERS */
-    private void setState(LoginState state) {
-        if (state == null) {
-            JOptionPane.showMessageDialog(view, "Estado de usuário nulo.");
-            System.exit(1);
-        } else {
-            this.state = state;
         }
     }
 
