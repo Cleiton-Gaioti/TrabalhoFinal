@@ -145,4 +145,23 @@ public abstract class PermissaoDAO {
         }
 
     }
+
+    public static void removeById(int id) {
+        var query = "delete from permissoes "
+                + "where id = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+
+            ps.close();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao remover permissões: " + e.getMessage());
+        }
+
+    }
 }

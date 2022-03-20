@@ -22,6 +22,10 @@ public class Permissao {
         setDate(date);
     }
 
+    public Permissao(int idUser, int idAdminGranted, String tipo, String path, LocalDate date) {
+        this(-1, idUser, idAdminGranted, tipo, path, date);
+    }
+
     /* METHODS */
     @Override
     public int hashCode() {

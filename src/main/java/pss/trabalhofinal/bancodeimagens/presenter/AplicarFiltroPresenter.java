@@ -112,7 +112,10 @@ public class AplicarFiltroPresenter implements IObservable {
     private void save() {
 
         try {
-            ImageIO.write(imagem.getImagem(), "jpg", new File(caminho));
+
+            var r = ImageIO.write(imagem.getImagem(), "jpg", new File(caminho));
+            System.out.println(r);
+
         } catch (IOException e) {
             JOptionPane.showMessageDialog(view, "Erro ao salvar imagem: " + e.getMessage());
         }
