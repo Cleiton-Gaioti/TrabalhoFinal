@@ -1,19 +1,22 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
 import java.io.File;
-import java.nio.file.Paths;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.AdminLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.Image;
+import pss.trabalhofinal.bancodeimagens.model.Permissao;
 import pss.trabalhofinal.bancodeimagens.model.UserDeslogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
+import pss.trabalhofinal.bancodeimagens.utils.RelativePath;
 import pss.trabalhofinal.bancodeimagens.view.PrincipalView;
 
 public class PrincipalPresenter implements IObserver {
@@ -22,6 +25,7 @@ public class PrincipalPresenter implements IObserver {
     private final PrincipalView view;
     // private LoginState state;
     private UserModel user;
+    private List<Permissao> permissoes;
 
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
@@ -56,6 +60,10 @@ public class PrincipalPresenter implements IObserver {
             new ShowNotificationsPresenter(view.getDesktop(), user).registerObserver(this);
         });
 
+        view.getMenuDesfazerExlusoes().addActionListener(l -> {
+            new ExclusoesPresenter(user, view.getDesktop());
+        });
+
         view.setSize(1280, 720);
 
         new UserDeslogadoState(this);
@@ -75,8 +83,10 @@ public class PrincipalPresenter implements IObserver {
 
         if (isAdmin) {
             new AdminLogadoState(this);
+            permissoes = null;
         } else {
             new UserLogadoState(this);
+            permissoes = PermissaoDAO.getPermissionsByUser(user.getId());
         }
 
         updateFooter(isAdmin);
@@ -120,21 +130,37 @@ public class PrincipalPresenter implements IObserver {
         try {
             JFileChooser chooser = new JFileChooser(new File("./images/"));
             chooser.setDialogTitle("Escolha os arquivos");
-            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            int res = chooser.showOpenDialog(view);
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            var res = chooser.showOpenDialog(view);
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhido = chooser.getSelectedFile();
-                if (escolhido.isDirectory()) {
-                    System.out.println("Pasta: "
-                            + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
+
+                if (Admin.class.isInstance(user)) {
+                    new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)), view.getDesktop(), user);
                 } else {
-                    new VisualizarImagemPresenter(new Image(
-                            Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString()),
-                            view.getDesktop());
-                    System.out.println("Imagem: "
-                            + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
+                    var auth = false;
+                    for (Permissao p : permissoes) {
+                        if (p.getPath().startsWith(RelativePath.toRelativePath(escolhido))) {
+                            System.out.println(p.getPath());
+                            auth = true;
+                        }
+                    }
+                    if (auth) {
+                        new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)), view.getDesktop(), user);
+                    } else {
+                        new NaoAutorizadoPresenter(user, view.getDesktop(), new Image(RelativePath.toRelativePath(escolhido)));
+                    }
+
                 }
+
             }
+
+            /*
+            JFileChooser chooser = new JFileChooser(new File("./images/"));
+            chooser.setDialogTitle("Selecione a pasta");
+            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            
+             */
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao abrir arquivo! " + e.getMessage());
         }

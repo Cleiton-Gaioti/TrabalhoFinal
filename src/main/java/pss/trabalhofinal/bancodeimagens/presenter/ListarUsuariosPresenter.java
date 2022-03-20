@@ -8,12 +8,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
+import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
 import pss.trabalhofinal.bancodeimagens.view.ListarUsuariosView;
 
 public class ListarUsuariosPresenter implements IObserver {
+
     /* ATTRIBUTES */
     private final ListarUsuariosView view;
     private UsersCollection users;
@@ -48,6 +50,10 @@ public class ListarUsuariosPresenter implements IObserver {
             removeUser();
         });
 
+        view.getBtnPermissoes().addActionListener(l -> {
+            permissoes(desktop);
+        });
+
         view.setLocation((desktop.getWidth() - view.getWidth()) / 2, (desktop.getHeight() - view.getHeight()) / 2);
 
         desktop.add(view);
@@ -68,7 +74,7 @@ public class ListarUsuariosPresenter implements IObserver {
         view.getTblUsuarios().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         var tableModel = new DefaultTableModel(
-                new Object[][] {}, new String[] { "Id", "Tipo", "Nome", "Usuário", "Permissão", "Data de Cadastro" }) {
+                new Object[][]{}, new String[]{"Id", "Tipo", "Nome", "Usuário", "Permissão", "Data de Cadastro"}) {
             @Override
             public boolean isCellEditable(final int row, final int column) {
                 return false;
@@ -83,12 +89,12 @@ public class ListarUsuariosPresenter implements IObserver {
             var tipo = Admin.class.isInstance(u) ? "Administrador" : "Usuário";
 
             tableModel.addRow(
-                    new Object[] {
-                            u.getId(),
-                            tipo,
-                            u.getName(),
-                            u.getUsername(),
-                            u.getRegistrationDate().format(dataFormat)
+                    new Object[]{
+                        u.getId(),
+                        tipo,
+                        u.getName(),
+                        u.getUsername(),
+                        u.getRegistrationDate().format(dataFormat)
                     });
         }
 
@@ -98,7 +104,6 @@ public class ListarUsuariosPresenter implements IObserver {
          * DefaultTableCellRenderer center = new DefaultTableCellRenderer();
          * center.setHorizontalAlignment(SwingConstants.CENTER);
          */
-
     }
 
     private void searchUser() {
@@ -150,6 +155,24 @@ public class ListarUsuariosPresenter implements IObserver {
         }
     }
 
+    private void permissoes(JDesktopPane desktop) {
+        var row = view.getTblUsuarios().getSelectedRow();
+
+        if (row == -1) {
+            JOptionPane.showMessageDialog(view, "Selecione uma linha!");
+
+        } else {
+            var id = Integer.valueOf(view.getTblUsuarios().getValueAt(row, 0).toString());
+            var tipo = view.getTblUsuarios().getValueAt(row, 1).toString();
+            if (tipo.equals("Administrador")) {
+                JOptionPane.showMessageDialog(view,
+                        "Administradores não precisam de permissões");
+            } else {
+                new PermissoesUserPresenter(UserDAO.getUserById(id), admin, desktop);
+            }
+        }
+    }
+
     private void removeUser() {
 
         var row = view.getTblUsuarios().getSelectedRow();
@@ -171,7 +194,7 @@ public class ListarUsuariosPresenter implements IObserver {
 
             } else {
 
-                String[] options = { "Sim", "Não" };
+                String[] options = {"Sim", "Não"};
 
                 int resposta = JOptionPane.showOptionDialog(
                         view,

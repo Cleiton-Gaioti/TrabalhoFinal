@@ -26,6 +26,8 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
+              <Component id="btnExportar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="btnVisualizarHistorico" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnCompartilhar" min="-2" max="-2" attributes="0"/>
@@ -51,6 +53,7 @@
                   <Component id="btnEditar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnCompartilhar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnVisualizarHistorico" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnExportar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -89,6 +92,11 @@
     <Component class="javax.swing.JButton" name="btnVisualizarHistorico">
       <Properties>
         <Property name="text" type="java.lang.String" value="Visualizar Hist&#xf3;rico"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnExportar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Exportar"/>
       </Properties>
     </Component>
   </SubComponents>

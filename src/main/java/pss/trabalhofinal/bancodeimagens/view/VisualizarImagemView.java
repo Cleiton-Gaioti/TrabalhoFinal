@@ -36,6 +36,7 @@ public class VisualizarImagemView extends javax.swing.JInternalFrame {
         btnEditar = new javax.swing.JButton();
         btnCompartilhar = new javax.swing.JButton();
         btnVisualizarHistorico = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
 
         jScrollPane1.setViewportView(lblImagem);
 
@@ -49,6 +50,8 @@ public class VisualizarImagemView extends javax.swing.JInternalFrame {
 
         btnVisualizarHistorico.setText("Visualizar Histórico");
 
+        btnExportar.setText("Exportar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -59,6 +62,8 @@ public class VisualizarImagemView extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnExportar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnVisualizarHistorico)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCompartilhar)
@@ -81,7 +86,8 @@ public class VisualizarImagemView extends javax.swing.JInternalFrame {
                     .addComponent(btnExcluir)
                     .addComponent(btnEditar)
                     .addComponent(btnCompartilhar)
-                    .addComponent(btnVisualizarHistorico))
+                    .addComponent(btnVisualizarHistorico)
+                    .addComponent(btnExportar))
                 .addContainerGap())
         );
 
@@ -112,10 +118,16 @@ public class VisualizarImagemView extends javax.swing.JInternalFrame {
         return lblImagem;
     }
 
+    public JButton getBtnExportar() {
+        return btnExportar;
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCompartilhar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnVisualizarHistorico;
     private javax.swing.JScrollPane jScrollPane1;
