@@ -15,6 +15,7 @@ import pss.trabalhofinal.bancodeimagens.model.UserDeslogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
+import pss.trabalhofinal.bancodeimagens.utils.RelativePath;
 import pss.trabalhofinal.bancodeimagens.view.PrincipalView;
 
 public class PrincipalPresenter implements IObserver {
