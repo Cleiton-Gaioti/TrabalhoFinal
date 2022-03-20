@@ -34,6 +34,7 @@ public class VisualizarImagemPresenter implements IObservable {
         this.user = user;
 
         try {
+            view.setTitle(imagem.getPath());
             view.getLblImagem().setIcon(new ImageIcon(this.imagem.getImagem()));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao abrir imagem! " + e.getMessage());
@@ -80,7 +81,6 @@ public class VisualizarImagemPresenter implements IObservable {
                     salvar = new File(salvar + ".jpg");
                 }
                 ImageIO.write(imagem.getImagem(), "jpg", salvar);
-                System.out.println("Salvar em" + salvar.getPath());
             }
 
         } catch (Exception e) {
@@ -116,9 +116,19 @@ public class VisualizarImagemPresenter implements IObservable {
                 options[1]);
 
         if (resposta == 0) {
-            view.dispose();
-            LixeiraDAO.insert(new Lixeira(user.getId(), imagem.getPath(), Paths.get(imagem.getPath()).getFileName().toString(), LocalDate.now()));
-            System.out.println("Apaga imagem " + imagem.getPath());
+            try {
+                File lixeira = new File("images/.lixeira");
+                if (!lixeira.exists()) {
+                    lixeira.mkdirs();
+                }
+                view.dispose();
+                File temp = new File(imagem.getPath());
+                String fileName = temp.getName();
+                temp.renameTo(new File("./images/.lixeira/" + fileName));
+                LixeiraDAO.insert(new Lixeira(user.getId(), imagem.getPath(), Paths.get(imagem.getPath()).getFileName().toString(), LocalDate.now()));
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(view, "Erro ao excluir imagem: " + e.getMessage());
+            }
 
         }
     }

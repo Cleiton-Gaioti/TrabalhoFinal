@@ -25,9 +25,9 @@ public class PrincipalView extends javax.swing.JFrame {
         menuUpdate = new javax.swing.JMenuItem();
         menuLogin = new javax.swing.JMenuItem();
         menuLogout = new javax.swing.JMenuItem();
-        menuDesfazerExclusoes = new javax.swing.JMenu();
+        menuArquivos = new javax.swing.JMenu();
         menuAbrir = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menuDesfazerExlusoes = new javax.swing.JMenuItem();
         jMenuAdministrador = new javax.swing.JMenu();
         menuListarUsuarios = new javax.swing.JMenuItem();
 
@@ -54,15 +54,15 @@ public class PrincipalView extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuUsuario);
 
-        menuDesfazerExclusoes.setText("Arquivo");
+        menuArquivos.setText("Arquivo");
 
         menuAbrir.setText("Abrir");
-        menuDesfazerExclusoes.add(menuAbrir);
+        menuArquivos.add(menuAbrir);
 
-        jMenuItem1.setText("Desfazer Exclusões");
-        menuDesfazerExclusoes.add(jMenuItem1);
+        menuDesfazerExlusoes.setText("Desfazer Exclusões");
+        menuArquivos.add(menuDesfazerExlusoes);
 
-        jMenuBar1.add(menuDesfazerExclusoes);
+        jMenuBar1.add(menuArquivos);
 
         jMenuAdministrador.setText("Administrador");
 
@@ -106,11 +106,11 @@ public class PrincipalView extends javax.swing.JFrame {
     private javax.swing.JDesktopPane desktop;
     private javax.swing.JMenu jMenuAdministrador;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu jMenuUsuario;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem menuAbrir;
-    private javax.swing.JMenu menuDesfazerExclusoes;
+    private javax.swing.JMenu menuArquivos;
+    private javax.swing.JMenuItem menuDesfazerExlusoes;
     private javax.swing.JMenuItem menuListarUsuarios;
     private javax.swing.JMenuItem menuLogin;
     private javax.swing.JMenuItem menuLogout;
@@ -159,11 +159,15 @@ public class PrincipalView extends javax.swing.JFrame {
     }
 
     public JMenu getjMenuArquivo() {
-        return menuDesfazerExclusoes;
+        return menuArquivos;
     }
 
-    public JMenu getMenuDesfazerExclusoes() {
-        return menuDesfazerExclusoes;
+    public JMenu getArquivos() {
+        return menuArquivos;
+    }
+
+    public JMenuItem getMenuDesfazerExlusoes() {
+        return menuDesfazerExlusoes;
     }
 
     public JMenuItem getMenuAbrir() {

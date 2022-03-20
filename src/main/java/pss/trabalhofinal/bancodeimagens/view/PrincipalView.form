@@ -26,7 +26,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="menuDesfazerExclusoes">
+        <Menu class="javax.swing.JMenu" name="menuArquivos">
           <Properties>
             <Property name="text" type="java.lang.String" value="Arquivo"/>
           </Properties>
@@ -36,7 +36,7 @@
                 <Property name="text" type="java.lang.String" value="Abrir"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="menuDesfazerExlusoes">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Desfazer Exclus&#xf5;es"/>
               </Properties>

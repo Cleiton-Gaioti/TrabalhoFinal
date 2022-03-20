@@ -60,6 +60,10 @@ public class PrincipalPresenter implements IObserver {
             new ShowNotificationsPresenter(view.getDesktop(), user).registerObserver(this);
         });
 
+        view.getMenuDesfazerExlusoes().addActionListener(l -> {
+            new ExclusoesPresenter(user, view.getDesktop());
+        });
+
         view.setSize(1280, 720);
 
         new UserDeslogadoState(this);
@@ -135,7 +139,6 @@ public class PrincipalPresenter implements IObserver {
                     new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)), view.getDesktop(), user);
                 } else {
                     var auth = false;
-
                     for (Permissao p : permissoes) {
                         if (p.getPath().startsWith(RelativePath.toRelativePath(escolhido))) {
                             System.out.println(p.getPath());
