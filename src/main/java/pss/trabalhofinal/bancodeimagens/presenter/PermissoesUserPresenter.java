@@ -27,7 +27,6 @@ public class PermissoesUserPresenter implements IObserver {
         this.user = user;
         this.admin = admin;
         view.setTitle("Permissões " + user.getUsername());
-        System.out.println(admin.getId());
 
         loadTable();
 

@@ -2,14 +2,17 @@ package pss.trabalhofinal.bancodeimagens.presenter;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.AdminLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.Image;
+import pss.trabalhofinal.bancodeimagens.model.Permissao;
 import pss.trabalhofinal.bancodeimagens.model.UserDeslogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
@@ -22,6 +25,7 @@ public class PrincipalPresenter implements IObserver {
     private final PrincipalView view;
     // private LoginState state;
     private UserModel user;
+    private List<Permissao> permissoes;
 
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
@@ -75,8 +79,10 @@ public class PrincipalPresenter implements IObserver {
 
         if (isAdmin) {
             new AdminLogadoState(this);
+            permissoes = null;
         } else {
             new UserLogadoState(this);
+            permissoes = PermissaoDAO.getPermissionsByUser(user.getId());
         }
 
         updateFooter(isAdmin);
@@ -121,7 +127,7 @@ public class PrincipalPresenter implements IObserver {
             JFileChooser chooser = new JFileChooser(new File("./images/"));
             chooser.setDialogTitle("Escolha os arquivos");
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            int res = chooser.showOpenDialog(view);
+            var res = chooser.showOpenDialog(view);
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhido = chooser.getSelectedFile();
                 if (escolhido.isDirectory()) {
@@ -136,6 +142,13 @@ public class PrincipalPresenter implements IObserver {
                             + Paths.get(System.getProperty("user.dir")).relativize(escolhido.toPath()).toString());
                 }
             }
+
+            /*
+            JFileChooser chooser = new JFileChooser(new File("./images/"));
+            chooser.setDialogTitle("Selecione a pasta");
+            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            
+             */
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao abrir arquivo! " + e.getMessage());
         }

@@ -1,11 +1,14 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import pss.trabalhofinal.bancodeimagens.dao.HistoricoFiltroDAO;
 import pss.trabalhofinal.bancodeimagens.dao.LixeiraDAO;
@@ -15,6 +18,7 @@ import pss.trabalhofinal.bancodeimagens.model.Lixeira;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
+import pss.trabalhofinal.bancodeimagens.utils.RelativePath;
 import pss.trabalhofinal.bancodeimagens.view.VisualizarImagemView;
 
 public class VisualizarImagemPresenter implements IObservable {
@@ -57,8 +61,32 @@ public class VisualizarImagemPresenter implements IObservable {
             excluir();
         });
 
+        view.getBtnExportar().addActionListener(l -> {
+            exportar();
+        });
+
         desktop.add(view);
         view.setVisible(true);
+    }
+
+    private void exportar() {
+        try {
+            JFileChooser chooser = new JFileChooser(new File("./images/"));
+            chooser.setDialogTitle("Escolha pasta para exportação");
+            var res = chooser.showSaveDialog(view);
+            if (res == JFileChooser.APPROVE_OPTION) {
+                File salvar = chooser.getSelectedFile();
+                System.out.println(salvar.getPath());
+                if (!salvar.getPath().endsWith(".jpg")) {
+                    salvar = new File(salvar + ".jpg");
+                }
+                ImageIO.write(imagem.getImagem(), "jpg", salvar);
+                System.out.println("Salvar em" + salvar.getPath());
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Erro ao exportar imagem: " + e.getMessage());
+        }
     }
 
     private void historico(JDesktopPane desktop) {
