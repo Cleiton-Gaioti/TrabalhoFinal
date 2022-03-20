@@ -24,12 +24,12 @@ public abstract class LixeiraDAO {
             Connection conn = ConnectionSQLite.connect();
             Statement stmt = conn.createStatement();
 
-            stmt.executeQuery(query);
+            stmt.execute(query);
 
             stmt.close();
             conn.close();
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao criar tabela lixeira:" + e.getMessage());
+            throw new RuntimeException("Erro ao criar tabela lixeira: " + e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public abstract class LixeiraDAO {
             ps.close();
             conn.close();
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao criar tabela lixeira:" + e.getMessage());
+            throw new RuntimeException("Erro ao inserir na tabela lixeira:" + e.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ public abstract class LixeiraDAO {
             ps.close();
             conn.close();
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao criar tabela lixeira:" + e.getMessage());
+            throw new RuntimeException("Erro ao remover da tabela lixeira:" + e.getMessage());
         }
     }
 }
