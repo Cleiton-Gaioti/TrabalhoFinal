@@ -106,7 +106,7 @@ public abstract class UserDAO {
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(conn, id));
                 var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
 
                 if (admin) {
@@ -223,7 +223,7 @@ public abstract class UserDAO {
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(conn, id));
                 var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
 
                 if (!authorized) {
@@ -270,7 +270,7 @@ public abstract class UserDAO {
                 var administrator = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(conn, id));
                 var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
 
                 if (administrator) {
@@ -349,7 +349,7 @@ public abstract class UserDAO {
                 var dataRegister = rs.getDate("dateRegister").toLocalDate();
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(conn, id));
                 var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
 
                 users.add(new NormalUser(id, name, email, username, password, dataRegister, notifications, authorized,
@@ -388,7 +388,7 @@ public abstract class UserDAO {
 
     public static UserModel getUserById(int id) {
 
-        var query = "SELECT * FROM user WHERE id = ";
+        var query = "SELECT * FROM user WHERE id = ?";
 
         try {
             Connection conn = ConnectionSQLite.connect();
@@ -396,7 +396,7 @@ public abstract class UserDAO {
 
             ps.setInt(1, id);
 
-            ResultSet rs = ps.executeQuery(query);
+            ResultSet rs = ps.executeQuery();
 
             UserModel user = null;
 
@@ -409,7 +409,7 @@ public abstract class UserDAO {
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(conn, id));
                 var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
 
                 if (admin) {
@@ -426,7 +426,7 @@ public abstract class UserDAO {
 
             return user;
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao inserir usuario: " + e.getMessage());
+            throw new RuntimeException("Erro ao buscar usuario: " + e.getMessage());
         }
     }
 }

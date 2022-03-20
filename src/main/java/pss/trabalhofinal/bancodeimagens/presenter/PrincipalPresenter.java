@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.AdminLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.Image;
-import pss.trabalhofinal.bancodeimagens.model.LoginState;
 import pss.trabalhofinal.bancodeimagens.model.UserDeslogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
@@ -21,7 +20,7 @@ public class PrincipalPresenter implements IObserver {
 
     /* ATTRIBUTES */
     private final PrincipalView view;
-    private LoginState state;
+    // private LoginState state;
     private UserModel user;
 
     /* CONSTRUCTOR */
@@ -55,7 +54,7 @@ public class PrincipalPresenter implements IObserver {
 
         view.setSize(1280, 720);
 
-        setState(new UserDeslogadoState(this));
+        new UserDeslogadoState(this);
 
         login();
 
@@ -71,9 +70,9 @@ public class PrincipalPresenter implements IObserver {
         var isAdmin = Admin.class.isInstance(obj);
 
         if (isAdmin) {
-            setState(new AdminLogadoState(this));
+            new AdminLogadoState(this);
         } else {
-            setState(new UserLogadoState(this));
+            new UserLogadoState(this);
         }
 
         updateFooter(isAdmin);
@@ -193,16 +192,6 @@ public class PrincipalPresenter implements IObserver {
     private void closeAllTabs() {
         for (JInternalFrame f : view.getDesktop().getAllFrames()) {
             f.dispose();
-        }
-    }
-
-    /* GETTERS AND SETTERS */
-    private void setState(LoginState state) {
-        if (state == null) {
-            JOptionPane.showMessageDialog(view, "Estado de usuário nulo.");
-            System.exit(1);
-        } else {
-            this.state = state;
         }
     }
 
