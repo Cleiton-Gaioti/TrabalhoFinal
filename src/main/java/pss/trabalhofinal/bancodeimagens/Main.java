@@ -2,6 +2,7 @@ package pss.trabalhofinal.bancodeimagens;
 
 import javax.swing.JOptionPane;
 import pss.trabalhofinal.bancodeimagens.dao.HistoricoFiltroDAO;
+import pss.trabalhofinal.bancodeimagens.dao.LixeiraDAO;
 import pss.trabalhofinal.bancodeimagens.dao.NotificationDAO;
 import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
@@ -18,7 +19,7 @@ public class Main {
             HistoricoFiltroDAO.createTableHistorico();
             PermissaoDAO.createTablePermissoes();
             NotificationDAO.createTableNotification();
-
+            LixeiraDAO.CreateTableLixeira();
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             System.exit(1);
