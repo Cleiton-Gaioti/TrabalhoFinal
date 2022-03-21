@@ -28,20 +28,21 @@ def inserir_registros(max_id):
 
     df.to_sql(con=conn, name="user", index=False, if_exists="append")
 
-try:
-    conn = sqlite3.connect('db/users.sqlite')
-    cursor = conn.cursor()
 
-    max_id = cursor.execute("SELECT MAX(id) FROM user").fetchall()[0][0]
-    print(max_id)
+if __name__ == '__main__':
+    try:
+        conn = sqlite3.connect('db/users.sqlite')
+        cursor = conn.cursor()
 
-    inserir_registros(max_id + 1)
+        max_id = cursor.execute("SELECT MAX(id) FROM user").fetchall()[0][0]
 
-except sqlite3.Error as error:
-        print("Error while connecting to sqlite", error)
-finally:
-    if conn:
-        conn.close()
-        print("The SQLite connection is closed")
+        inserir_registros(max_id + 1)
+
+    except sqlite3.Error as error:
+            print("Error while connecting to sqlite", error)
+    finally:
+        if conn:
+            conn.close()
+            print("The SQLite connection is closed")
 
 
