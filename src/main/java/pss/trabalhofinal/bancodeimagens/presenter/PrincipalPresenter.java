@@ -117,7 +117,7 @@ public class PrincipalPresenter implements IObserver {
         var resposta = 0;
 
         if (confirmar) {
-            String[] options = { "Sim", "Não" };
+            String[] options = {"Sim", "Não"};
 
             resposta = JOptionPane.showOptionDialog(
                     view,
@@ -144,6 +144,7 @@ public class PrincipalPresenter implements IObserver {
     private void excluirMultiplos() {
         /*
          * Apenas usuários administradores poderão excluir múltiplas imagens
+        pois um usuário não administrador pode tentar excluir imagens que não tem acesso
          */
         try {
             JFileChooser chooser = new JFileChooser(new File("./images/"));
@@ -156,7 +157,7 @@ public class PrincipalPresenter implements IObserver {
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhidos[] = chooser.getSelectedFiles();
 
-                String[] options = { "Sim", "Não" };
+                String[] options = {"Sim", "Não"};
 
                 int resposta = JOptionPane.showOptionDialog(
                         view,
