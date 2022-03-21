@@ -45,6 +45,8 @@ public class CadastrarUsuarioPresenter implements IObservable {
                 }
             });
 
+            view.getBtnExcluir().setVisible(false);
+
             /*
              * Verifica se é o primeiro usuário do sistema ou se esta sendo cadastrado por
              * um administrador.

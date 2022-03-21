@@ -8,9 +8,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import pss.trabalhofinal.bancodeimagens.dao.LixeiraDAO;
 import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
-
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.AdminLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.Image;
@@ -76,8 +76,6 @@ public class PrincipalPresenter implements IObserver {
 
         new UserDeslogadoState(this);
 
-        login();
-
         view.setLocationRelativeTo(view.getParent());
         view.setVisible(true);
     }
@@ -85,19 +83,28 @@ public class PrincipalPresenter implements IObserver {
     /* METHODS */
     @Override
     public void update(Object obj) {
-        user = (UserModel) obj;
 
-        var isAdmin = Admin.class.isInstance(obj);
+        if (obj == null) {
 
-        if (isAdmin) {
-            new AdminLogadoState(this);
-            permissoes = null;
+            closeAllTabs();
+            updateFooter(null);
+            new UserDeslogadoState(this);
+
         } else {
-            new UserLogadoState(this);
-            permissoes = PermissaoDAO.getPermissionsByUser(user.getId());
-        }
+            user = (UserModel) obj;
 
-        updateFooter(isAdmin);
+            var isAdmin = Admin.class.isInstance(obj);
+
+            if (isAdmin) {
+                new AdminLogadoState(this);
+                permissoes = null;
+            } else {
+                new UserLogadoState(this);
+                permissoes = PermissaoDAO.getPermissionsByUser(user.getId());
+            }
+
+            updateFooter(isAdmin);
+        }
 
     }
 
@@ -110,7 +117,7 @@ public class PrincipalPresenter implements IObserver {
         var resposta = 0;
 
         if (confirmar) {
-            String[] options = {"Sim", "Não"};
+            String[] options = { "Sim", "Não" };
 
             resposta = JOptionPane.showOptionDialog(
                     view,
@@ -136,7 +143,7 @@ public class PrincipalPresenter implements IObserver {
 
     private void excluirMultiplos() {
         /*
-        Apenas usuários administradores poderão excluir múltiplas imagens
+         * Apenas usuários administradores poderão excluir múltiplas imagens
          */
         try {
             JFileChooser chooser = new JFileChooser(new File("./images/"));
@@ -149,7 +156,7 @@ public class PrincipalPresenter implements IObserver {
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhidos[] = chooser.getSelectedFiles();
 
-                String[] options = {"Sim", "Não"};
+                String[] options = { "Sim", "Não" };
 
                 int resposta = JOptionPane.showOptionDialog(
                         view,
@@ -195,7 +202,8 @@ public class PrincipalPresenter implements IObserver {
                 File escolhido = chooser.getSelectedFile();
 
                 if (Admin.class.isInstance(user)) {
-                    new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)), view.getDesktop(), user);
+                    new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)), view.getDesktop(),
+                            user);
                 } else {
                     var auth = false;
                     for (Permissao p : permissoes) {
@@ -205,18 +213,20 @@ public class PrincipalPresenter implements IObserver {
                         }
                     }
                     if (auth) {
-                        new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)), view.getDesktop(), user);
+                        new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)),
+                                view.getDesktop(), user);
                     } else {
-                        new NaoAutorizadoPresenter(user, view.getDesktop(), new Image(RelativePath.toRelativePath(escolhido)));
+                        new NaoAutorizadoPresenter(user, view.getDesktop(),
+                                new Image(RelativePath.toRelativePath(escolhido)));
                     }
                 }
             }
 
             /*
-            JFileChooser chooser = new JFileChooser(new File("./images/"));
-            chooser.setDialogTitle("Selecione a pasta");
-            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            
+             * JFileChooser chooser = new JFileChooser(new File("./images/"));
+             * chooser.setDialogTitle("Selecione a pasta");
+             * chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+             * 
              */
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao abrir arquivo! " + e.getMessage());
@@ -231,6 +241,7 @@ public class PrincipalPresenter implements IObserver {
         view.getBtnSolicitacao().setVisible(false);
         view.getjMenuArquivo().setVisible(false);
 
+        login();
     }
 
     public void userLogadoLayout() {
@@ -265,15 +276,23 @@ public class PrincipalPresenter implements IObserver {
 
     }
 
-    private void updateFooter(boolean isAdmin) {
+    private void updateFooter(Boolean isAdmin) {
+        int not = 0;
 
-        if (isAdmin) {
-            view.getTxtUser().setText("Administrador - " + user.getName());
+        if (isAdmin == null) {
+
+            view.getTxtUser().setText("");
         } else {
-            view.getTxtUser().setText("Usuário - " + user.getName());
-        }
 
-        var not = user.getNotifications().getUnreadNotifications().size();
+            if (isAdmin) {
+                view.getTxtUser().setText("Administrador - " + user.getName());
+            } else {
+                view.getTxtUser().setText("Usuário - " + user.getName());
+            }
+
+            not = user.getNotifications().getUnreadNotifications().size();
+
+        }
 
         view.getBtnNotifications().setText(not + " Notificações");
     }

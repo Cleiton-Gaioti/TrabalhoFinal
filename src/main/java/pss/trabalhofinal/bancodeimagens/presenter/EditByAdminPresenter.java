@@ -42,6 +42,8 @@ public class EditByAdminPresenter implements IObservable {
                 }
             });
 
+            view.getBtnExcluir().setVisible(false);
+
             view.setLocation((desktop.getWidth() - view.getWidth()) / 2, (desktop.getHeight() - view.getHeight()) / 2);
 
             desktop.add(view);

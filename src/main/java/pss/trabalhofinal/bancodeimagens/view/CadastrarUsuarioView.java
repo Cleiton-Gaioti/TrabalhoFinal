@@ -27,6 +27,7 @@ public class CadastrarUsuarioView extends javax.swing.JInternalFrame {
         txtName = new javax.swing.JTextField();
         checkShowPassword = new javax.swing.JCheckBox();
         txtPassword = new javax.swing.JPasswordField();
+        btnExcluir = new javax.swing.JButton();
 
         setTitle("Cadastrar Usuário");
 
@@ -48,6 +49,8 @@ public class CadastrarUsuarioView extends javax.swing.JInternalFrame {
         checkShowPassword.setFont(new java.awt.Font("Ubuntu", 0, 12)); // NOI18N
         checkShowPassword.setText("Mostrar Senha");
 
+        btnExcluir.setText("Excluir");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -66,6 +69,8 @@ public class CadastrarUsuarioView extends javax.swing.JInternalFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(btnClose)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnExcluir)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnRegister))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(checkShowPassword)
@@ -106,7 +111,8 @@ public class CadastrarUsuarioView extends javax.swing.JInternalFrame {
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegister)
-                    .addComponent(btnClose))
+                    .addComponent(btnClose)
+                    .addComponent(btnExcluir))
                 .addGap(15, 15, 15))
         );
 
@@ -115,6 +121,7 @@ public class CadastrarUsuarioView extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnRegister;
     private javax.swing.JCheckBox checkAdministrador;
     private javax.swing.JCheckBox checkShowPassword;
@@ -162,6 +169,10 @@ public class CadastrarUsuarioView extends javax.swing.JInternalFrame {
 
     public JLabel getLblPassword() {
         return lblPassword;
+    }
+
+    public JButton getBtnExcluir() {
+        return btnExcluir;
     }
 
 }

@@ -37,6 +37,8 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="btnClose" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnExcluir" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="btnRegister" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -88,6 +90,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnRegister" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnClose" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnExcluir" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
           </Group>
@@ -148,6 +151,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtPassword">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnExcluir">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Excluir"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

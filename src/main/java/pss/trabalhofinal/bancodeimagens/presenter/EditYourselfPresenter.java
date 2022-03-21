@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 import pss.trabalhofinal.bancodeimagens.collection.NotificationCollection;
 import pss.trabalhofinal.bancodeimagens.collection.PermissaoCollection;
+import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.NormalUser;
@@ -26,6 +27,8 @@ public class EditYourselfPresenter implements IObservable {
         view = new CadastrarUsuarioView();
         observers = new ArrayList<>();
 
+        var users = new UsersCollection();
+
         try {
 
             preencherCampos(user);
@@ -35,6 +38,10 @@ public class EditYourselfPresenter implements IObservable {
 
             view.getBtnClose().addActionListener(l -> {
                 view.dispose();
+            });
+
+            view.getBtnExcluir().addActionListener(l -> {
+                excluir(user, users);
             });
 
             view.getBtnRegister().addActionListener(l -> {
@@ -63,6 +70,31 @@ public class EditYourselfPresenter implements IObservable {
     }
 
     /* METHODS */
+    private void excluir(UserModel user, UsersCollection users) {
+        String[] options = { "Sim", "Não" };
+
+        int resposta = JOptionPane.showOptionDialog(
+                view,
+                "Tem certeza que deseja deletar sua conta?",
+                "Deletar conta",
+                JOptionPane.YES_OPTION,
+                JOptionPane.NO_OPTION,
+                null,
+                options,
+                options[1]);
+
+        if (resposta == 0) {
+
+            try {
+                users.remove(user);
+                notifyObservers(null);
+            } catch (RuntimeException e) {
+                JOptionPane.showMessageDialog(view, e.getMessage());
+
+            }
+        }
+    }
+
     private void save(UserModel user) {
         var name = view.getTxtName().getText();
         var email = view.getTxtEmail().getText();
