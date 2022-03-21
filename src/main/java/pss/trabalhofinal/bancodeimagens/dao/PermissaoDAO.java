@@ -12,7 +12,7 @@ import java.util.List;
 import pss.trabalhofinal.bancodeimagens.factory.ConnectionSQLite;
 import pss.trabalhofinal.bancodeimagens.model.Permissao;
 
-public abstract class PermissaoDAO {
+public class PermissaoDAO {
 
     public static void createTablePermissoes() {
         var query = "CREATE TABLE IF NOT EXISTS permissoes ("
@@ -37,7 +37,7 @@ public abstract class PermissaoDAO {
         }
     }
 
-    public static void insert(Permissao permissao) {
+    public void insert(Permissao permissao) {
         var query = "INSERT INTO permissoes (idUser, idAdminGranted, tipo, path, date) VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -60,7 +60,7 @@ public abstract class PermissaoDAO {
         }
     }
 
-    public static List<Permissao> getPermissionsByUser(int idUser) {
+    public List<Permissao> getPermissionsByUser(int idUser) {
         var query = "SELECT * FROM permissoes WHERE idUser = ?";
 
         try {
@@ -95,7 +95,7 @@ public abstract class PermissaoDAO {
         }
     }
 
-    public static List<Permissao> getPermissionsByUser(Connection conn, int idUser) {
+    public List<Permissao> getPermissionsByUser(Connection conn, int idUser) {
         var query = "SELECT * FROM permissoes WHERE idUser = ?";
 
         try {
@@ -128,7 +128,7 @@ public abstract class PermissaoDAO {
         }
     }
 
-    public static void removeByPath(Connection conn, String path) {
+    public void removeByPath(Connection conn, String path) {
         var query = "delete from permissoes "
                 + "where path = ?";
 
@@ -146,7 +146,7 @@ public abstract class PermissaoDAO {
 
     }
 
-    public static void removeById(int id) {
+    public void removeById(int id) {
         var query = "delete from permissoes "
                 + "where id = ?";
 
@@ -165,7 +165,7 @@ public abstract class PermissaoDAO {
 
     }
 
-    public static boolean isAuthorized(int idUser, String path) {
+    public boolean isAuthorized(int idUser, String path) {
         var query = "select count(1) as num from permissoes where "
                 + "idUser = ? and path = ?";
 

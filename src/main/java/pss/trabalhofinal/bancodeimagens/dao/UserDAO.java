@@ -16,7 +16,7 @@ import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.NormalUser;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 
-public abstract class UserDAO {
+public class UserDAO {
 
     public static void createTableUsers() {
         var query = "CREATE TABLE IF NOT EXISTS user("
@@ -43,7 +43,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static void insertUser(UserModel user, boolean authorized) {
+    public void insertUser(UserModel user, boolean authorized) {
         var query = "INSERT INTO user(name, email, username, password, dateRegister, admin, authorized) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
@@ -67,7 +67,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static void removeUser(int id) {
+    public void removeUser(int id) {
         var query = "DELETE FROM user WHERE id = ?";
 
         try {
@@ -85,7 +85,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static List<UserModel> getAllUsers() {
+    public List<UserModel> getAllUsers() {
         List<UserModel> users = new ArrayList<>();
 
         var query = "SELECT * FROM user";
@@ -106,8 +106,8 @@ public abstract class UserDAO {
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
-                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(id));
+                var notifications = new NotificationCollection(id);
+                var permissoes = new PermissaoCollection(id);
 
                 if (admin) {
                     users.add(new Admin(id, name, email, username, password, dateRegister, notifications, false));
@@ -127,7 +127,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static void appointNewAdmin() {
+    public void appointNewAdmin() {
         var query = "UPDATE user SET admin = 1 WHERE id = (SELECT id FROM user ORDER BY dateRegister ASC LIMIT 1)";
 
         try {
@@ -143,7 +143,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static boolean verifyUsername(String username) {
+    public boolean verifyUsername(String username) {
         var query = "SELECT COUNT(1) AS count FROM user WHERE username = ?";
 
         try {
@@ -171,7 +171,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static boolean verifyEmail(String email) {
+    public boolean verifyEmail(String email) {
         var query = "SELECT COUNT(1) AS count FROM user WHERE email = ?";
 
         try {
@@ -199,7 +199,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static UserModel login(String username, String password) {
+    public UserModel login(String username, String password) {
         var query = "SELECT * FROM user WHERE LOWER(username) = LOWER(?) AND password = ?";
 
         try {
@@ -223,10 +223,14 @@ public abstract class UserDAO {
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
-                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(id));
+                var notifications = new NotificationCollection(id);
+                var permissoes = new PermissaoCollection(id);
 
                 if (!authorized) {
+                    rs.close();
+                    ps.close();
+                    conn.close();
+
                     throw new RuntimeException(
                             "Usuário não autorizado. Espere até que um administrador autorize sua criação de usuário.");
 
@@ -248,7 +252,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static List<UserModel> search(String query, String substr) {
+    public List<UserModel> search(String query, String substr) {
 
         try {
             Connection conn = ConnectionSQLite.connect();
@@ -270,8 +274,8 @@ public abstract class UserDAO {
                 var administrator = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
-                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(id));
+                var notifications = new NotificationCollection(id);
+                var permissoes = new PermissaoCollection(id);
 
                 if (administrator) {
 
@@ -296,7 +300,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static void update(UserModel newer) {
+    public void update(UserModel newer) {
         var query = "UPDATE user SET "
                 + "name = ?, "
                 + "email = ?, "
@@ -329,7 +333,7 @@ public abstract class UserDAO {
 
     }
 
-    public static List<NormalUser> getUsersUnauthorizeds() {
+    public List<NormalUser> getUsersUnauthorizeds() {
         var query = "SELECT * FROM user WHERE authorized = 0";
 
         try {
@@ -349,8 +353,8 @@ public abstract class UserDAO {
                 var dataRegister = rs.getDate("dateRegister").toLocalDate();
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
-                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(id));
+                var notifications = new NotificationCollection(id);
+                var permissoes = new PermissaoCollection(id);
 
                 users.add(new NormalUser(id, name, email, username, password, dataRegister, notifications, authorized,
                         permissoes, false));
@@ -366,7 +370,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static void approveSolicitation(String username) {
+    public void approveSolicitation(String username) {
         var query = "UPDATE user SET authorized = 1 WHERE username = ?";
 
         try {
@@ -386,7 +390,7 @@ public abstract class UserDAO {
         }
     }
 
-    public static UserModel getUserById(int id) {
+    public UserModel getUserById(int id) {
 
         var query = "SELECT * FROM user WHERE id = ?";
 
@@ -409,8 +413,8 @@ public abstract class UserDAO {
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
-                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(id));
+                var notifications = new NotificationCollection(id);
+                var permissoes = new PermissaoCollection(id);
 
                 if (admin) {
                     user = new Admin(id, name, email, username, password, dateRegister, notifications, false);

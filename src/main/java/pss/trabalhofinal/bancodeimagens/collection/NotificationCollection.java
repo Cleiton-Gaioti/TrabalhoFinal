@@ -9,14 +9,17 @@ import pss.trabalhofinal.bancodeimagens.model.Notification;
 public class NotificationCollection {
     // ATTRIBUTES
     private List<Notification> notifications;
+    private final NotificationDAO notificationDAO;
 
     // CONSTRUCTOR
     public NotificationCollection(List<Notification> notifications) {
+        notificationDAO = new NotificationDAO();
         setNotifications(notifications);
     }
 
     public NotificationCollection(int idUser) {
-        this(NotificationDAO.getNotificationsByUser(idUser));
+        notificationDAO = new NotificationDAO();
+        setNotifications(notificationDAO.getNotificationsByUser(idUser));
     }
 
     public NotificationCollection() {
@@ -30,8 +33,8 @@ public class NotificationCollection {
         } else {
             notifications.add(notification);
 
-            NotificationDAO.insert(notification);
-            setNotifications(NotificationDAO.getNotificationsByUser(idUser));
+            notificationDAO.insert(notification);
+            setNotifications(notificationDAO.getNotificationsByUser(idUser));
         }
     }
 

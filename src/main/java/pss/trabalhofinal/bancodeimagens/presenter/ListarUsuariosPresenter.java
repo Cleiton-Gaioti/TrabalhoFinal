@@ -18,12 +18,14 @@ public class ListarUsuariosPresenter implements IObserver {
 
     /* ATTRIBUTES */
     private final ListarUsuariosView view;
+    private final UserDAO userDAO;
     private UsersCollection users;
     private final Admin admin;
 
     /* CONSTRUCTOR */
     public ListarUsuariosPresenter(JDesktopPane desktop, Admin admin) {
         view = new ListarUsuariosView();
+        userDAO = new UserDAO();
         this.admin = admin;
 
         reloadUsersList();
@@ -74,7 +76,7 @@ public class ListarUsuariosPresenter implements IObserver {
         view.getTblUsuarios().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         var tableModel = new DefaultTableModel(
-                new Object[][]{}, new String[]{"Id", "Tipo", "Nome", "Usuário", "Data de Cadastro"}) {
+                new Object[][] {}, new String[] { "Id", "Tipo", "Nome", "Usuário", "Data de Cadastro" }) {
             @Override
             public boolean isCellEditable(final int row, final int column) {
                 return false;
@@ -89,12 +91,12 @@ public class ListarUsuariosPresenter implements IObserver {
             var tipo = Admin.class.isInstance(u) ? "Administrador" : "Usuário";
 
             tableModel.addRow(
-                    new Object[]{
-                        u.getId(),
-                        tipo,
-                        u.getName(),
-                        u.getUsername(),
-                        u.getRegistrationDate().format(dataFormat)
+                    new Object[] {
+                            u.getId(),
+                            tipo,
+                            u.getName(),
+                            u.getUsername(),
+                            u.getRegistrationDate().format(dataFormat)
                     });
         }
 
@@ -168,7 +170,7 @@ public class ListarUsuariosPresenter implements IObserver {
                 JOptionPane.showMessageDialog(view,
                         "Administradores não precisam de permissões");
             } else {
-                new PermissoesUserPresenter(UserDAO.getUserById(id), admin, desktop);
+                new PermissoesUserPresenter(userDAO.getUserById(id), admin, desktop);
             }
         }
     }
@@ -194,7 +196,7 @@ public class ListarUsuariosPresenter implements IObserver {
 
             } else {
 
-                String[] options = {"Sim", "Não"};
+                String[] options = { "Sim", "Não" };
 
                 int resposta = JOptionPane.showOptionDialog(
                         view,

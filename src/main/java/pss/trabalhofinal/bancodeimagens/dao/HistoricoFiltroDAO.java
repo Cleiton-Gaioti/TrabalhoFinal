@@ -9,10 +9,11 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import pss.trabalhofinal.bancodeimagens.factory.ConnectionSQLite;
 import pss.trabalhofinal.bancodeimagens.model.HistoricoFiltros;
 
-public abstract class HistoricoFiltroDAO {
+public class HistoricoFiltroDAO {
 
     public static void createTableHistorico() {
         var query = "create table if not exists historicoFiltro ("
@@ -35,7 +36,7 @@ public abstract class HistoricoFiltroDAO {
         }
     }
 
-    public static void insertHistorico(String imagem, String filtro) {
+    public void insertHistorico(String imagem, String filtro) {
         var query = "insert into historicoFiltro(path, filter, date) "
                 + "values (?, ?, ?)";
 
@@ -58,7 +59,7 @@ public abstract class HistoricoFiltroDAO {
 
     }
 
-    public static List<HistoricoFiltros> getHistoricoByImagem(String path) {
+    public List<HistoricoFiltros> getHistoricoByImagem(String path) {
         var query = "select * from historicoFiltro where path = ?";
 
         try {

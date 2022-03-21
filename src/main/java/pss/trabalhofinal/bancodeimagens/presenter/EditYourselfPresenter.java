@@ -21,11 +21,13 @@ public class EditYourselfPresenter implements IObservable {
     /* ATTRIBUTES */
     private final CadastrarUsuarioView view;
     private final List<IObserver> observers;
+    private final UserDAO userDAO;
 
     /* CONSTRUCTOR */
     public EditYourselfPresenter(JDesktopPane desktop, UserModel user) {
         view = new CadastrarUsuarioView();
         observers = new ArrayList<>();
+        userDAO = new UserDAO();
 
         var users = new UsersCollection();
 
@@ -112,7 +114,7 @@ public class EditYourselfPresenter implements IObservable {
                         new NotificationCollection(), true, new PermissaoCollection(), true);
             }
 
-            UserDAO.update(newer);
+            userDAO.update(newer);
 
             JOptionPane.showMessageDialog(view, "Dados editados com sucesso!");
 

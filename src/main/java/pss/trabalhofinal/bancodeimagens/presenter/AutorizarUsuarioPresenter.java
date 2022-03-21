@@ -2,6 +2,7 @@ package pss.trabalhofinal.bancodeimagens.presenter;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
@@ -46,6 +47,8 @@ public class AutorizarUsuarioPresenter {
     private void loadTable() {
 
         tableModel.setNumRows(0);
+
+        view.getTblUsers().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         try {
 

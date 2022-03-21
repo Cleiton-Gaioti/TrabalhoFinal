@@ -1,12 +1,13 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
 import java.time.LocalDate;
+
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
+
 import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
 import pss.trabalhofinal.bancodeimagens.dao.NotificationDAO;
-
 import pss.trabalhofinal.bancodeimagens.model.Image;
 import pss.trabalhofinal.bancodeimagens.model.Notification;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
@@ -14,12 +15,15 @@ import pss.trabalhofinal.bancodeimagens.view.NaoAutorizadoView;
 
 public class NaoAutorizadoPresenter {
 
+    private final NotificationDAO notificationDAO;
     private NaoAutorizadoView view;
 
     public NaoAutorizadoPresenter(UserModel user, JDesktopPane desktop, Image imagem) {
-        view = new NaoAutorizadoView();
         UsersCollection users = new UsersCollection();
         UserModel admin = users.getAdmins().get(0);
+        notificationDAO = new NotificationDAO();
+        view = new NaoAutorizadoView();
+
         view.setTitle(user.getUsername() + " não autorizado!");
         view.getBtnSolicitar().setText("Solicitar " + admin.getUsername());
 
@@ -40,7 +44,7 @@ public class NaoAutorizadoPresenter {
 
     private void solicitar(UserModel admin, UserModel user, Image imagem) {
         try {
-            NotificationDAO.insert(new Notification(user.getId(), admin.getId(),
+            notificationDAO.insert(new Notification(user.getId(), admin.getId(),
                     "USER:" + user.getUsername() + ",IMAGEM:" + imagem.getPath(),
                     false, LocalDate.now()));
             JOptionPane.showMessageDialog(view, "Solicitação enviada!");

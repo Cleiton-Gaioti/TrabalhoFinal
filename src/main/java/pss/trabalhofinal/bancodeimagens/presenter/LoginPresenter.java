@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
-import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
+import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.factory.PasswordEncryptor;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
@@ -15,19 +15,14 @@ import pss.trabalhofinal.bancodeimagens.view.LoginView;
 public class LoginPresenter implements IObservable {
     /* ATTRIBUTES */
     private final List<IObserver> observers;
-    private UsersCollection users;
+    private final UserDAO userDAO;
     private final LoginView view;
 
     /* CONSTRUCTOR */
     public LoginPresenter(JDesktopPane desktop) {
         observers = new ArrayList<>();
+        userDAO = new UserDAO();
         view = new LoginView();
-
-        try {
-            users = new UsersCollection();
-        } catch (RuntimeException e) {
-            JOptionPane.showMessageDialog(view, e.getMessage());
-        }
 
         view.getCheckShowPassword().addActionListener(l -> {
             if (view.getCheckShowPassword().isSelected()) {
@@ -42,7 +37,7 @@ public class LoginPresenter implements IObservable {
         });
 
         view.getBtnRegister().addActionListener(l -> {
-            if (users.getAllUsers().size() == 0) {
+            if (userDAO.getAllUsers().size() == 0) {
                 new CadastrarUsuarioPresenter(desktop, true, false);
             } else {
                 new CadastrarUsuarioPresenter(desktop, false, false);
@@ -70,7 +65,7 @@ public class LoginPresenter implements IObservable {
         } else {
 
             try {
-                var user = users.login(username, PasswordEncryptor.encrypt(password));
+                var user = userDAO.login(username, PasswordEncryptor.encrypt(password));
 
                 if (user == null) {
 

@@ -9,8 +9,8 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
-import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
 
+import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
 import pss.trabalhofinal.bancodeimagens.dao.NotificationDAO;
 import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
@@ -25,20 +25,26 @@ import pss.trabalhofinal.bancodeimagens.view.ShowNotificationsView;
 public class ShowNotificationsPresenter implements IObservable {
 
     /* ATTRIBUTES */
-    private final List<IObserver> observers;
+    private final NotificationDAO notificationDAO;
     private final ShowNotificationsView view;
+    private final PermissaoDAO permissaoDAO;
+    private final List<IObserver> observers;
     private DefaultTableModel tableModel;
+    private final UserDAO userDAO;
     private UserModel user;
 
     /* CONSTRUCTOR */
     public ShowNotificationsPresenter(JDesktopPane desktop, UserModel user) {
+        notificationDAO = new NotificationDAO();
         tableModel = new DefaultTableModel();
         view = new ShowNotificationsView();
+        permissaoDAO = new PermissaoDAO();
         observers = new ArrayList<>();
+        userDAO = new UserDAO();
         this.user = user;
 
         tableModel = new DefaultTableModel(
-                new Object[][]{}, new String[]{"Id", "Notificação"}) {
+                new Object[][] {}, new String[] { "Id", "Notificação" }) {
             @Override
             public boolean isCellEditable(final int row, final int column) {
                 return false;
@@ -82,7 +88,7 @@ public class ShowNotificationsPresenter implements IObservable {
                         var user = users.getUserByUsername(dados[0].replace("USER:", "").strip());
                         var path = dados[1].replace("IMAGEM:", "").strip();
 
-                        String[] options = {"Sim", "Não"};
+                        String[] options = { "Sim", "Não" };
 
                         int resposta = JOptionPane.showOptionDialog(
                                 view,
@@ -95,10 +101,13 @@ public class ShowNotificationsPresenter implements IObservable {
                                 options[1]);
 
                         if (resposta == 0) {
-                            PermissaoDAO.insert(new Permissao(user.getId(), this.user.getId(), "imagem", path, LocalDate.now()));
-                            NotificationDAO.insert(new Notification(this.user.getId(), user.getId(), "Aceso autorizado a " + path, false, LocalDate.now()));
+                            permissaoDAO.insert(
+                                    new Permissao(user.getId(), this.user.getId(), "imagem", path, LocalDate.now()));
+                            notificationDAO.insert(new Notification(this.user.getId(), user.getId(),
+                                    "Aceso autorizado a " + path, false, LocalDate.now()));
                         } else {
-                            NotificationDAO.insert(new Notification(this.user.getId(), user.getId(), "Aceso negado a " + path, false, LocalDate.now()));
+                            notificationDAO.insert(new Notification(this.user.getId(), user.getId(),
+                                    "Aceso negado a " + path, false, LocalDate.now()));
                         }
 
                     }
@@ -123,13 +132,13 @@ public class ShowNotificationsPresenter implements IObservable {
 
                 var id = Integer.valueOf(view.getListNotifications().getValueAt(row, 0).toString());
 
-                var notification = NotificationDAO.getNotificationById(id);
+                var notification = notificationDAO.getNotificationById(id);
 
                 view.getListNotifications().setValueAt(notification.getContent(), row, 1);
 
-                NotificationDAO.setReadNotification(notification.getId());
+                notificationDAO.setReadNotification(notification.getId());
 
-                user = UserDAO.getUserById(user.getId());
+                user = userDAO.getUserById(user.getId());
 
                 notifyObservers(user);
 
@@ -148,9 +157,9 @@ public class ShowNotificationsPresenter implements IObservable {
 
         user.getNotifications().getUnreadNotifications().forEach(n -> {
             tableModel.addRow(
-                    new String[]{
-                        String.valueOf(n.getId()),
-                        "<html><b>" + n.getContent() + "</b></html>"
+                    new String[] {
+                            String.valueOf(n.getId()),
+                            "<html><b>" + n.getContent() + "</b></html>"
                     });
         });
 

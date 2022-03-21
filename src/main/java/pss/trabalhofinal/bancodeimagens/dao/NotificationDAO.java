@@ -12,7 +12,7 @@ import java.util.List;
 import pss.trabalhofinal.bancodeimagens.factory.ConnectionSQLite;
 import pss.trabalhofinal.bancodeimagens.model.Notification;
 
-public abstract class NotificationDAO {
+public class NotificationDAO {
 
     public static void createTableNotification() {
         var query = "CREATE TABLE IF NOT EXISTS notification("
@@ -37,7 +37,7 @@ public abstract class NotificationDAO {
         }
     }
 
-    public static void insert(Notification notification) {
+    public void insert(Notification notification) {
         var query = "INSERT INTO notification (idUserWhoSent, idUser, content, read, date) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
@@ -60,7 +60,7 @@ public abstract class NotificationDAO {
         }
     }
 
-    public static List<Notification> getNotificationsByUser(int idUser) {
+    public List<Notification> getNotificationsByUser(int idUser) {
         var query = "SELECT * FROM notification WHERE idUser = ?";
 
         try {
@@ -93,7 +93,7 @@ public abstract class NotificationDAO {
         }
     }
 
-    public static Notification getNotificationById(int id) {
+    public Notification getNotificationById(int id) {
         var query = "SELECT * FROM notification WHERE id = ?";
 
         try {
@@ -126,7 +126,7 @@ public abstract class NotificationDAO {
         }
     }
 
-    public static void setReadNotification(int id) {
+    public void setReadNotification(int id) {
         var query = "UPDATE notification set read = 1 WHERE id = ?";
 
         try {

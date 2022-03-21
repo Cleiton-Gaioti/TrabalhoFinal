@@ -13,14 +13,17 @@ public class UsersCollection {
 
     /* ATTRIBUTES */
     private List<UserModel> users;
+    private final UserDAO userDAO;
 
     /* CONSTRUCTORS */
     public UsersCollection(List<UserModel> users) {
+        userDAO = new UserDAO();
         setUsers(users);
     }
 
     public UsersCollection() {
-        this(UserDAO.getAllUsers());
+        userDAO = new UserDAO();
+        setUsers(userDAO.getAllUsers());
     }
 
     /* METHODS */
@@ -38,19 +41,19 @@ public class UsersCollection {
 
             throw new RuntimeException("Usuário já cadastrado.");
 
-        } else if (!UserDAO.verifyUsername(user.getUsername())) {
+        } else if (!userDAO.verifyUsername(user.getUsername())) {
 
             throw new RuntimeException("Nome de usuário já em uso.");
 
-        } else if (!UserDAO.verifyEmail(user.getEmail())) {
+        } else if (!userDAO.verifyEmail(user.getEmail())) {
 
             throw new RuntimeException("Email já em uso.");
 
         } else {
 
-            UserDAO.insertUser(user, authorized);
+            userDAO.insertUser(user, authorized);
 
-            setUsers(UserDAO.getAllUsers());
+            setUsers(userDAO.getAllUsers());
         }
     }
 
@@ -71,9 +74,9 @@ public class UsersCollection {
 
         } else {
 
-            UserDAO.removeUser(user.getId());
+            userDAO.removeUser(user.getId());
             appointNewAdmin(user);
-            setUsers(UserDAO.getAllUsers());
+            setUsers(userDAO.getAllUsers());
         }
     }
 
@@ -103,12 +106,8 @@ public class UsersCollection {
 
         } else {
 
-            UserDAO.update(newer);
+            userDAO.update(newer);
         }
-    }
-
-    public UserModel login(String username, String password) {
-        return UserDAO.login(username, password);
     }
 
     public void searchUser(String substr, int field) {
@@ -128,11 +127,11 @@ public class UsersCollection {
                 throw new RuntimeException("Campo de pesquisa inválido!");
         }
 
-        setUsers(users = UserDAO.search(query, substr));
+        setUsers(users = userDAO.search(query, substr));
     }
 
     public void approveSolicitation(String username) {
-        UserDAO.approveSolicitation(username);
+        userDAO.approveSolicitation(username);
     }
 
     private void appointNewAdmin(UserModel user) {
@@ -140,7 +139,7 @@ public class UsersCollection {
 
         if (countAdmins() == 1) {
             if (Admin.class.isInstance(user)) {
-                UserDAO.appointNewAdmin();
+                userDAO.appointNewAdmin();
             }
         }
     }
@@ -159,7 +158,7 @@ public class UsersCollection {
 
     /* GETTERS AND SETTERS */
     public List<NormalUser> getUsersUnauthorizeds() {
-        return UserDAO.getUsersUnauthorizeds();
+        return userDAO.getUsersUnauthorizeds();
     }
 
     public UserModel getUserById(int id) {
@@ -174,7 +173,7 @@ public class UsersCollection {
 
     public List<UserModel> getAllUsers() {
 
-        users = UserDAO.getAllUsers();
+        users = userDAO.getAllUsers();
 
         return Collections.unmodifiableList(users);
     }

@@ -26,13 +26,16 @@ import pss.trabalhofinal.bancodeimagens.view.PrincipalView;
 public class PrincipalPresenter implements IObserver {
 
     /* ATTRIBUTES */
-    private final PrincipalView view;
-    // private LoginState state;
-    private UserModel user;
+    private final PermissaoDAO permissaoDAO;
+    private final LixeiraDAO lixeiraDAO;
     private List<Permissao> permissoes;
+    private final PrincipalView view;
+    private UserModel user;
 
     /* CONSTRUCTOR */
     public PrincipalPresenter() {
+        permissaoDAO = new PermissaoDAO();
+        lixeiraDAO = new LixeiraDAO();
         view = new PrincipalView();
         user = null;
 
@@ -100,7 +103,7 @@ public class PrincipalPresenter implements IObserver {
                 permissoes = null;
             } else {
                 new UserLogadoState(this);
-                permissoes = PermissaoDAO.getPermissionsByUser(user.getId());
+                permissoes = permissaoDAO.getPermissionsByUser(user.getId());
             }
 
             updateFooter(isAdmin);
@@ -117,7 +120,7 @@ public class PrincipalPresenter implements IObserver {
         var resposta = 0;
 
         if (confirmar) {
-            String[] options = {"Sim", "Não"};
+            String[] options = { "Sim", "Não" };
 
             resposta = JOptionPane.showOptionDialog(
                     view,
@@ -155,7 +158,7 @@ public class PrincipalPresenter implements IObserver {
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhidos[] = chooser.getSelectedFiles();
 
-                String[] options = {"Sim", "Não"};
+                String[] options = { "Sim", "Não" };
 
                 int resposta = JOptionPane.showOptionDialog(
                         view,
@@ -175,7 +178,7 @@ public class PrincipalPresenter implements IObserver {
                             var path = RelativePath.toRelativePath(f);
                             f.renameTo(new File("./images/.lixeira/" + fileName));
 
-                            LixeiraDAO.insert(new Lixeira(user.getId(), path, fileName, LocalDate.now()));
+                            lixeiraDAO.insert(new Lixeira(user.getId(), path, fileName, LocalDate.now()));
 
                         }
                     } catch (Exception e) {

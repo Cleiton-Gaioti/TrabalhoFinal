@@ -9,13 +9,21 @@ import pss.trabalhofinal.bancodeimagens.model.Permissao;
 public class PermissaoCollection {
     /* ATTRIBUTES */
     private List<Permissao> permissoes;
+    private final PermissaoDAO permissaoDAO;
 
     /* CONSTRUCTOR */
     public PermissaoCollection(List<Permissao> permissoes) {
+        permissaoDAO = new PermissaoDAO();
         setPermissoes(permissoes);
     }
 
+    public PermissaoCollection(int idUser) {
+        permissaoDAO = new PermissaoDAO();
+        setPermissoes(permissaoDAO.getPermissionsByUser(idUser));
+    }
+
     public PermissaoCollection() {
+        permissaoDAO = new PermissaoDAO();
         setPermissoes(new ArrayList<>());
     }
 
@@ -36,9 +44,9 @@ public class PermissaoCollection {
 
         } else {
 
-            PermissaoDAO.insert(permissao);
+            permissaoDAO.insert(permissao);
 
-            setPermissoes(PermissaoDAO.getPermissionsByUser(permissao.getIdUser()));
+            setPermissoes(permissaoDAO.getPermissionsByUser(permissao.getIdUser()));
         }
     }
 

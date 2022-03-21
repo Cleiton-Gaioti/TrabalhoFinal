@@ -12,7 +12,7 @@ import java.util.List;
 import pss.trabalhofinal.bancodeimagens.factory.ConnectionSQLite;
 import pss.trabalhofinal.bancodeimagens.model.Lixeira;
 
-public abstract class LixeiraDAO {
+public class LixeiraDAO {
 
     public static void createTableLixeira() {
         var query = "CREATE TABLE IF NOT EXISTS lixeira ("
@@ -36,7 +36,7 @@ public abstract class LixeiraDAO {
         }
     }
 
-    public static void insert(Lixeira lixeira) {
+    public void insert(Lixeira lixeira) {
         var query = "INSERT INTO lixeira (idUser, caminhoDeOrigem, nomeDoArquivo, dataDeExclusao) VALUES (?, ?, ?, ?)";
 
         try {
@@ -50,7 +50,7 @@ public abstract class LixeiraDAO {
 
             ps.execute();
 
-            PermissaoDAO.removeByPath(conn, lixeira.getCaminhoDeOrigem());
+            new PermissaoDAO().removeByPath(conn, lixeira.getCaminhoDeOrigem());
 
             ps.close();
             conn.close();
@@ -59,7 +59,7 @@ public abstract class LixeiraDAO {
         }
     }
 
-    public static void remove(String nomeDoArquivo) {
+    public void remove(String nomeDoArquivo) {
         var query = "DELETE FROM lixeira WHERE nomeDoArquivo = ?";
 
         try {
@@ -77,7 +77,7 @@ public abstract class LixeiraDAO {
         }
     }
 
-    public static List<Lixeira> getLixeiraByUser(int idUser) {
+    public List<Lixeira> getLixeiraByUser(int idUser) {
         var query = "select * from lixeira where idUser = ? ";
 
         try {

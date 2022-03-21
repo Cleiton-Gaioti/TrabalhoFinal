@@ -22,14 +22,19 @@ import pss.trabalhofinal.bancodeimagens.view.PermissoesUserView;
 
 public class PermissoesUserPresenter implements IObserver {
 
+    private final NotificationDAO notificationDAO;
+    private final PermissaoDAO permissaoDAO;
     private PermissoesUserView view;
     private UserModel user;
     private Admin admin;
 
     public PermissoesUserPresenter(UserModel user, Admin admin, JDesktopPane desktop) {
+        notificationDAO = new NotificationDAO();
+        permissaoDAO = new PermissaoDAO();
         view = new PermissoesUserView();
         this.user = user;
         this.admin = admin;
+
         view.setTitle("Permissões " + user.getUsername());
 
         loadTable();
@@ -56,10 +61,10 @@ public class PermissoesUserPresenter implements IObserver {
                 File escolhido = chooser.getSelectedFile();
                 Permissao per = null;
                 if (escolhido.isDirectory()) {
-                    List<Permissao> temp = PermissaoDAO.getPermissionsByUser(user.getId());
+                    List<Permissao> temp = permissaoDAO.getPermissionsByUser(user.getId());
                     for (Permissao p : temp) {
                         if (p.getPath().startsWith(RelativePath.toRelativePath(escolhido))) {
-                            PermissaoDAO.removeById(p.getId());
+                            permissaoDAO.removeById(p.getId());
                         }
                     }
                     per = new Permissao(user.getId(), admin.getId(), "pasta", RelativePath.toRelativePath(escolhido),
@@ -70,9 +75,9 @@ public class PermissoesUserPresenter implements IObserver {
                             LocalDate.now());
                 }
 
-                PermissaoDAO.insert(per);
+                permissaoDAO.insert(per);
 
-                NotificationDAO.insert(new Notification(admin.getId(), user.getId(), "Acesso concedido a(o) "
+                notificationDAO.insert(new Notification(admin.getId(), user.getId(), "Acesso concedido a(o) "
                         + per.getTipo() + " " + per.getPath(), false, LocalDate.now()));
             }
             loadTable();
@@ -94,7 +99,7 @@ public class PermissoesUserPresenter implements IObserver {
         tableModel.setNumRows(0);
 
         try {
-            List<Permissao> lista = PermissaoDAO.getPermissionsByUser(user.getId());
+            List<Permissao> lista = permissaoDAO.getPermissionsByUser(user.getId());
             var dataFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             for (Permissao p : lista) {

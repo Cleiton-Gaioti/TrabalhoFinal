@@ -31,15 +31,17 @@ import pss.trabalhofinal.bancodeimagens.view.AplicarFiltroView;
 
 public class AplicarFiltroPresenter implements IObservable {
 
-    private AplicarFiltroView view;
+    private final HistoricoFiltroDAO historicoFiltroDAO;
     private ArrayList<IObserver> observers;
+    private AplicarFiltroView view;
     private ImagemComponente imagem;
     private String caminho;
 
     public AplicarFiltroPresenter(Image imagem, JDesktopPane desktop) {
-        this.imagem = imagem;
-        caminho = imagem.getPath();
+        historicoFiltroDAO = new HistoricoFiltroDAO();
         view = new AplicarFiltroView();
+        caminho = imagem.getPath();
+        this.imagem = imagem;
 
         view.getBtnReverter().setVisible(false);
         view.getCmbPredefinicoes().setSelectedIndex(-1);
@@ -131,8 +133,8 @@ public class AplicarFiltroPresenter implements IObservable {
         try {
             imagem = imagem.reverter();
             imagem = imagem.reverter();
-            HistoricoFiltroDAO.insertHistorico(caminho, "Efeito anterior revertido");
-            HistoricoFiltroDAO.insertHistorico(caminho, "Efeito anterior revertido");
+            historicoFiltroDAO.insertHistorico(caminho, "Efeito anterior revertido");
+            historicoFiltroDAO.insertHistorico(caminho, "Efeito anterior revertido");
             view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
             view.getBtnReverter().setVisible(false);
             save();
@@ -184,7 +186,7 @@ public class AplicarFiltroPresenter implements IObservable {
                     imagem = new BrilhoDecorator(imagem, res);
                     view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                     save();
-                    HistoricoFiltroDAO.insertHistorico(caminho, "Brilho aumentado em " + res);
+                    historicoFiltroDAO.insertHistorico(caminho, "Brilho aumentado em " + res);
                 } else {
                     JOptionPane.showMessageDialog(view, "Valor de brilho deve ser maior ou igual a 0!");
                     view.getCkbImgBrilho().setSelected(false);
@@ -195,7 +197,7 @@ public class AplicarFiltroPresenter implements IObservable {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Brilho revertido");
+                historicoFiltroDAO.insertHistorico(caminho, "Brilho revertido");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
@@ -211,7 +213,7 @@ public class AplicarFiltroPresenter implements IObservable {
                     imagem = new PixeladaDecorator(imagem, res);
                     view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                     save();
-                    HistoricoFiltroDAO.insertHistorico(caminho, "Pixelado com tamanho " + res);
+                    historicoFiltroDAO.insertHistorico(caminho, "Pixelado com tamanho " + res);
                 } else {
                     JOptionPane.showMessageDialog(view, "Valor de píxel deve ser maior do que 1!");
                     view.getCkbImgPixelar().setSelected(false);
@@ -221,7 +223,7 @@ public class AplicarFiltroPresenter implements IObservable {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Pixelação revertida");
+                historicoFiltroDAO.insertHistorico(caminho, "Pixelação revertida");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
@@ -238,7 +240,7 @@ public class AplicarFiltroPresenter implements IObservable {
                     imagem = new RotacionaDecorator(imagem, res);
                     view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                     save();
-                    HistoricoFiltroDAO.insertHistorico(caminho, "Rotacionado em " + res + "graus");
+                    historicoFiltroDAO.insertHistorico(caminho, "Rotacionado em " + res + "graus");
                 } else {
                     JOptionPane.showMessageDialog(view, "Valor de rotação deve ser maior ou igual a 0!");
                     view.getCkbImgRotacionar().setSelected(false);
@@ -248,7 +250,7 @@ public class AplicarFiltroPresenter implements IObservable {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Rotação revertida");
+                historicoFiltroDAO.insertHistorico(caminho, "Rotação revertida");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
@@ -261,12 +263,12 @@ public class AplicarFiltroPresenter implements IObservable {
                 imagem = new TomDeCinzaDecorator(imagem);
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Tons de Cinza Aplicado");
+                historicoFiltroDAO.insertHistorico(caminho, "Tons de Cinza Aplicado");
             } else {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Tons de Cinza revertido");
+                historicoFiltroDAO.insertHistorico(caminho, "Tons de Cinza revertido");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
@@ -279,12 +281,12 @@ public class AplicarFiltroPresenter implements IObservable {
                 imagem = new NegativaDecorator(imagem);
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Negativo");
+                historicoFiltroDAO.insertHistorico(caminho, "Negativo");
             } else {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Negativo revertido");
+                historicoFiltroDAO.insertHistorico(caminho, "Negativo revertido");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
@@ -297,11 +299,11 @@ public class AplicarFiltroPresenter implements IObservable {
                 imagem = new EspelhadaDecorator(imagem);
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Espelhada");
+                historicoFiltroDAO.insertHistorico(caminho, "Espelhada");
             } else {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
-                HistoricoFiltroDAO.insertHistorico(caminho, "Espelhada Revertida");
+                historicoFiltroDAO.insertHistorico(caminho, "Espelhada Revertida");
                 save();
             }
         } catch (Exception e) {
@@ -315,12 +317,12 @@ public class AplicarFiltroPresenter implements IObservable {
                 imagem = new SepiaDecorator(imagem);
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Sépia");
+                historicoFiltroDAO.insertHistorico(caminho, "Sépia");
             } else {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Sépia revertido");
+                historicoFiltroDAO.insertHistorico(caminho, "Sépia revertido");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
@@ -333,12 +335,12 @@ public class AplicarFiltroPresenter implements IObservable {
                 imagem = new AzulDecorator(imagem);
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Azul");
+                historicoFiltroDAO.insertHistorico(caminho, "Azul");
             } else {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Azul revertido");
+                historicoFiltroDAO.insertHistorico(caminho, "Azul revertido");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
@@ -351,12 +353,12 @@ public class AplicarFiltroPresenter implements IObservable {
                 imagem = new VermelhoDecorator(imagem);
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Vermelho");
+                historicoFiltroDAO.insertHistorico(caminho, "Vermelho");
             } else {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
                 save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Vermelho revertido");
+                historicoFiltroDAO.insertHistorico(caminho, "Vermelho revertido");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
@@ -368,12 +370,12 @@ public class AplicarFiltroPresenter implements IObservable {
             if (selecionado) {
                 imagem = new VerdeDecorator(imagem);
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
-                HistoricoFiltroDAO.insertHistorico(caminho, "Verde");
+                historicoFiltroDAO.insertHistorico(caminho, "Verde");
                 save();
             } else {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
-                HistoricoFiltroDAO.insertHistorico(caminho, "Verde revertido");
+                historicoFiltroDAO.insertHistorico(caminho, "Verde revertido");
                 save();
             }
         } catch (Exception e) {

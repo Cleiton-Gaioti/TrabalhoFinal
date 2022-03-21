@@ -5,11 +5,13 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import pss.trabalhofinal.bancodeimagens.dao.HistoricoFiltroDAO;
 import pss.trabalhofinal.bancodeimagens.dao.LixeiraDAO;
 import pss.trabalhofinal.bancodeimagens.model.HistoricoFiltros;
@@ -22,14 +24,18 @@ import pss.trabalhofinal.bancodeimagens.view.VisualizarImagemView;
 
 public class VisualizarImagemPresenter implements IObservable {
 
+    private final HistoricoFiltroDAO historicoFiltroDAO;
+    private final LixeiraDAO lixeiraDAO;
     private VisualizarImagemView view;
     private List<IObserver> observers;
-    private Image imagem;
     private UserModel user;
+    private Image imagem;
 
     public VisualizarImagemPresenter(Image imagem, JDesktopPane desktop, UserModel user) {
+        historicoFiltroDAO = new HistoricoFiltroDAO();
         view = new VisualizarImagemView();
         observers = new ArrayList<>();
+        lixeiraDAO = new LixeiraDAO();
         this.imagem = imagem;
         this.user = user;
 
@@ -91,7 +97,7 @@ public class VisualizarImagemPresenter implements IObservable {
 
         ArrayList<HistoricoFiltros> lista = new ArrayList<>();
 
-        lista = (ArrayList<HistoricoFiltros>) HistoricoFiltroDAO.getHistoricoByImagem(imagem.getPath());
+        lista = (ArrayList<HistoricoFiltros>) historicoFiltroDAO.getHistoricoByImagem(imagem.getPath());
 
         if (!lista.isEmpty()) {
             new HistoricoFiltroPresenter(lista, desktop);
@@ -102,7 +108,7 @@ public class VisualizarImagemPresenter implements IObservable {
     }
 
     private void excluir() {
-        String[] options = {"Sim", "Não"};
+        String[] options = { "Sim", "Não" };
 
         int resposta = JOptionPane.showOptionDialog(
                 view,
@@ -120,7 +126,8 @@ public class VisualizarImagemPresenter implements IObservable {
                 File temp = new File(imagem.getPath());
                 String fileName = temp.getName();
                 temp.renameTo(new File("./images/.lixeira/" + fileName));
-                LixeiraDAO.insert(new Lixeira(user.getId(), imagem.getPath(), Paths.get(imagem.getPath()).getFileName().toString(), LocalDate.now()));
+                lixeiraDAO.insert(new Lixeira(user.getId(), imagem.getPath(),
+                        Paths.get(imagem.getPath()).getFileName().toString(), LocalDate.now()));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(view, "Erro ao excluir imagem: " + e.getMessage());
             }
