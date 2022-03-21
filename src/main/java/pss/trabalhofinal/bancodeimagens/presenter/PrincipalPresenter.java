@@ -117,7 +117,7 @@ public class PrincipalPresenter implements IObserver {
         var resposta = 0;
 
         if (confirmar) {
-            String[] options = {"Sim", "Não"};
+            String[] options = { "Sim", "Não" };
 
             resposta = JOptionPane.showOptionDialog(
                     view,
@@ -132,19 +132,17 @@ public class PrincipalPresenter implements IObserver {
 
         if (resposta == 0) {
             closeAllTabs();
-            userDeslogadoLayout();
+            new UserDeslogadoState(this);
             user = null;
-            view.getTxtUser().setText("");
-            view.getBtnNotifications().setText("0 notificações");
-            userDeslogadoLayout();
-            login();
+
         }
     }
 
     private void excluirMultiplos() {
         /*
          * Apenas usuários administradores poderão excluir múltiplas imagens
-        pois um usuário não administrador pode tentar excluir imagens que não tem acesso
+         * pois um usuário não administrador pode tentar excluir imagens que não tem
+         * acesso
          */
         try {
             JFileChooser chooser = new JFileChooser(new File("./images/"));
@@ -157,7 +155,7 @@ public class PrincipalPresenter implements IObserver {
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhidos[] = chooser.getSelectedFiles();
 
-                String[] options = {"Sim", "Não"};
+                String[] options = { "Sim", "Não" };
 
                 int resposta = JOptionPane.showOptionDialog(
                         view,
@@ -241,6 +239,9 @@ public class PrincipalPresenter implements IObserver {
         view.getjMenuAdministrador().setVisible(false);
         view.getBtnSolicitacao().setVisible(false);
         view.getjMenuArquivo().setVisible(false);
+
+        view.getTxtUser().setText("");
+        view.getBtnNotifications().setText("0 notificações");
 
         login();
     }
