@@ -10,6 +10,7 @@ import pss.trabalhofinal.bancodeimagens.model.NormalUser;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 
 public class UsersCollection {
+
     /* ATTRIBUTES */
     private List<UserModel> users;
 
@@ -202,6 +203,17 @@ public class UsersCollection {
         });
 
         return Collections.unmodifiableList(nUsers);
+    }
+
+    public UserModel getUserByUsername(String userName) {
+        UserModel user = null;
+        for (UserModel u : users) {
+            if (u.getUsername().equals(userName)) {
+                user = getUserById(u.getId());
+            }
+        }
+
+        return user;
     }
 
     private void setUsers(List<UserModel> users) {

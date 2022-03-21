@@ -1,10 +1,14 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
+import java.time.LocalDate;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
+import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
+import pss.trabalhofinal.bancodeimagens.dao.NotificationDAO;
 
 import pss.trabalhofinal.bancodeimagens.model.Image;
+import pss.trabalhofinal.bancodeimagens.model.Notification;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.view.NaoAutorizadoView;
 
@@ -14,7 +18,10 @@ public class NaoAutorizadoPresenter {
 
     public NaoAutorizadoPresenter(UserModel user, JDesktopPane desktop, Image imagem) {
         view = new NaoAutorizadoView();
+        UsersCollection users = new UsersCollection();
+        UserModel admin = users.getAdmins().get(0);
         view.setTitle(user.getUsername() + " não autorizado!");
+        view.getBtnSolicitar().setText("Solicitar " + admin.getUsername());
 
         loadIcon(imagem);
 
@@ -22,9 +29,25 @@ public class NaoAutorizadoPresenter {
             view.dispose();
         });
 
+        view.getBtnSolicitar().addActionListener(l -> {
+            solicitar(admin, user, imagem);
+        });
+
         desktop.add(view);
         view.setVisible(true);
 
+    }
+
+    private void solicitar(UserModel admin, UserModel user, Image imagem) {
+        try {
+            NotificationDAO.insert(new Notification(user.getId(), admin.getId(),
+                    "USER:" + user.getUsername() + ",IMAGEM:" + imagem.getPath(),
+                    false, LocalDate.now()));
+            JOptionPane.showMessageDialog(view, "Solicitação enviada!");
+            view.dispose();
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(view, "Erro ao enviar solicitação: " + e.getMessage());
+        }
     }
 
     private void loadIcon(Image imagem) {

@@ -117,7 +117,7 @@ public class PrincipalPresenter implements IObserver {
         var resposta = 0;
 
         if (confirmar) {
-            String[] options = { "Sim", "Não" };
+            String[] options = {"Sim", "Não"};
 
             resposta = JOptionPane.showOptionDialog(
                     view,
@@ -155,7 +155,7 @@ public class PrincipalPresenter implements IObserver {
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhidos[] = chooser.getSelectedFiles();
 
-                String[] options = { "Sim", "Não" };
+                String[] options = {"Sim", "Não"};
 
                 int resposta = JOptionPane.showOptionDialog(
                         view,
@@ -207,7 +207,6 @@ public class PrincipalPresenter implements IObserver {
                     var auth = false;
                     for (Permissao p : permissoes) {
                         if (p.getPath().startsWith(RelativePath.toRelativePath(escolhido))) {
-                            System.out.println(p.getPath());
                             auth = true;
                         }
                     }

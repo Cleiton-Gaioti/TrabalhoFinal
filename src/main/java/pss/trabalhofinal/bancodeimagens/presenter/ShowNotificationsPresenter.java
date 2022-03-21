@@ -1,5 +1,6 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +9,14 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
+import pss.trabalhofinal.bancodeimagens.collection.UsersCollection;
 
 import pss.trabalhofinal.bancodeimagens.dao.NotificationDAO;
+import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
+import pss.trabalhofinal.bancodeimagens.model.Admin;
+import pss.trabalhofinal.bancodeimagens.model.Notification;
+import pss.trabalhofinal.bancodeimagens.model.Permissao;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
@@ -32,7 +38,7 @@ public class ShowNotificationsPresenter implements IObservable {
         this.user = user;
 
         tableModel = new DefaultTableModel(
-                new Object[][] {}, new String[] { "Id", "Notificação" }) {
+                new Object[][]{}, new String[]{"Id", "Notificação"}) {
             @Override
             public boolean isCellEditable(final int row, final int column) {
                 return false;
@@ -46,12 +52,64 @@ public class ShowNotificationsPresenter implements IObservable {
         });
 
         view.getListNotifications().getSelectionModel().addListSelectionListener((ListSelectionEvent l) -> {
-            setRead();
+            if (Admin.class.isInstance(user)) {
+                permissao();
+            } else {
+                setRead();
+            }
         });
 
         view.setLocation((desktop.getWidth() - view.getWidth()) / 2, (desktop.getHeight() - view.getHeight()) / 2);
         desktop.add(view);
         view.setVisible(true);
+    }
+
+    private void permissao() {
+
+        var row = view.getListNotifications().getSelectedRow();
+
+        if (row == -1) {
+            JOptionPane.showMessageDialog(view, "Selecione uma linha.");
+        } else {
+            try {
+
+                var notificacao = view.getListNotifications().getValueAt(row, 1).toString();
+                if (notificacao.startsWith("<html><b>")) {
+                    notificacao = notificacao.replace("<html><b>", "").replace("</b></html>", "");
+                    if (notificacao.startsWith("USER:")) {
+                        UsersCollection users = new UsersCollection();
+                        var dados = notificacao.split(",");
+                        var user = users.getUserByUsername(dados[0].replace("USER:", "").strip());
+                        var path = dados[1].replace("IMAGEM:", "").strip();
+
+                        String[] options = {"Sim", "Não"};
+
+                        int resposta = JOptionPane.showOptionDialog(
+                                view,
+                                "Autorizar " + user.getUsername() + "?",
+                                "Autorizar usuário",
+                                JOptionPane.YES_OPTION,
+                                JOptionPane.NO_OPTION,
+                                null,
+                                options,
+                                options[1]);
+
+                        if (resposta == 0) {
+                            PermissaoDAO.insert(new Permissao(user.getId(), this.user.getId(), "imagem", path, LocalDate.now()));
+                            NotificationDAO.insert(new Notification(this.user.getId(), user.getId(), "Aceso autorizado a " + path, false, LocalDate.now()));
+                        } else {
+                            NotificationDAO.insert(new Notification(this.user.getId(), user.getId(), "Aceso negado a " + path, false, LocalDate.now()));
+                        }
+
+                    }
+                }
+                setRead();
+            } catch (RuntimeException e) {
+                JOptionPane.showMessageDialog(view, e.getMessage());
+
+            }
+        }
+
     }
 
     private void setRead() {
@@ -90,9 +148,9 @@ public class ShowNotificationsPresenter implements IObservable {
 
         user.getNotifications().getUnreadNotifications().forEach(n -> {
             tableModel.addRow(
-                    new String[] {
-                            String.valueOf(n.getId()),
-                            "<html><b>" + n.getContent() + "</b></html>"
+                    new String[]{
+                        String.valueOf(n.getId()),
+                        "<html><b>" + n.getContent() + "</b></html>"
                     });
         });
 

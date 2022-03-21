@@ -76,7 +76,6 @@ public class VisualizarImagemPresenter implements IObservable {
             var res = chooser.showSaveDialog(view);
             if (res == JFileChooser.APPROVE_OPTION) {
                 File salvar = chooser.getSelectedFile();
-                System.out.println(salvar.getPath());
                 if (!salvar.getPath().endsWith(".jpg")) {
                     salvar = new File(salvar + ".jpg");
                 }

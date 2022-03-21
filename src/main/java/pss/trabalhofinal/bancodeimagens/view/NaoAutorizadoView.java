@@ -17,6 +17,7 @@ public class NaoAutorizadoView extends javax.swing.JInternalFrame {
         lblAcessoNaoAutorizado = new javax.swing.JLabel();
         btnFechar = new javax.swing.JButton();
         lblAguarde = new javax.swing.JLabel();
+        btnSolicitar = new javax.swing.JButton();
 
         jScrollPane1.setViewportView(lblIcone);
 
@@ -27,6 +28,8 @@ public class NaoAutorizadoView extends javax.swing.JInternalFrame {
 
         lblAguarde.setText("Aguarde autorização!");
 
+        btnSolicitar.setText("Solicitar Acesso");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -34,7 +37,10 @@ public class NaoAutorizadoView extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnFechar)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnSolicitar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnFechar))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -51,7 +57,9 @@ public class NaoAutorizadoView extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblAguarde)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addComponent(btnFechar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFechar)
+                    .addComponent(btnSolicitar))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
@@ -64,6 +72,10 @@ public class NaoAutorizadoView extends javax.swing.JInternalFrame {
 
     public JButton getBtnFechar() {
         return btnFechar;
+    }
+
+    public JButton getBtnSolicitar() {
+        return btnSolicitar;
     }
 
     public JLabel getLblAguarde() {
@@ -80,6 +92,7 @@ public class NaoAutorizadoView extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnSolicitar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAcessoNaoAutorizado;
     private javax.swing.JLabel lblAguarde;
