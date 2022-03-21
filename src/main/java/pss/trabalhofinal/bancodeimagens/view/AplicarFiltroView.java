@@ -72,7 +72,7 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
 
         txtRotacao.setText("0");
 
-        txtPixel.setText("0");
+        txtPixel.setText("1");
 
         txtBrilho.setText("0");
 

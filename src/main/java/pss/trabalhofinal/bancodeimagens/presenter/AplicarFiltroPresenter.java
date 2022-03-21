@@ -131,6 +131,8 @@ public class AplicarFiltroPresenter implements IObservable {
         try {
             imagem = imagem.reverter();
             imagem = imagem.reverter();
+            HistoricoFiltroDAO.insertHistorico(caminho, "Efeito anterior revertido");
+            HistoricoFiltroDAO.insertHistorico(caminho, "Efeito anterior revertido");
             view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
             view.getBtnReverter().setVisible(false);
             save();
@@ -178,10 +180,17 @@ public class AplicarFiltroPresenter implements IObservable {
 
                 int res = Integer.parseInt(view.getTxtBrilho().getText());
 
-                imagem = new BrilhoDecorator(imagem, res);
-                view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
-                save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Brilho aumentado em " + res);
+                if (res >= 0) {
+                    imagem = new BrilhoDecorator(imagem, res);
+                    view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
+                    save();
+                    HistoricoFiltroDAO.insertHistorico(caminho, "Brilho aumentado em " + res);
+                } else {
+                    JOptionPane.showMessageDialog(view, "Valor de brilho deve ser maior ou igual a 0!");
+                    view.getCkbImgBrilho().setSelected(false);
+                    view.getTxtBrilho().setText("0");
+                }
+
             } else {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
@@ -198,11 +207,16 @@ public class AplicarFiltroPresenter implements IObservable {
             if (view.getCkbImgPixelar().isSelected()) {
 
                 int res = Integer.parseInt(view.getTxtPixel().getText());
-
-                imagem = new PixeladaDecorator(imagem, res);
-                view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
-                save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Pixelado com tamanho " + res);
+                if (res > 0) {
+                    imagem = new PixeladaDecorator(imagem, res);
+                    view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
+                    save();
+                    HistoricoFiltroDAO.insertHistorico(caminho, "Pixelado com tamanho " + res);
+                } else {
+                    JOptionPane.showMessageDialog(view, "Valor de píxel deve ser maior do que 1!");
+                    view.getCkbImgPixelar().setSelected(false);
+                    view.getTxtPixel().setText("1");
+                }
             } else {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
@@ -220,10 +234,16 @@ public class AplicarFiltroPresenter implements IObservable {
 
                 int res = Integer.parseInt(view.getTxtRotacao().getText());
 
-                imagem = new RotacionaDecorator(imagem, res);
-                view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
-                save();
-                HistoricoFiltroDAO.insertHistorico(caminho, "Rotacionado em " + res + "graus");
+                if (res >= 0) {
+                    imagem = new RotacionaDecorator(imagem, res);
+                    view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
+                    save();
+                    HistoricoFiltroDAO.insertHistorico(caminho, "Rotacionado em " + res + "graus");
+                } else {
+                    JOptionPane.showMessageDialog(view, "Valor de rotação deve ser maior ou igual a 0!");
+                    view.getCkbImgRotacionar().setSelected(false);
+                    view.getTxtRotacao().setText("0");
+                }
             } else {
                 imagem = imagem.reverter();
                 view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
