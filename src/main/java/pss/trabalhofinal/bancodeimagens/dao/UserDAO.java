@@ -106,8 +106,8 @@ public abstract class UserDAO {
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(conn, id));
-                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(id));
 
                 if (admin) {
                     users.add(new Admin(id, name, email, username, password, dateRegister, notifications, false));
@@ -223,8 +223,8 @@ public abstract class UserDAO {
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(conn, id));
-                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(id));
 
                 if (!authorized) {
                     throw new RuntimeException(
@@ -270,8 +270,8 @@ public abstract class UserDAO {
                 var administrator = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(conn, id));
-                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(id));
 
                 if (administrator) {
 
@@ -349,8 +349,8 @@ public abstract class UserDAO {
                 var dataRegister = rs.getDate("dateRegister").toLocalDate();
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(conn, id));
-                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(id));
 
                 users.add(new NormalUser(id, name, email, username, password, dataRegister, notifications, authorized,
                         permissoes, false));
@@ -409,8 +409,8 @@ public abstract class UserDAO {
                 var admin = rs.getInt("admin") == 1;
                 var authorized = rs.getInt("authorized") == 1;
 
-                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(conn, id));
-                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(conn, id));
+                var notifications = new NotificationCollection(NotificationDAO.getNotificationsByUser(id));
+                var permissoes = new PermissaoCollection(PermissaoDAO.getPermissionsByUser(id));
 
                 if (admin) {
                     user = new Admin(id, name, email, username, password, dateRegister, notifications, false);

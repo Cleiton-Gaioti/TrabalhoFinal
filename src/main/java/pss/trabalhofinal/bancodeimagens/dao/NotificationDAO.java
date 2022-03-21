@@ -93,38 +93,6 @@ public abstract class NotificationDAO {
         }
     }
 
-    public static List<Notification> getNotificationsByUser(Connection conn, int idUser) {
-        var query = "SELECT * FROM notification WHERE idUser = ?";
-
-        try {
-            conn = ConnectionSQLite.connect();
-            PreparedStatement ps = conn.prepareStatement(query);
-
-            ps.setInt(1, idUser);
-
-            ResultSet rs = ps.executeQuery();
-
-            List<Notification> notifications = new ArrayList<>();
-
-            while (rs.next()) {
-                var id = rs.getInt("id");
-                var idAdminWhoSent = rs.getInt("idUserWhoSent");
-                var content = rs.getString("content");
-                var read = rs.getInt("read") == 1;
-                var date = rs.getDate("date").toLocalDate();
-
-                notifications.add(new Notification(id, idAdminWhoSent, idUser, content, read, date));
-            }
-
-            rs.close();
-            ps.close();
-
-            return notifications;
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao listar notificações: " + e.getMessage());
-        }
-    }
-
     public static Notification getNotificationById(int id) {
         var query = "SELECT * FROM notification WHERE id = ?";
 

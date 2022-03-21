@@ -172,6 +172,9 @@ public class UsersCollection {
     }
 
     public List<UserModel> getAllUsers() {
+
+        users = UserDAO.getAllUsers();
+
         return Collections.unmodifiableList(users);
     }
 
