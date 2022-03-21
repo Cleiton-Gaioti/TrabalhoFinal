@@ -1,7 +1,7 @@
 package pss.trabalhofinal.bancodeimagens;
 
 import java.io.File;
-import java.io.IOException;
+
 import javax.swing.JOptionPane;
 
 import pss.trabalhofinal.bancodeimagens.dao.HistoricoFiltroDAO;

@@ -4,10 +4,12 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 import pss.trabalhofinal.bancodeimagens.dao.NotificationDAO;
 import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
@@ -60,18 +62,18 @@ public class PermissoesUserPresenter implements IObserver {
                             PermissaoDAO.removeById(p.getId());
                         }
                     }
-                    per = new Permissao(user.getId(), admin.getId(), "pasta", RelativePath.toRelativePath(escolhido), LocalDate.now());
+                    per = new Permissao(user.getId(), admin.getId(), "pasta", RelativePath.toRelativePath(escolhido),
+                            LocalDate.now());
 
                 } else {
-                    per = new Permissao(user.getId(), admin.getId(), "arquivo", RelativePath.toRelativePath(escolhido), LocalDate.now());
+                    per = new Permissao(user.getId(), admin.getId(), "arquivo", RelativePath.toRelativePath(escolhido),
+                            LocalDate.now());
                 }
-                if (per != null) {
-                    PermissaoDAO.insert(per);
-                    NotificationDAO.insert(new Notification(admin.getId(), user.getId(), "Acesso concedido a(o) "
-                            + per.getTipo() + " " + per.getPath(), false, LocalDate.now()));
-                } else {
-                    throw new RuntimeException("Erro ao adicionar permissão!");
-                }
+
+                PermissaoDAO.insert(per);
+
+                NotificationDAO.insert(new Notification(admin.getId(), user.getId(), "Acesso concedido a(o) "
+                        + per.getTipo() + " " + per.getPath(), false, LocalDate.now()));
             }
             loadTable();
         } catch (Exception e) {
@@ -82,7 +84,7 @@ public class PermissoesUserPresenter implements IObserver {
     private void loadTable() {
 
         var tableModel = new DefaultTableModel(
-                new Object[][]{}, new String[]{"ID", "IDAdmin", "Tipo", "Path", "Data de Autorização"}) {
+                new Object[][] {}, new String[] { "ID", "IDAdmin", "Tipo", "Path", "Data de Autorização" }) {
             @Override
             public boolean isCellEditable(final int row, final int column) {
                 return false;
@@ -96,12 +98,12 @@ public class PermissoesUserPresenter implements IObserver {
             var dataFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             for (Permissao p : lista) {
-                tableModel.addRow(new Object[]{
-                    p.getId(),
-                    p.getAdminWhoGranted(),
-                    p.getTipo(),
-                    p.getPath(),
-                    p.getDate().format(dataFormat)});
+                tableModel.addRow(new Object[] {
+                        p.getId(),
+                        p.getAdminWhoGranted(),
+                        p.getTipo(),
+                        p.getPath(),
+                        p.getDate().format(dataFormat) });
             }
 
             view.getTblPermissoes().setModel(tableModel);
