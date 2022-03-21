@@ -74,7 +74,7 @@ public class ListarUsuariosPresenter implements IObserver {
         view.getTblUsuarios().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         var tableModel = new DefaultTableModel(
-                new Object[][]{}, new String[]{"Id", "Tipo", "Nome", "Usuário", "Permissão", "Data de Cadastro"}) {
+                new Object[][]{}, new String[]{"Id", "Tipo", "Nome", "Usuário", "Data de Cadastro"}) {
             @Override
             public boolean isCellEditable(final int row, final int column) {
                 return false;
