@@ -8,7 +8,7 @@ import sqlite3
 
 """ Registros gerados aleatóriamente no site https://www.4devs.com.br/gerador_de_pessoas """
 
-def inserir_registros(max_id):
+def inserir_registros(conn, max_id):
     with open("data.json", "r") as datas:
         data = json.load(datas)
 
@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
         max_id = cursor.execute("SELECT MAX(id) FROM user").fetchall()[0][0]
 
-        inserir_registros(max_id + 1)
+        inserir_registros(conn, max_id + 1)
 
     except sqlite3.Error as error:
             print("Error while connecting to sqlite", error)
