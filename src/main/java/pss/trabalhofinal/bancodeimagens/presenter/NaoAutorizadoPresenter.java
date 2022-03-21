@@ -3,6 +3,7 @@ package pss.trabalhofinal.bancodeimagens.presenter;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
+
 import pss.trabalhofinal.bancodeimagens.model.Image;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.view.NaoAutorizadoView;
@@ -10,16 +11,12 @@ import pss.trabalhofinal.bancodeimagens.view.NaoAutorizadoView;
 public class NaoAutorizadoPresenter {
 
     private NaoAutorizadoView view;
-    private UserModel user;
-    private Image imagem;
 
     public NaoAutorizadoPresenter(UserModel user, JDesktopPane desktop, Image imagem) {
         view = new NaoAutorizadoView();
-        this.user = user;
-        this.imagem = imagem;
         view.setTitle(user.getUsername() + " não autorizado!");
 
-        loadIcon();
+        loadIcon(imagem);
 
         view.getBtnFechar().addActionListener(l -> {
             view.dispose();
@@ -30,7 +27,7 @@ public class NaoAutorizadoPresenter {
 
     }
 
-    private void loadIcon() {
+    private void loadIcon(Image imagem) {
         try {
             String iconPath = imagem.getPath().replace("images/", "images/.thumbnails/");
             Image icon = new Image(iconPath);
