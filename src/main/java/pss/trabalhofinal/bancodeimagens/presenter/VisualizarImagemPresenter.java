@@ -117,10 +117,6 @@ public class VisualizarImagemPresenter implements IObservable {
 
         if (resposta == 0) {
             try {
-                File lixeira = new File("images/.lixeira");
-                if (!lixeira.exists()) {
-                    lixeira.mkdirs();
-                }
                 view.dispose();
                 File temp = new File(imagem.getPath());
                 String fileName = temp.getName();

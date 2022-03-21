@@ -1,16 +1,21 @@
 package pss.trabalhofinal.bancodeimagens.presenter;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import pss.trabalhofinal.bancodeimagens.dao.LixeiraDAO;
 import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 
 import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.AdminLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.Image;
+import pss.trabalhofinal.bancodeimagens.model.Lixeira;
 import pss.trabalhofinal.bancodeimagens.model.Permissao;
 import pss.trabalhofinal.bancodeimagens.model.UserDeslogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserLogadoState;
@@ -62,6 +67,10 @@ public class PrincipalPresenter implements IObserver {
 
         view.getMenuDesfazerExlusoes().addActionListener(l -> {
             new ExclusoesPresenter(user, view.getDesktop());
+        });
+
+        view.getMenuExcluirMultiplos().addActionListener(l -> {
+            excluirMultiplos();
         });
 
         view.setSize(1280, 720);
@@ -126,11 +135,64 @@ public class PrincipalPresenter implements IObserver {
         }
     }
 
+    private void excluirMultiplos() {
+        /*
+        Apenas usuários administradores poderão excluir múltiplas imagens
+         */
+        try {
+            JFileChooser chooser = new JFileChooser(new File("./images/"));
+            chooser.setDialogTitle("Excluir arquivos!");
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            chooser.setMultiSelectionEnabled(true);
+            chooser.setFileFilter(new FileNameExtensionFilter("JPG images", "jpg"));
+
+            int res = chooser.showOpenDialog(view);
+            if (res == JFileChooser.APPROVE_OPTION) {
+                File escolhidos[] = chooser.getSelectedFiles();
+
+                String[] options = {"Sim", "Não"};
+
+                int resposta = JOptionPane.showOptionDialog(
+                        view,
+                        "Deseja excluir " + escolhidos.length + " imagens?",
+                        "Apagar imagem",
+                        JOptionPane.YES_OPTION,
+                        JOptionPane.NO_OPTION,
+                        null,
+                        options,
+                        options[1]);
+
+                if (resposta == 0) {
+                    try {
+                        for (File f : escolhidos) {
+
+                            if (true) {
+                                var fileName = f.getName();
+                                var path = RelativePath.toRelativePath(f);
+                                f.renameTo(new File("./images/.lixeira/" + fileName));
+                                System.out.println(fileName);
+                                System.out.println(path);
+                                LixeiraDAO.insert(new Lixeira(user.getId(), path, fileName, LocalDate.now()));
+                            }
+                        }
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(view, "Erro ao excluir multiplos arquivos: " + e.getMessage());
+                    }
+                }
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Erro ao excluir multiplos arquivos: " + e.getMessage());
+        }
+    }
+
     private void abrirArquivo() {
         try {
             JFileChooser chooser = new JFileChooser(new File("./images/"));
             chooser.setDialogTitle("Escolha os arquivos");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            chooser.setFileFilter(new FileNameExtensionFilter("JPG images", "jpg"));
             var res = chooser.showOpenDialog(view);
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhido = chooser.getSelectedFile();
@@ -150,9 +212,7 @@ public class PrincipalPresenter implements IObserver {
                     } else {
                         new NaoAutorizadoPresenter(user, view.getDesktop(), new Image(RelativePath.toRelativePath(escolhido)));
                     }
-
                 }
-
             }
 
             /*
@@ -188,6 +248,7 @@ public class PrincipalPresenter implements IObserver {
         view.getMenuUpdate().setVisible(true);
         view.getBtnSolicitacao().setVisible(false);
         view.getjMenuArquivo().setVisible(true);
+        view.getMenuExcluirMultiplos().setVisible(false);
 
     }
 
@@ -203,6 +264,7 @@ public class PrincipalPresenter implements IObserver {
         view.getMenuUpdate().setVisible(true);
         view.getBtnSolicitacao().setVisible(true);
         view.getjMenuArquivo().setVisible(true);
+        view.getMenuExcluirMultiplos().setVisible(true);
 
     }
 

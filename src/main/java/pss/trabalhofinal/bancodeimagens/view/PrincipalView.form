@@ -36,6 +36,11 @@
                 <Property name="text" type="java.lang.String" value="Abrir"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="menuExcluirMultiplos">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Excluir Multiplos Arquivos"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuDesfazerExlusoes">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Desfazer Exclus&#xf5;es"/>

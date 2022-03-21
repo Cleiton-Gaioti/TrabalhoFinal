@@ -1,5 +1,7 @@
 package pss.trabalhofinal.bancodeimagens;
 
+import java.io.File;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import pss.trabalhofinal.bancodeimagens.dao.HistoricoFiltroDAO;
 import pss.trabalhofinal.bancodeimagens.dao.LixeiraDAO;
@@ -15,6 +17,10 @@ public class Main {
         ConnectionSQLite.checkDiretorioDb();
 
         try {
+            File lixeira = new File("images/.lixeira");
+            if (!lixeira.exists()) {
+                lixeira.mkdirs();
+            }
             UserDAO.createTableUsers();
             HistoricoFiltroDAO.createTableHistorico();
             PermissaoDAO.createTablePermissoes();

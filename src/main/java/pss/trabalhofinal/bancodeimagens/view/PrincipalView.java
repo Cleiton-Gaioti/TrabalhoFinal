@@ -27,6 +27,7 @@ public class PrincipalView extends javax.swing.JFrame {
         menuLogout = new javax.swing.JMenuItem();
         menuArquivos = new javax.swing.JMenu();
         menuAbrir = new javax.swing.JMenuItem();
+        menuExcluirMultiplos = new javax.swing.JMenuItem();
         menuDesfazerExlusoes = new javax.swing.JMenuItem();
         jMenuAdministrador = new javax.swing.JMenu();
         menuListarUsuarios = new javax.swing.JMenuItem();
@@ -58,6 +59,9 @@ public class PrincipalView extends javax.swing.JFrame {
 
         menuAbrir.setText("Abrir");
         menuArquivos.add(menuAbrir);
+
+        menuExcluirMultiplos.setText("Excluir Multiplos Arquivos");
+        menuArquivos.add(menuExcluirMultiplos);
 
         menuDesfazerExlusoes.setText("Desfazer Exclusões");
         menuArquivos.add(menuDesfazerExlusoes);
@@ -111,6 +115,7 @@ public class PrincipalView extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuAbrir;
     private javax.swing.JMenu menuArquivos;
     private javax.swing.JMenuItem menuDesfazerExlusoes;
+    private javax.swing.JMenuItem menuExcluirMultiplos;
     private javax.swing.JMenuItem menuListarUsuarios;
     private javax.swing.JMenuItem menuLogin;
     private javax.swing.JMenuItem menuLogout;
@@ -128,6 +133,10 @@ public class PrincipalView extends javax.swing.JFrame {
 
     public JTextPane getTxtUser() {
         return txtUser;
+    }
+
+    public JMenuItem getMenuExcluirMultiplos() {
+        return menuExcluirMultiplos;
     }
 
     public JMenu getjMenuAdministrador() {
