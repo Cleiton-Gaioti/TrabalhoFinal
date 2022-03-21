@@ -45,7 +45,7 @@ public class VisualizarImagemPresenter implements IObservable {
         });
 
         view.getBtnCompartilhar().addActionListener(ae -> {
-
+            new CompartilharPresenter(user, imagem, desktop);
         });
 
         view.getBtnEditar().addActionListener(ae -> {

@@ -8,8 +8,10 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import pss.trabalhofinal.bancodeimagens.dao.NotificationDAO;
 import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
+import pss.trabalhofinal.bancodeimagens.model.Notification;
 import pss.trabalhofinal.bancodeimagens.model.Permissao;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
@@ -50,6 +52,7 @@ public class PermissoesUserPresenter implements IObserver {
             int res = chooser.showOpenDialog(view);
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhido = chooser.getSelectedFile();
+                Permissao per = null;
                 if (escolhido.isDirectory()) {
                     List<Permissao> temp = PermissaoDAO.getPermissionsByUser(user.getId());
                     for (Permissao p : temp) {
@@ -57,9 +60,17 @@ public class PermissoesUserPresenter implements IObserver {
                             PermissaoDAO.removeById(p.getId());
                         }
                     }
-                    PermissaoDAO.insert(new Permissao(user.getId(), admin.getId(), "pasta", RelativePath.toRelativePath(escolhido), LocalDate.now()));
+                    per = new Permissao(user.getId(), admin.getId(), "pasta", RelativePath.toRelativePath(escolhido), LocalDate.now());
+
                 } else {
-                    PermissaoDAO.insert(new Permissao(user.getId(), admin.getId(), "arquivo", RelativePath.toRelativePath(escolhido), LocalDate.now()));
+                    per = new Permissao(user.getId(), admin.getId(), "arquivo", RelativePath.toRelativePath(escolhido), LocalDate.now());
+                }
+                if (per != null) {
+                    PermissaoDAO.insert(per);
+                    NotificationDAO.insert(new Notification(admin.getId(), user.getId(), "Acesso concedido a(o) "
+                            + per.getTipo() + " " + per.getPath(), false, LocalDate.now()));
+                } else {
+                    throw new RuntimeException("Erro ao adicionar permissão!");
                 }
             }
             loadTable();

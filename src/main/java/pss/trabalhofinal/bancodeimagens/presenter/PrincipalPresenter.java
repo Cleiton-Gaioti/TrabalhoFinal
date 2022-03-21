@@ -2,7 +2,6 @@ package pss.trabalhofinal.bancodeimagens.presenter;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -166,14 +165,12 @@ public class PrincipalPresenter implements IObserver {
                     try {
                         for (File f : escolhidos) {
 
-                            if (true) {
-                                var fileName = f.getName();
-                                var path = RelativePath.toRelativePath(f);
-                                f.renameTo(new File("./images/.lixeira/" + fileName));
-                                System.out.println(fileName);
-                                System.out.println(path);
-                                LixeiraDAO.insert(new Lixeira(user.getId(), path, fileName, LocalDate.now()));
-                            }
+                            var fileName = f.getName();
+                            var path = RelativePath.toRelativePath(f);
+                            f.renameTo(new File("./images/.lixeira/" + fileName));
+
+                            LixeiraDAO.insert(new Lixeira(user.getId(), path, fileName, LocalDate.now()));
+
                         }
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(view, "Erro ao excluir multiplos arquivos: " + e.getMessage());

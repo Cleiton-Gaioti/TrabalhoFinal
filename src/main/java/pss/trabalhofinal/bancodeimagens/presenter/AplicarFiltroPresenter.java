@@ -133,6 +133,7 @@ public class AplicarFiltroPresenter implements IObservable {
             imagem = imagem.reverter();
             view.getLblImagem().setIcon(new ImageIcon(imagem.getImagem()));
             view.getBtnReverter().setVisible(false);
+            save();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao aplicar filtro! " + e.getMessage());
         }

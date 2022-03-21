@@ -164,4 +164,34 @@ public abstract class PermissaoDAO {
         }
 
     }
+
+    public static boolean isAuthorized(int idUser, String path) {
+        var query = "select count(1) as num from permissoes where "
+                + "idUser = ? and path = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, idUser);
+            ps.setString(2, path);
+
+            boolean auth = false;
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                auth = rs.getInt("num") > 0;
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return auth;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao verificar autorização: " + e.getMessage());
+        }
+
+    }
 }
