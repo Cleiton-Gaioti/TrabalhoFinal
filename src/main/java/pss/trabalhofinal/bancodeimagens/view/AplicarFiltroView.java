@@ -1,7 +1,6 @@
 package pss.trabalhofinal.bancodeimagens.view;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -36,6 +35,7 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
         btnPixelar = new javax.swing.JButton();
         btnCinza = new javax.swing.JButton();
         btnBrilho = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setTitle("Aplicar filtro em uma imagem");
 
@@ -78,6 +78,8 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
 
         btnBrilho.setText("Brilho");
 
+        jLabel1.setText("Desfaz o último efeito aplicado, para as predefinições, pressione duas vezes.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -106,12 +108,14 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
                         .addComponent(scpPainel))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblFiltros)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 430, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 470, Short.MAX_VALUE)
                         .addComponent(lblPredefinicoes)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmbPredefinicoes, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnRestaurar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnFechar)))
                 .addContainerGap())
@@ -127,11 +131,12 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(scpPainel, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                        .addComponent(scpPainel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnFechar)
-                            .addComponent(btnRestaurar)))
+                            .addComponent(btnRestaurar)
+                            .addComponent(jLabel1)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnImgVermelha)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -158,7 +163,7 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnBrilho)
                             .addComponent(txtBrilho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 239, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -260,6 +265,7 @@ public class AplicarFiltroView extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnRotacionar;
     private javax.swing.JButton btnSepia;
     private javax.swing.JComboBox<String> cmbPredefinicoes;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblFiltros;
     private javax.swing.JLabel lblImagem;
     private javax.swing.JLabel lblPredefinicoes;
