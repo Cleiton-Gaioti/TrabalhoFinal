@@ -44,7 +44,7 @@ public class ShowNotificationsPresenter implements IObservable {
         this.user = user;
 
         tableModel = new DefaultTableModel(
-                new Object[][] {}, new String[] { "Id", "Notificação" }) {
+                new Object[][]{}, new String[]{"Id", "Notificação"}) {
             @Override
             public boolean isCellEditable(final int row, final int column) {
                 return false;
@@ -87,12 +87,13 @@ public class ShowNotificationsPresenter implements IObservable {
                         var dados = notificacao.split(",");
                         var user = users.getUserByUsername(dados[0].replace("USER:", "").strip());
                         var path = dados[1].replace("IMAGEM:", "").strip();
+                        var acao = dados[2].replace("AÇÃO:", "");
 
-                        String[] options = { "Sim", "Não" };
+                        String[] options = {"Sim", "Não"};
 
                         int resposta = JOptionPane.showOptionDialog(
                                 view,
-                                "Autorizar " + user.getUsername() + "?",
+                                "Autorizar " + user.getUsername() + " a " + acao + "?",
                                 "Autorizar usuário",
                                 JOptionPane.YES_OPTION,
                                 JOptionPane.NO_OPTION,
@@ -101,18 +102,33 @@ public class ShowNotificationsPresenter implements IObservable {
                                 options[1]);
 
                         if (resposta == 0) {
-                            permissaoDAO.insert(
-                                    new Permissao(user.getId(), this.user.getId(), "imagem", path, LocalDate.now()));
-                            notificationDAO.insert(new Notification(this.user.getId(), user.getId(),
-                                    "Aceso autorizado a " + path, false, LocalDate.now()));
+                            if (permissaoDAO.isAuthorizedFolder(user.getId())) {
+                                permissaoDAO.insert(new Permissao(user.getId(), this.user.getId(), "arquivo", path, LocalDate.now()));
+                            }
+                            if (permissaoDAO.isAuthorized(user.getId(), path)) {
+                                if (acao.equalsIgnoreCase("excluir")) {
+                                    permissaoDAO.autorizarExcluir(user.getId(), path);
+                                    notificationDAO.insert(new Notification(this.user.getId(), user.getId(),
+                                            "Aceso autorizado a " + acao.toLowerCase() + " " + path, false, LocalDate.now()));
+                                } else if (acao.equalsIgnoreCase("compartilhar")) {
+                                    permissaoDAO.autorizarCompartilhar(user.getId(), path);
+                                    notificationDAO.insert(new Notification(this.user.getId(), user.getId(),
+                                            "Aceso autorizado a " + acao.toLowerCase() + " " + path, false, LocalDate.now()));
+                                }
+                            } else if (acao.equalsIgnoreCase("visualizar") && !permissaoDAO.isAuthorizedFolder(user.getId())) {
+                                permissaoDAO.insert(
+                                        new Permissao(user.getId(), this.user.getId(), "arquivo", path, LocalDate.now()));
+                                notificationDAO.insert(new Notification(this.user.getId(), user.getId(),
+                                        "Aceso autorizado a " + acao.toLowerCase() + " " + path, false, LocalDate.now()));
+                            }
                         } else {
                             notificationDAO.insert(new Notification(this.user.getId(), user.getId(),
                                     "Aceso negado a " + path, false, LocalDate.now()));
                         }
-
+                        setRead();
                     }
                 }
-                setRead();
+
             } catch (RuntimeException e) {
                 JOptionPane.showMessageDialog(view, e.getMessage());
 
@@ -157,9 +173,9 @@ public class ShowNotificationsPresenter implements IObservable {
 
         user.getNotifications().getUnreadNotifications().forEach(n -> {
             tableModel.addRow(
-                    new String[] {
-                            String.valueOf(n.getId()),
-                            "<html><b>" + n.getContent() + "</b></html>"
+                    new String[]{
+                        String.valueOf(n.getId()),
+                        "<html><b>" + n.getContent() + "</b></html>"
                     });
         });
 

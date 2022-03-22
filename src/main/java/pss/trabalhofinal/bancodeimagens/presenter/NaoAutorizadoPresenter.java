@@ -18,13 +18,14 @@ public class NaoAutorizadoPresenter {
     private final NotificationDAO notificationDAO;
     private NaoAutorizadoView view;
 
-    public NaoAutorizadoPresenter(UserModel user, JDesktopPane desktop, Image imagem) {
+    public NaoAutorizadoPresenter(UserModel user, JDesktopPane desktop, Image imagem, String msg) {
         UsersCollection users = new UsersCollection();
         UserModel admin = users.getAdmins().get(0);
         notificationDAO = new NotificationDAO();
         view = new NaoAutorizadoView();
 
         view.setTitle(user.getUsername() + " não autorizado!");
+        view.getLblAcessoNaoAutorizado().setText(msg.substring(0, 1).toUpperCase() + msg.substring(1).toLowerCase() + " não autorizado!");
         view.getBtnSolicitar().setText("Solicitar " + admin.getUsername());
 
         loadIcon(imagem);
@@ -34,7 +35,7 @@ public class NaoAutorizadoPresenter {
         });
 
         view.getBtnSolicitar().addActionListener(l -> {
-            solicitar(admin, user, imagem);
+            solicitar(admin, user, imagem, msg.toLowerCase());
         });
 
         desktop.add(view);
@@ -42,10 +43,10 @@ public class NaoAutorizadoPresenter {
 
     }
 
-    private void solicitar(UserModel admin, UserModel user, Image imagem) {
+    private void solicitar(UserModel admin, UserModel user, Image imagem, String acao) {
         try {
             notificationDAO.insert(new Notification(user.getId(), admin.getId(),
-                    "USER:" + user.getUsername() + ",IMAGEM:" + imagem.getPath(),
+                    "USER:" + user.getUsername() + ",IMAGEM:" + imagem.getPath() + ",AÇÃO:" + acao,
                     false, LocalDate.now()));
             JOptionPane.showMessageDialog(view, "Solicitação enviada!");
             view.dispose();

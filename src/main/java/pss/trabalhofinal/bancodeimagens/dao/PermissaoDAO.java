@@ -19,7 +19,10 @@ public class PermissaoDAO {
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "idUser INTEGER NOT NULL, "
                 + "idAdminGranted INTEGER NOT NULL, "
-                + "tipo VARCHAR NOT NULL, "
+                + "tipo VARCHAR NOT NULL,"
+                + "visualizar INT DEFAULT 0, "
+                + "compartilhar INT DEFAULT 0,"
+                + "excluir INT DEFAULT 0, "
                 + "path VARCHAR NOT NULL, "
                 + "date DATE NOT NULL "
                 + ")";
@@ -38,7 +41,8 @@ public class PermissaoDAO {
     }
 
     public void insert(Permissao permissao) {
-        var query = "INSERT INTO permissoes (idUser, idAdminGranted, tipo, path, date) VALUES (?, ?, ?, ?, ?)";
+        var query = "INSERT INTO permissoes (idUser, idAdminGranted, tipo, visualizar, compartilhar, excluir, path, date) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
 
@@ -48,8 +52,11 @@ public class PermissaoDAO {
             ps.setInt(1, permissao.getIdUser());
             ps.setInt(2, permissao.getAdminWhoGranted());
             ps.setString(3, permissao.getTipo());
-            ps.setString(4, permissao.getPath());
-            ps.setDate(5, Date.valueOf(permissao.getDate()));
+            ps.setInt(4, permissao.isVisualizar() ? 1 : 0);
+            ps.setInt(5, permissao.isCompartilhar() ? 1 : 0);
+            ps.setInt(6, permissao.isExcluir() ? 1 : 0);
+            ps.setString(7, permissao.getPath());
+            ps.setDate(8, Date.valueOf(permissao.getDate()));
 
             ps.executeUpdate();
 
@@ -80,8 +87,11 @@ public class PermissaoDAO {
                 var tipo = rs.getString("tipo");
                 var path = rs.getString("path");
                 var date = rs.getDate("date").toLocalDate();
+                var visualizar = rs.getInt("visualizar") == 1;
+                var excluir = rs.getInt("excluir") == 1;
+                var compartilhar = rs.getInt("compartilhar") == 1;
 
-                permissoes.add(new Permissao(id, idUser, idAdminGranted, tipo, path, date));
+                permissoes.add(new Permissao(id, idUser, idAdminGranted, tipo, path, visualizar, compartilhar, excluir, date));
             }
 
             rs.close();
@@ -114,8 +124,11 @@ public class PermissaoDAO {
                 var tipo = rs.getString("tipo");
                 var path = rs.getString("path");
                 var date = rs.getDate("date").toLocalDate();
+                var visualizar = rs.getInt("visualizar") == 1;
+                var excluir = rs.getInt("excluir") == 1;
+                var compartilhar = rs.getInt("compartilhar") == 1;
 
-                permissoes.add(new Permissao(id, idUser, idAdminGranted, tipo, path, date));
+                permissoes.add(new Permissao(id, idUser, idAdminGranted, tipo, path, visualizar, compartilhar, excluir, date));
             }
 
             rs.close();
@@ -168,6 +181,169 @@ public class PermissaoDAO {
     public boolean isAuthorized(int idUser, String path) {
         var query = "select count(1) as num from permissoes where "
                 + "idUser = ? and path = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, idUser);
+            ps.setString(2, path);
+
+            boolean auth = false;
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                auth = rs.getInt("num") > 0;
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return auth;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao verificar autorização: " + e.getMessage());
+        }
+
+    }
+
+    public boolean isAuthorizedFolder(int idUser) {
+        var query = "select count(1) as num from permissoes where "
+                + "idUser = ? and path = 'images/'";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, idUser);
+
+            boolean auth = false;
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                auth = rs.getInt("num") > 0;
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return auth;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao verificar autorização: " + e.getMessage());
+        }
+
+    }
+
+    public void autorizarCompartilhar(int idUser, String path) {
+        var query = "update permissoes "
+                + "set compartilhar = 1 "
+                + "where idUser = ? and path = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, idUser);
+            ps.setString(2, path);
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao autorizar compartilhar: " + e.getMessage());
+        }
+    }
+
+    public void autorizarExcluir(int idUser, String path) {
+        var query = "update permissoes "
+                + "set excluir = 1 "
+                + "where idUser = ? and path = ?";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, idUser);
+            ps.setString(2, path);
+
+            ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao autorizar compartilhar: " + e.getMessage());
+        }
+    }
+
+    public boolean canVisualizar(int idUser, String path) {
+        var query = "select count(1) as num from permissoes where "
+                + "idUser = ? and path = ? and visualizar = 1";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, idUser);
+            ps.setString(2, path);
+
+            boolean auth = false;
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                auth = rs.getInt("num") > 0;
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return auth;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao verificar autorização: " + e.getMessage());
+        }
+
+    }
+
+    public boolean canCompartilhar(int idUser, String path) {
+        var query = "select count(1) as num from permissoes where "
+                + "idUser = ? and path = ? and compartilhar = 1";
+
+        try {
+            Connection conn = ConnectionSQLite.connect();
+            PreparedStatement ps = conn.prepareStatement(query);
+
+            ps.setInt(1, idUser);
+            ps.setString(2, path);
+
+            boolean auth = false;
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                auth = rs.getInt("num") > 0;
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+
+            return auth;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao verificar autorização: " + e.getMessage());
+        }
+
+    }
+
+    public boolean canExcluir(int idUser, String path) {
+        var query = "select count(1) as num from permissoes where "
+                + "idUser = ? and path = ? and excluir = 1";
 
         try {
             Connection conn = ConnectionSQLite.connect();

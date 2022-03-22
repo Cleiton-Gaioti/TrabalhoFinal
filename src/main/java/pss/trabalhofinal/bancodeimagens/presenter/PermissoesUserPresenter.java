@@ -53,32 +53,39 @@ public class PermissoesUserPresenter implements IObserver {
 
     private void addPermissao(JDesktopPane desktop) {
         try {
-            JFileChooser chooser = new JFileChooser(new File("./images/"));
-            chooser.setDialogTitle("Inserir Permissão");
-            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            int res = chooser.showOpenDialog(view);
-            if (res == JFileChooser.APPROVE_OPTION) {
-                File escolhido = chooser.getSelectedFile();
-                Permissao per = null;
-                if (escolhido.isDirectory()) {
-                    List<Permissao> temp = permissaoDAO.getPermissionsByUser(user.getId());
-                    for (Permissao p : temp) {
-                        if (p.getPath().startsWith(RelativePath.toRelativePath(escolhido))) {
-                            permissaoDAO.removeById(p.getId());
-                        }
-                    }
-                    per = new Permissao(user.getId(), admin.getId(), "pasta", RelativePath.toRelativePath(escolhido),
+
+            var resposta = 0;
+
+            String[] options = {"Pasta", "Imagem"};
+
+            resposta = JOptionPane.showOptionDialog(
+                    view,
+                    "Deseja compartilhar pasta ou imagem?",
+                    "Permissão",
+                    JOptionPane.YES_OPTION,
+                    JOptionPane.NO_OPTION,
+                    null,
+                    options,
+                    options[1]);
+
+            if (resposta != 0) {
+                JFileChooser chooser = new JFileChooser(new File("./images/"));
+                chooser.setDialogTitle("Inserir Permissão");
+                chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                int res = chooser.showOpenDialog(view);
+                if (res == JFileChooser.APPROVE_OPTION) {
+                    File escolhido = chooser.getSelectedFile();
+                    Permissao per = new Permissao(user.getId(), admin.getId(), "arquivo", RelativePath.toRelativePath(escolhido),
                             LocalDate.now());
 
-                } else {
-                    per = new Permissao(user.getId(), admin.getId(), "arquivo", RelativePath.toRelativePath(escolhido),
-                            LocalDate.now());
+                    permissaoDAO.insert(per);
+                    notificationDAO.insert(new Notification(admin.getId(), user.getId(), "Acesso concedido a(o) "
+                            + per.getTipo() + " " + per.getPath(), false, LocalDate.now()));
                 }
-
-                permissaoDAO.insert(per);
-
-                notificationDAO.insert(new Notification(admin.getId(), user.getId(), "Acesso concedido a(o) "
-                        + per.getTipo() + " " + per.getPath(), false, LocalDate.now()));
+            } else {
+                permissaoDAO.insert(new Permissao(user.getId(), admin.getId(), "pasta", "images/", LocalDate.now()));
+                notificationDAO.insert(new Notification(admin.getId(), user.getId(), "Acesso concedido a(o) pasta "
+                        + "images/", false, LocalDate.now()));
             }
             loadTable();
         } catch (Exception e) {
@@ -89,7 +96,7 @@ public class PermissoesUserPresenter implements IObserver {
     private void loadTable() {
 
         var tableModel = new DefaultTableModel(
-                new Object[][] {}, new String[] { "ID", "IDAdmin", "Tipo", "Path", "Data de Autorização" }) {
+                new Object[][]{}, new String[]{"ID", "IDAdmin", "Tipo", "Path", "Data de Autorização"}) {
             @Override
             public boolean isCellEditable(final int row, final int column) {
                 return false;
@@ -103,12 +110,12 @@ public class PermissoesUserPresenter implements IObserver {
             var dataFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             for (Permissao p : lista) {
-                tableModel.addRow(new Object[] {
-                        p.getId(),
-                        p.getAdminWhoGranted(),
-                        p.getTipo(),
-                        p.getPath(),
-                        p.getDate().format(dataFormat) });
+                tableModel.addRow(new Object[]{
+                    p.getId(),
+                    p.getAdminWhoGranted(),
+                    p.getTipo(),
+                    p.getPath(),
+                    p.getDate().format(dataFormat)});
             }
 
             view.getTblPermissoes().setModel(tableModel);

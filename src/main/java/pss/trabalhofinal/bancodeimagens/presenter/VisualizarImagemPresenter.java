@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 
 import pss.trabalhofinal.bancodeimagens.dao.HistoricoFiltroDAO;
 import pss.trabalhofinal.bancodeimagens.dao.LixeiraDAO;
+import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
+import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.HistoricoFiltros;
 import pss.trabalhofinal.bancodeimagens.model.Image;
 import pss.trabalhofinal.bancodeimagens.model.Lixeira;
@@ -26,18 +28,22 @@ public class VisualizarImagemPresenter implements IObservable {
 
     private final HistoricoFiltroDAO historicoFiltroDAO;
     private final LixeiraDAO lixeiraDAO;
+    private final PermissaoDAO permissaoDAO;
     private VisualizarImagemView view;
     private List<IObserver> observers;
     private UserModel user;
     private Image imagem;
+    private JDesktopPane desktop;
 
     public VisualizarImagemPresenter(Image imagem, JDesktopPane desktop, UserModel user) {
         historicoFiltroDAO = new HistoricoFiltroDAO();
         view = new VisualizarImagemView();
         observers = new ArrayList<>();
         lixeiraDAO = new LixeiraDAO();
+        permissaoDAO = new PermissaoDAO();
         this.imagem = imagem;
         this.user = user;
+        this.desktop = desktop;
 
         try {
             view.setTitle(imagem.getPath());
@@ -51,7 +57,11 @@ public class VisualizarImagemPresenter implements IObservable {
         });
 
         view.getBtnCompartilhar().addActionListener(ae -> {
-            new CompartilharPresenter(user, imagem, desktop);
+            if (Admin.class.isInstance(user) || permissaoDAO.canCompartilhar(user.getId(), imagem.getPath())) {
+                new CompartilharPresenter(user, imagem, desktop);
+            } else {
+                new NaoAutorizadoPresenter(user, desktop, imagem, "compartilhar");
+            }
         });
 
         view.getBtnEditar().addActionListener(ae -> {
@@ -71,11 +81,12 @@ public class VisualizarImagemPresenter implements IObservable {
             exportar();
         });
 
-        desktop.add(view);
+        this.desktop.add(view);
         view.setVisible(true);
     }
 
     private void exportar() {
+
         try {
             JFileChooser chooser = new JFileChooser(new File("./images/"));
             chooser.setDialogTitle("Escolha pasta para exportação");
@@ -91,6 +102,7 @@ public class VisualizarImagemPresenter implements IObservable {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Erro ao exportar imagem: " + e.getMessage());
         }
+
     }
 
     private void historico(JDesktopPane desktop) {
@@ -108,30 +120,36 @@ public class VisualizarImagemPresenter implements IObservable {
     }
 
     private void excluir() {
-        String[] options = { "Sim", "Não" };
 
-        int resposta = JOptionPane.showOptionDialog(
-                view,
-                "Tem certeza que deseja apagar a imagem?",
-                "Apagar imagem",
-                JOptionPane.YES_OPTION,
-                JOptionPane.NO_OPTION,
-                null,
-                options,
-                options[1]);
+        if (Admin.class.isInstance(this) || permissaoDAO.canExcluir(user.getId(), imagem.getPath())) {
 
-        if (resposta == 0) {
-            try {
-                view.dispose();
-                File temp = new File(imagem.getPath());
-                String fileName = temp.getName();
-                temp.renameTo(new File("./images/.lixeira/" + fileName));
-                lixeiraDAO.insert(new Lixeira(user.getId(), imagem.getPath(),
-                        Paths.get(imagem.getPath()).getFileName().toString(), LocalDate.now()));
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(view, "Erro ao excluir imagem: " + e.getMessage());
+            String[] options = {"Sim", "Não"};
+
+            int resposta = JOptionPane.showOptionDialog(
+                    view,
+                    "Tem certeza que deseja apagar a imagem?",
+                    "Apagar imagem",
+                    JOptionPane.YES_OPTION,
+                    JOptionPane.NO_OPTION,
+                    null,
+                    options,
+                    options[1]);
+
+            if (resposta == 0) {
+                try {
+                    view.dispose();
+                    File temp = new File(imagem.getPath());
+                    String fileName = temp.getName();
+                    temp.renameTo(new File("./images/.lixeira/" + fileName));
+                    lixeiraDAO.insert(new Lixeira(user.getId(), imagem.getPath(),
+                            Paths.get(imagem.getPath()).getFileName().toString(), LocalDate.now()));
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(view, "Erro ao excluir imagem: " + e.getMessage());
+                }
+
             }
-
+        } else {
+            new NaoAutorizadoPresenter(user, desktop, imagem, "excluir");
         }
     }
 

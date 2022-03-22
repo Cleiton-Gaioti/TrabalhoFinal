@@ -120,7 +120,7 @@ public class PrincipalPresenter implements IObserver {
         var resposta = 0;
 
         if (confirmar) {
-            String[] options = { "Sim", "Não" };
+            String[] options = {"Sim", "Não"};
 
             resposta = JOptionPane.showOptionDialog(
                     view,
@@ -158,7 +158,7 @@ public class PrincipalPresenter implements IObserver {
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhidos[] = chooser.getSelectedFiles();
 
-                String[] options = { "Sim", "Não" };
+                String[] options = {"Sim", "Não"};
 
                 int resposta = JOptionPane.showOptionDialog(
                         view,
@@ -207,6 +207,16 @@ public class PrincipalPresenter implements IObserver {
                     new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)), view.getDesktop(),
                             user);
                 } else {
+
+                    if (permissaoDAO.canVisualizar(user.getId(), RelativePath.toRelativePath(escolhido))
+                            || permissaoDAO.isAuthorizedFolder(user.getId())) {
+                        new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)),
+                                view.getDesktop(), user);
+                    } else {
+                        new NaoAutorizadoPresenter(user, view.getDesktop(),
+                                new Image(RelativePath.toRelativePath(escolhido)), "Visualizar");
+                    }
+                    /*
                     var auth = false;
                     for (Permissao p : permissoes) {
                         if (p.getPath().startsWith(RelativePath.toRelativePath(escolhido))) {
@@ -219,6 +229,8 @@ public class PrincipalPresenter implements IObserver {
                     } else {
                         new NaoAutorizadoPresenter(user, view.getDesktop(),
                                 new Image(RelativePath.toRelativePath(escolhido)));
+                    }*/ {
+
                     }
                 }
             }

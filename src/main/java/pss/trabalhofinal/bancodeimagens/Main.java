@@ -1,6 +1,7 @@
 package pss.trabalhofinal.bancodeimagens;
 
 import java.io.File;
+import java.time.LocalDate;
 
 import javax.swing.JOptionPane;
 
@@ -10,6 +11,7 @@ import pss.trabalhofinal.bancodeimagens.dao.NotificationDAO;
 import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 import pss.trabalhofinal.bancodeimagens.dao.UserDAO;
 import pss.trabalhofinal.bancodeimagens.factory.ConnectionSQLite;
+import pss.trabalhofinal.bancodeimagens.model.Permissao;
 import pss.trabalhofinal.bancodeimagens.presenter.PrincipalPresenter;
 
 public class Main {
@@ -27,6 +29,7 @@ public class Main {
             PermissaoDAO.createTablePermissoes();
             NotificationDAO.createTableNotification();
             LixeiraDAO.createTableLixeira();
+
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             System.exit(1);
