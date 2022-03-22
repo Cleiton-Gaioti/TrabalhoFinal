@@ -61,7 +61,7 @@ public class NaoAutorizadoPresenter {
             Image icon = new Image(iconPath);
             view.getLblIcone().setIcon(new ImageIcon(icon.getImagem()));
         } catch (Exception e) {
-            JOptionPane.showConfirmDialog(view, "Erro ao carregar Icone: " + e.getMessage());
+            JOptionPane.showMessageDialog(view, "Erro ao carregar Icone: " + e.getMessage());
         }
     }
 
