@@ -43,7 +43,7 @@ public class NaoAutorizadoView extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblAguarde)
                             .addComponent(lblAcessoNaoAutorizado))
-                        .addGap(0, 57, Short.MAX_VALUE))
+                        .addGap(0, 105, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnSolicitar)

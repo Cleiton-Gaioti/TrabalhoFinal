@@ -22,6 +22,7 @@ import pss.trabalhofinal.bancodeimagens.model.Lixeira;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObservable;
 import pss.trabalhofinal.bancodeimagens.model.interfaces.IObserver;
+import pss.trabalhofinal.bancodeimagens.utils.ThumbnailFileChooser;
 import pss.trabalhofinal.bancodeimagens.view.VisualizarImagemView;
 
 public class VisualizarImagemPresenter implements IObservable {
@@ -88,7 +89,7 @@ public class VisualizarImagemPresenter implements IObservable {
     private void exportar() {
 
         try {
-            JFileChooser chooser = new JFileChooser(new File("./images/"));
+            ThumbnailFileChooser chooser = new ThumbnailFileChooser(new File("./images/"));
             chooser.setDialogTitle("Escolha pasta para exportação");
             var res = chooser.showSaveDialog(view);
             if (res == JFileChooser.APPROVE_OPTION) {
