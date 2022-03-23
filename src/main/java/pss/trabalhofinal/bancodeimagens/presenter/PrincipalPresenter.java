@@ -2,7 +2,6 @@ package pss.trabalhofinal.bancodeimagens.presenter;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
@@ -15,7 +14,6 @@ import pss.trabalhofinal.bancodeimagens.model.Admin;
 import pss.trabalhofinal.bancodeimagens.model.AdminLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.Image;
 import pss.trabalhofinal.bancodeimagens.model.Lixeira;
-import pss.trabalhofinal.bancodeimagens.model.Permissao;
 import pss.trabalhofinal.bancodeimagens.model.UserDeslogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserLogadoState;
 import pss.trabalhofinal.bancodeimagens.model.UserModel;
@@ -28,7 +26,6 @@ public class PrincipalPresenter implements IObserver {
     /* ATTRIBUTES */
     private final PermissaoDAO permissaoDAO;
     private final LixeiraDAO lixeiraDAO;
-    private List<Permissao> permissoes;
     private final PrincipalView view;
     private UserModel user;
 
@@ -100,10 +97,8 @@ public class PrincipalPresenter implements IObserver {
 
             if (isAdmin) {
                 new AdminLogadoState(this);
-                permissoes = null;
             } else {
                 new UserLogadoState(this);
-                permissoes = permissaoDAO.getPermissionsByUser(user.getId());
             }
 
             updateFooter(isAdmin);
@@ -120,7 +115,7 @@ public class PrincipalPresenter implements IObserver {
         var resposta = 0;
 
         if (confirmar) {
-            String[] options = {"Sim", "Não"};
+            String[] options = { "Sim", "Não" };
 
             resposta = JOptionPane.showOptionDialog(
                     view,
@@ -158,7 +153,7 @@ public class PrincipalPresenter implements IObserver {
             if (res == JFileChooser.APPROVE_OPTION) {
                 File escolhidos[] = chooser.getSelectedFiles();
 
-                String[] options = {"Sim", "Não"};
+                String[] options = { "Sim", "Não" };
 
                 int resposta = JOptionPane.showOptionDialog(
                         view,
@@ -217,19 +212,21 @@ public class PrincipalPresenter implements IObserver {
                                 new Image(RelativePath.toRelativePath(escolhido)), "Visualizar");
                     }
                     /*
-                    var auth = false;
-                    for (Permissao p : permissoes) {
-                        if (p.getPath().startsWith(RelativePath.toRelativePath(escolhido))) {
-                            auth = true;
-                        }
-                    }
-                    if (auth) {
-                        new VisualizarImagemPresenter(new Image(RelativePath.toRelativePath(escolhido)),
-                                view.getDesktop(), user);
-                    } else {
-                        new NaoAutorizadoPresenter(user, view.getDesktop(),
-                                new Image(RelativePath.toRelativePath(escolhido)));
-                    }*/ {
+                     * var auth = false;
+                     * for (Permissao p : permissoes) {
+                     * if (p.getPath().startsWith(RelativePath.toRelativePath(escolhido))) {
+                     * auth = true;
+                     * }
+                     * }
+                     * if (auth) {
+                     * new VisualizarImagemPresenter(new
+                     * Image(RelativePath.toRelativePath(escolhido)),
+                     * view.getDesktop(), user);
+                     * } else {
+                     * new NaoAutorizadoPresenter(user, view.getDesktop(),
+                     * new Image(RelativePath.toRelativePath(escolhido)));
+                     * }
+                     */ {
 
                     }
                 }
