@@ -8,6 +8,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import pss.trabalhofinal.bancodeimagens.ThumbnailFileChooser;
 import pss.trabalhofinal.bancodeimagens.dao.LixeiraDAO;
 import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
@@ -143,7 +144,8 @@ public class PrincipalPresenter implements IObserver {
          * acesso
          */
         try {
-            JFileChooser chooser = new JFileChooser(new File("./images/"));
+            ThumbnailFileChooser chooser = new ThumbnailFileChooser(new File("./images/"));
+            //JFileChooser chooser = new JFileChooser(new File("./images/"));
             chooser.setDialogTitle("Excluir arquivos!");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             chooser.setMultiSelectionEnabled(true);
@@ -190,7 +192,8 @@ public class PrincipalPresenter implements IObserver {
 
     private void abrirArquivo() {
         try {
-            JFileChooser chooser = new JFileChooser(new File("./images/"));
+            ThumbnailFileChooser chooser = new ThumbnailFileChooser(new File("./images/"));
+            //JFileChooser chooser = new JFileChooser(new File("./images/"));
             chooser.setDialogTitle("Escolha os arquivos");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             chooser.setFileFilter(new FileNameExtensionFilter("JPG images", "jpg"));
