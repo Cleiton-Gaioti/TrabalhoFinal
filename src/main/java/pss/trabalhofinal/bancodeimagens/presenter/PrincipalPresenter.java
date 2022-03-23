@@ -8,7 +8,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import pss.trabalhofinal.bancodeimagens.ThumbnailFileChooser;
+import pss.trabalhofinal.bancodeimagens.utils.ThumbnailFileChooser;
 import pss.trabalhofinal.bancodeimagens.dao.LixeiraDAO;
 import pss.trabalhofinal.bancodeimagens.dao.PermissaoDAO;
 import pss.trabalhofinal.bancodeimagens.model.Admin;
